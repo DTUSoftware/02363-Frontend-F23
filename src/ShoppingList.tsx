@@ -22,7 +22,7 @@ function ShoppingList() {
         { product: products.get("sugar-cane-1kg"), quantity: 2, giftWrap: false },
         ];
 
-    const total = itemList.reduce((sum, x) => sum += x.quantity*x.product!.price, 0);
+    const total = itemList.reduce((sum, x) => sum += x.quantity*x.product!.price, 0); 
 
     const listEmpty = itemList === undefined || itemList.length == 0;
   return (
