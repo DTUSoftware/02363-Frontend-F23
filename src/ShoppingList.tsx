@@ -10,21 +10,33 @@ interface Item {
     upsellProductId: String | null
   }
 
+const products = new Map<String,Item>();
+productsSJSON.map(x => products.set(x.id,x));
+console.log(products)
+
+const itemList = [
+    { product: products.get("vitamin-c-500-250"), quantity: 2, giftWrap: false },
+    { product: products.get("kids-songbook"), quantity: 1, giftWrap: true },
+    { product: products.get("sugar-cane-1kg"), quantity: 2, giftWrap: false },
+    ];
 
 function ShoppingList() {
-    const products = new Map<String,Item>();
-    productsSJSON.map(x => products.set(x.id,x));
-    console.log(products)
+    function changeQuantity(index: number) {
+        //TODO: Could be implemented as clickable + or - buttons that increment or decrement quantity of a specific item
+    }
 
-    const itemList = [
-        { product: products.get("vitamin-c-500-250"), quantity: 2, giftWrap: false },
-        { product: products.get("kids-songbook"), quantity: 1, giftWrap: true },
-        { product: products.get("sugar-cane-1kg"), quantity: 2, giftWrap: false },
-        ];
+    function removeItem(index: number) {
+        //TODO: Remove item from itemList, perhaps using its index 
+    }
+
+    function recurringOrderSchedule() {
+        //TODO: Not sure about this one
+    }
 
     const total = itemList.reduce((sum, x) => sum += x.quantity*x.product!.price, 0); 
 
     const listEmpty = itemList === undefined || itemList.length == 0;
+
   return (
     <div className="ShoppingList">
         <p>Kurv</p>
@@ -37,6 +49,7 @@ function ShoppingList() {
                         <th>Pris</th>
                         <th>Stk</th>
                         <th>Beløb</th>
+                        <th>Gavepapir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,11 +59,12 @@ function ShoppingList() {
                             <th>{`${x.product!.price} ${x.product!.currency}`}</th>
                             <th>{`${x.quantity}`}</th>
                             <th>{`${x.quantity*x.product!.price} ${x.product!.currency}`}</th>
+                            <th>{`${x.giftWrap}`}</th>
                         </tr>
                     ))}
                 </tbody>
             </table>
-        <p>{`I alt ${total}`}</p>
+        <p>{`I alt ${total} ${itemList[0].product!.currency}`}</p>
       </div>
     ) : (
         <p>Kurven er tom!</p>
