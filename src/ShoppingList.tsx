@@ -22,8 +22,26 @@ const itemList = [
     ];
 
 function ShoppingList() {
-    function changeQuantity(index: number) {
-        //TODO: Could be implemented as clickable + or - buttons that increment or decrement quantity of a specific item
+    function incrementQuantity(index: number) {
+        if (items.at(index)?.product) {
+            var quanitity = items.at(index)!.quantity +1;
+            console.log("New quantity of:" +items.at(index)!.product?.name+ " is:" + quanitity)
+            handleQuantityChange(items.at(index)!.product!,quanitity);
+          }else {
+            console.log("No change in quanitity!")
+          }
+        
+    }    
+    function decrementQuantity(index: number) {
+        
+        if (items.at(index)?.product && items.at(index)!.quantity >= 1) {
+
+            var quanitity = items.at(index)!.quantity -1;
+            console.log("New quantity is: "+ quanitity)
+            handleQuantityChange(items.at(index)!.product!,quanitity);
+        } else{
+            console.log("No change in quanitity!")
+        }
     }
 
     function removeItem(index: number) {
@@ -41,6 +59,15 @@ function ShoppingList() {
 
     const listEmpty = items === undefined || items.length == 0;
 
+    function handleQuantityChange(product: Item, newQuantity:number){
+        //based on https://beta.reactjs.org/learn/updating-objects-in-state
+        const newItemList = [...itemList]
+        const item = newItemList.find(
+            i => i.product === product
+          );
+          item!.quantity = newQuantity;
+          setItems(newItemList);
+    }
   return (
     <div className="ShoppingList">
         <p>Kurv</p>
@@ -61,9 +88,11 @@ function ShoppingList() {
                         <tr key={index}>
                             <th>{`${x.product!.name}`}</th>
                             <th>{`${x.product!.price} ${x.product!.currency}`}</th>
-                            <th>{`${x.quantity}`}</th>
+                            <th> {x.quantity} </th>
                             <th>{`${x.quantity*x.product!.price} ${x.product!.currency}`}</th>
                             <th>{`${x.giftWrap}`}</th>
+                            <th><button onClick={ ()=> incrementQuantity(index)}>+</button></th>
+                            <th><button onClick={ ()=> decrementQuantity(index)}>-</button></th>
                             <th><button onClick={ ()=> removeItem(index)}>Delete</button></th>
                         </tr>
                     ))}
