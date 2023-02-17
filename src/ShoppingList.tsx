@@ -1,5 +1,6 @@
 import { useState } from "react";
 import productsSJSON from "./assets/products.json";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 interface Item {
     id: String;
@@ -81,15 +82,15 @@ function ShoppingList() {
 
     return (
         <div className="ShoppingList">
-            <p>Kurv</p>
+            <p>Din indkøbskurv</p>
             {!listEmpty ? (
                 <div className="shopTable">
                     <table>
                         <thead>
                             <tr>
-                                <th>Navn</th>
+                                <th>Produkt</th>
                                 <th>Pris</th>
-                                <th>Stk</th>
+                                <th>Antal</th>
                                 <th>Beløb</th>
                                 <th>Gavepapir</th>
                             </tr>
@@ -97,16 +98,16 @@ function ShoppingList() {
                         <tbody>
                             {items.map((x, index) => (
                                 <tr key={index}>
-                                    <th>{`${x.product!.name}`}</th>
-                                    <th>{`${x.product!.price} ${
+                                    <td>{`${x.product!.name}`}</td>
+                                    <td>{`${x.product!.price} ${
                                         x.product!.currency
-                                    }`}</th>
-                                    <th> {x.quantity} </th>
-                                    <th>{`${x.quantity * x.product!.price} ${
+                                    }`}</td>
+                                    <td> {x.quantity} </td>
+                                    <td>{`${x.quantity * x.product!.price} ${
                                         x.product!.currency
-                                    }`}</th>
-                                    <th>{`${x.giftWrap}`}</th>
-                                    <th>
+                                    }`}</td>
+                                    <td>{`${x.giftWrap}`}</td>
+                                    <td>
                                         <button
                                             onClick={() =>
                                                 incrementQuantity(index)
@@ -114,8 +115,8 @@ function ShoppingList() {
                                         >
                                             +
                                         </button>
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <button
                                             onClick={() =>
                                                 decrementQuantity(index)
@@ -123,22 +124,22 @@ function ShoppingList() {
                                         >
                                             -
                                         </button>
-                                    </th>
-                                    <th>
+                                    </td>
+                                    <td>
                                         <button
                                             onClick={() => removeItem(index)}
                                         >
-                                            Delete
+                                           <FaRegTrashAlt/>
                                         </button>
-                                    </th>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    <p>{`I alt ${total} ${items[0].product!.currency}`}</p>
+                    <p>{`Pris i alt ${total} ${items[0].product!.currency}`}</p>
                 </div>
             ) : (
-                <p>Kurven er tom!</p>
+                <p>Din kurv er tom!</p>
             )}
         </div>
     );
