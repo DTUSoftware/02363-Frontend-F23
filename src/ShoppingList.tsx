@@ -103,6 +103,9 @@ function ShoppingList() {
                                 <th>Antal</th>
                                 <th>Beløb</th>
                                 <th>Gavepapir</th>
+                                <th>Tilføj</th>
+                                <th>Fjern</th>
+                                <th>Ryd</th>
                             </tr>
                         </thead>
                         <tbody>
