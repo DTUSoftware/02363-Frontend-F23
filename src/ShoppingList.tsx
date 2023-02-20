@@ -1,6 +1,7 @@
 import { useState } from "react";
 import productsSJSON from "./assets/products.json";
 import { FaRegTrashAlt } from "react-icons/fa";
+import "./ShoppingList.css";
 
 interface Item {
     id: String;
@@ -82,7 +83,7 @@ function ShoppingList() {
 
     return (
         <div className="ShoppingList">
-            <p>Din indkøbskurv</p>
+            <p className="qpr">Din indkøbskurv</p>
             {!listEmpty ? (
                 <div className="shopTable">
                     <table>
@@ -129,7 +130,7 @@ function ShoppingList() {
                                         <button
                                             onClick={() => removeItem(index)}
                                         >
-                                           <FaRegTrashAlt/>
+                                            <FaRegTrashAlt />
                                         </button>
                                     </td>
                                 </tr>
