@@ -124,9 +124,9 @@ function ShoppingList() {
                                             <input
                                                 type="checkbox"
                                                 checked={x.giftWrap}
-                                                onChange={() => {
-                                                    toggleGiftWrap(index);
-                                                }}
+                                                onChange={() =>
+                                                    toggleGiftWrap(index)
+                                                }
                                             />
                                         </label>
                                     </td>
