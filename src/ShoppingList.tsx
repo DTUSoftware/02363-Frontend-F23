@@ -12,19 +12,21 @@ interface Item {
     upsellProductId: String | null;
 }
 
-const products = new Map<String, Item>();
-productsSJSON.map((x) => products.set(x.id, x));
+type Products = { [key: string]: Item };
+
+const products: Products = {};
+productsSJSON.map((x) => (products[x.id] = x));
 console.log(products);
 
 const itemList = [
     {
-        product: products.get("vitamin-c-500-250"),
+        product: products["vitamin-c-500-250"],
         quantity: 2,
         giftWrap: false,
     },
-    { product: products.get("kids-songbook"), quantity: 1, giftWrap: true },
+    { product: products["kids-songbook"], quantity: 1, giftWrap: true },
     {
-        product: products.get("sugar-cane-1kg"),
+        product: products["sugar-cane-1kg"],
         quantity: 2,
         giftWrap: false,
     },
@@ -47,8 +49,9 @@ function ShoppingList() {
             console.log("No change in quanitity!");
         }
     }
+
     function decrementQuantity(index: number) {
-        if (items.at(index)?.product && items.at(index)!.quantity >= 1) {
+        if (items.at(index)?.product && items.at(index)!.quantity > 1) {
             var quanitity = items.at(index)!.quantity - 1;
             console.log("New quantity is: " + quanitity);
             handleQuantityChange(items.at(index)!.product!, quanitity);
@@ -129,7 +132,7 @@ function ShoppingList() {
                                         <button
                                             onClick={() => removeItem(index)}
                                         >
-                                           <FaRegTrashAlt/>
+                                            <FaRegTrashAlt />
                                         </button>
                                     </td>
                                 </tr>
