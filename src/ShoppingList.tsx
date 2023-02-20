@@ -15,7 +15,7 @@ interface Item {
 type Products = { [key: string]: Item };
 
 const products: Products = {};
-productsSJSON.map((x) => (products[x.id] = x));
+productsSJSON.forEach((x) => (products[x.id] = x));
 console.log(products);
 
 const itemList = [
@@ -36,7 +36,7 @@ function ShoppingList() {
     const [items, setItems] = useState(itemList);
 
     function incrementQuantity(index: number) {
-        if (items.at(index)?.product) {
+        if (items.at(index)!.product) {
             var quanitity = items.at(index)!.quantity + 1;
             console.log(
                 "New quantity of:" +
@@ -64,11 +64,16 @@ function ShoppingList() {
         setItems(items.filter((p, i) => i != index));
     }
 
-    function toggleGiftWrap(index: number) {
-        const newItemList = [...items];
-        const item = newItemList.at(index);
-        item!.giftWrap = !item!.giftWrap;
-        setItems(newItemList);
+    function toggleGiftWrap(i: number) {
+        setItems(
+            items.map((x, index) => {
+                if (index === i) {
+                    return { ...x, giftWrap: !x.giftWrap };
+                } else {
+                    return x;
+                }
+            })
+        );
     }
 
     function recurringOrderSchedule() {
