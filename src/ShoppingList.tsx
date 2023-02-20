@@ -16,7 +16,6 @@ type Products = { [key: string]: Item };
 
 const products: Products = {};
 productsSJSON.forEach((x) => (products[x.id] = x));
-console.log(products);
 
 const itemList = [
     {
@@ -36,27 +35,14 @@ function ShoppingList() {
     const [items, setItems] = useState(itemList);
 
     function incrementQuantity(index: number) {
-        if (items.at(index)!.product) {
-            var quanitity = items.at(index)!.quantity + 1;
-            console.log(
-                "New quantity of:" +
-                    items.at(index)!.product?.name +
-                    " is:" +
-                    quanitity
-            );
-            handleQuantityChange(items.at(index)!.product!, quanitity);
-        } else {
-            console.log("No change in quanitity!");
-        }
+        const item = items.at(index)!;
+        handleQuantityChange(item.product, item.quantity + 1);
     }
 
     function decrementQuantity(index: number) {
-        if (items.at(index)?.product && items.at(index)!.quantity > 1) {
-            var quanitity = items.at(index)!.quantity - 1;
-            console.log("New quantity is: " + quanitity);
-            handleQuantityChange(items.at(index)!.product!, quanitity);
-        } else {
-            console.log("No change in quanitity!");
+        const item = items.at(index)!;
+        if (item.quantity > 1) {
+            handleQuantityChange(item.product, item.quantity - 1);
         }
     }
 
@@ -64,10 +50,10 @@ function ShoppingList() {
         setItems(items.filter((p, i) => i != index));
     }
 
-    function toggleGiftWrap(i: number) {
+    function toggleGiftWrap(index: number) {
         setItems(
-            items.map((x, index) => {
-                if (index === i) {
+            items.map((x, i) => {
+                if (i === index) {
                     return { ...x, giftWrap: !x.giftWrap };
                 } else {
                     return x;
@@ -76,8 +62,16 @@ function ShoppingList() {
         );
     }
 
-    function recurringOrderSchedule() {
-        //TODO: Not sure about this one
+    function handleQuantityChange(product: Item, newQuantity: number) {
+        setItems(
+            items.map((x) => {
+                if (x.product.id === product.id) {
+                    return { ...x, quantity: newQuantity };
+                } else {
+                    return x;
+                }
+            })
+        );
     }
 
     const total = items.reduce(
@@ -85,15 +79,11 @@ function ShoppingList() {
         0
     );
 
-    const listEmpty = items === undefined || items.length == 0;
-
-    function handleQuantityChange(product: Item, newQuantity: number) {
-        //based on https://beta.reactjs.org/learn/updating-objects-in-state
-        const newItemList = [...items];
-        const item = newItemList.find((i) => i.product === product);
-        item!.quantity = newQuantity;
-        setItems(newItemList);
+    function recurringOrderSchedule() {
+        //TODO: Not sure about this one
     }
+
+    const listEmpty = items === undefined || items.length == 0;
 
     return (
         <div className="ShoppingList">
