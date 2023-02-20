@@ -13,19 +13,21 @@ interface Item {
     upsellProductId: String | null;
 }
 
-const products = new Map<String, Item>();
-productsSJSON.map((x) => products.set(x.id, x));
+type Products = { [key: string]: Item };
+
+const products: Products = {};
+productsSJSON.map((x) => (products[x.id] = x));
 console.log(products);
 
 const itemList = [
     {
-        product: products.get("vitamin-c-500-250"),
+        product: products["vitamin-c-500-250"],
         quantity: 2,
         giftWrap: false,
     },
-    { product: products.get("kids-songbook"), quantity: 1, giftWrap: true },
+    { product: products["kids-songbook"], quantity: 1, giftWrap: true },
     {
-        product: products.get("sugar-cane-1kg"),
+        product: products["sugar-cane-1kg"],
         quantity: 2,
         giftWrap: false,
     },
@@ -48,8 +50,9 @@ function ShoppingList() {
             console.log("No change in quanitity!");
         }
     }
+
     function decrementQuantity(index: number) {
-        if (items.at(index)?.product && items.at(index)!.quantity >= 1) {
+        if (items.at(index)?.product && items.at(index)!.quantity > 1) {
             var quanitity = items.at(index)!.quantity - 1;
             console.log("New quantity is: " + quanitity);
             handleQuantityChange(items.at(index)!.product!, quanitity);
@@ -60,6 +63,13 @@ function ShoppingList() {
 
     function removeItem(index: number) {
         setItems(items.filter((p, i) => i != index));
+    }
+
+    function toggleGiftWrap(index: number) {
+        const newItemList = [...items];
+        const item = newItemList.at(index);
+        item!.giftWrap = !item!.giftWrap;
+        setItems(newItemList);
     }
 
     function recurringOrderSchedule() {
@@ -94,6 +104,9 @@ function ShoppingList() {
                                 <th>Antal</th>
                                 <th>Beløb</th>
                                 <th>Gavepapir</th>
+                                <th>Tilføj</th>
+                                <th>Fjern</th>
+                                <th>Ryd</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -107,7 +120,17 @@ function ShoppingList() {
                                     <td>{`${x.quantity * x.product!.price} ${
                                         x.product!.currency
                                     }`}</td>
-                                    <td>{`${x.giftWrap}`}</td>
+                                    <td>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={x.giftWrap}
+                                                onChange={() =>
+                                                    toggleGiftWrap(index)
+                                                }
+                                            />
+                                        </label>
+                                    </td>
                                     <td>
                                         <button
                                             onClick={() =>
