@@ -64,6 +64,13 @@ function ShoppingList() {
         setItems(items.filter((p, i) => i != index));
     }
 
+    function toggleGiftWrap(index: number) {
+        const newItemList = [...items];
+        const item = newItemList.at(index);
+        item!.giftWrap = !item!.giftWrap;
+        setItems(newItemList);
+    }
+
     function recurringOrderSchedule() {
         //TODO: Not sure about this one
     }
@@ -109,7 +116,17 @@ function ShoppingList() {
                                     <td>{`${x.quantity * x.product!.price} ${
                                         x.product!.currency
                                     }`}</td>
-                                    <td>{`${x.giftWrap}`}</td>
+                                    <td>
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={x.giftWrap}
+                                                onChange={() => {
+                                                    toggleGiftWrap(index);
+                                                }}
+                                            />
+                                        </label>
+                                    </td>
                                     <td>
                                         <button
                                             onClick={() =>
