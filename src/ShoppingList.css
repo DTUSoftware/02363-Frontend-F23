@@ -14,7 +14,7 @@
     padding-right: 200px;
 }
 
-.price {
+.price, .increment {
     padding-right: 30px;
 }
 
@@ -23,17 +23,12 @@
     text-align: center;
 }
 
-.increment {
-    padding-right: 30px;
-
-}
-
 .priceTotal {
     padding-right: 60px;
 
 }
 
-.giftwrapping {
+.giftwrapping, .recurringOrderSchedule {
     text-align: center;
     padding-right: 30px;
 

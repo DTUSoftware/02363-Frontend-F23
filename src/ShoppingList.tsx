@@ -23,12 +23,14 @@ const itemList = [
         product: products["vitamin-c-500-250"],
         quantity: 2,
         giftWrap: false,
+        recurringOrder: false
     },
-    { product: products["kids-songbook"], quantity: 1, giftWrap: true },
+    { product: products["kids-songbook"], quantity: 1, giftWrap: true, recurringOrder: false },
     {
         product: products["sugar-cane-1kg"],
         quantity: 2,
         giftWrap: false,
+        recurringOrder: true
     },
 ];
 
@@ -80,8 +82,16 @@ function ShoppingList() {
         0
     );
 
-    function recurringOrderSchedule() {
-        //TODO: Not sure about this one
+    function toggleRecurringOrderSchedule(index: number) {
+        setItems(
+            items.map((x, i) => {
+                if (i === index) {
+                    return { ...x, recurringOrder: !x.recurringOrder };
+                } else {
+                    return x;
+                }
+            })
+        );
     }
 
     const listEmpty = items === undefined || items.length == 0;
@@ -101,6 +111,7 @@ function ShoppingList() {
                                 <th> </th>
                                 <th className="priceTotal">Total</th>
                                 <th className="giftwrapping">Gavepapir</th>
+                                <th className="recurringOrderSchedule">Tilbagevendende</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,6 +154,17 @@ function ShoppingList() {
                                             />
                                         </label>
                                     </td>   
+                                    <td className="recurringOrderSchedule">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={x.recurringOrder}
+                                                onChange={() =>
+                                                    toggleRecurringOrderSchedule(index)
+                                                }
+                                            />
+                                        </label>
+                                    </td> 
                                     <td>
                                         <button
                                             onClick={() => removeItem(index)}
