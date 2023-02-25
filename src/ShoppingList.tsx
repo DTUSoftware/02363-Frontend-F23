@@ -83,15 +83,7 @@ function ShoppingList() {
     );
 
     function toggleRecurringOrderSchedule(index: number) {
-        setItems(
-            items.map((x, i) => {
-                if (i === index) {
-                    return { ...x, recurringOrder: !x.recurringOrder };
-                } else {
-                    return x;
-                }
-            })
-        );
+        //TODO
     }
 
     const listEmpty = items === undefined || items.length == 0;
@@ -111,7 +103,6 @@ function ShoppingList() {
                                 <th> </th>
                                 <th className="priceTotal">Total</th>
                                 <th className="giftwrapping">Gavepapir</th>
-                                <th className="recurringOrderSchedule">Tilbagevendende</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -150,17 +141,6 @@ function ShoppingList() {
                                                 checked={x.giftWrap}
                                                 onChange={() =>
                                                     toggleGiftWrap(index)
-                                                }
-                                            />
-                                        </label>
-                                    </td>   
-                                    <td className="recurringOrderSchedule">
-                                        <label>
-                                            <input
-                                                type="checkbox"
-                                                checked={x.recurringOrder}
-                                                onChange={() =>
-                                                    toggleRecurringOrderSchedule(index)
                                                 }
                                             />
                                         </label>
