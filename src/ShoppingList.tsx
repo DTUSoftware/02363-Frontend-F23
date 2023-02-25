@@ -88,34 +88,51 @@ function ShoppingList() {
 
     return (
         <div className="ShoppingList">
-            <p className="qpr">Din indkøbskurv</p>
+            <p className="heading">Din indkøbskurv</p>
             {!listEmpty ? (
                 <div className="shopTable">
                     <table>
                         <thead>
                             <tr>
-                                <th>Produkt</th>
-                                <th>Pris</th>
-                                <th>Antal</th>
-                                <th>Beløb</th>
-                                <th>Gavepapir</th>
-                                <th>Tilføj</th>
-                                <th>Fjern</th>
-                                <th>Ryd</th>
+                                <th className="product">Produkt</th>
+                                <th className="price">Pris</th>
+                                <th> </th>
+                                <th className="quantity">Antal</th>
+                                <th> </th>
+                                <th className="priceTotal">Total</th>
+                                <th className="giftwrapping">Gavepapir</th>
                             </tr>
                         </thead>
                         <tbody>
                             {items.map((x, index) => (
                                 <tr key={index}>
-                                    <td>{`${x.product!.name}`}</td>
-                                    <td>{`${x.product!.price} ${
+                                    <td className="product">{`${x.product!.name}`}</td>
+                                    <td className="price">{`${x.product!.price} ${
                                         x.product!.currency
                                     }`}</td>
-                                    <td> {x.quantity} </td>
-                                    <td>{`${x.quantity * x.product!.price} ${
+                                    <td className="decrement">
+                                        <button className="quantityBtn"
+                                            onClick={() =>
+                                                decrementQuantity(index)
+                                            }
+                                        >
+                                            -
+                                        </button>
+                                    </td>
+                                    <td className="quantity"> {x.quantity} </td>
+                                    <td className="increment">
+                                        <button className="quantityBtn"
+                                            onClick={() =>
+                                                incrementQuantity(index)
+                                            }
+                                        >
+                                            +
+                                        </button>
+                                    </td>
+                                    <td className="priceTotal">{`${x.quantity * x.product!.price} ${
                                         x.product!.currency
                                     }`}</td>
-                                    <td>
+                                    <td className="giftwrapping">
                                         <label>
                                             <input
                                                 type="checkbox"
@@ -125,25 +142,7 @@ function ShoppingList() {
                                                 }
                                             />
                                         </label>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                incrementQuantity(index)
-                                            }
-                                        >
-                                            +
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                decrementQuantity(index)
-                                            }
-                                        >
-                                            -
-                                        </button>
-                                    </td>
+                                    </td>   
                                     <td>
                                         <button
                                             onClick={() => removeItem(index)}
@@ -155,7 +154,7 @@ function ShoppingList() {
                             ))}
                         </tbody>
                     </table>
-                    <p>{`Pris i alt ${total} ${items[0].product!.currency}`}</p>
+                    <p className="total">{`Pris i alt ${total} ${items[0].product!.currency}`}</p>
                 </div>
             ) : (
                 <p>Din kurv er tom!</p>
