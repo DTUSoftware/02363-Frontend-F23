@@ -1,6 +1,7 @@
 import { useState } from "react";
 import productsSJSON from "./assets/products.json";
 import { FaRegTrashAlt } from "react-icons/fa";
+import "./ShoppingList.css";
 
 interface Item {
     id: String;
@@ -22,12 +23,14 @@ const itemList = [
         product: products["vitamin-c-500-250"],
         quantity: 2,
         giftWrap: false,
+        recurringOrder: false
     },
-    { product: products["kids-songbook"], quantity: 1, giftWrap: true },
+    { product: products["kids-songbook"], quantity: 1, giftWrap: true, recurringOrder: false },
     {
         product: products["sugar-cane-1kg"],
         quantity: 2,
         giftWrap: false,
+        recurringOrder: true
     },
 ];
 
@@ -79,42 +82,59 @@ function ShoppingList() {
         0
     );
 
-    function recurringOrderSchedule() {
-        //TODO: Not sure about this one
+    function toggleRecurringOrderSchedule(index: number) {
+        //TODO
     }
 
     const listEmpty = items === undefined || items.length == 0;
 
     return (
         <div className="ShoppingList">
-            <p>Din indkøbskurv</p>
+            <p className="heading">Din indkøbskurv</p>
             {!listEmpty ? (
                 <div className="shopTable">
                     <table>
                         <thead>
                             <tr>
-                                <th>Produkt</th>
-                                <th>Pris</th>
-                                <th>Antal</th>
-                                <th>Beløb</th>
-                                <th>Gavepapir</th>
-                                <th>Tilføj</th>
-                                <th>Fjern</th>
-                                <th>Ryd</th>
+                                <th className="product">Produkt</th>
+                                <th className="price">Pris</th>
+                                <th> </th>
+                                <th className="quantity">Antal</th>
+                                <th> </th>
+                                <th className="priceTotal">Total</th>
+                                <th className="giftwrapping">Gavepapir</th>
                             </tr>
                         </thead>
                         <tbody>
                             {items.map((x, index) => (
                                 <tr key={index}>
-                                    <td>{`${x.product!.name}`}</td>
-                                    <td>{`${x.product!.price} ${
+                                    <td className="product">{`${x.product!.name}`}</td>
+                                    <td className="price">{`${x.product!.price} ${
                                         x.product!.currency
                                     }`}</td>
-                                    <td> {x.quantity} </td>
-                                    <td>{`${x.quantity * x.product!.price} ${
+                                    <td className="decrement">
+                                        <button className="quantityBtn"
+                                            onClick={() =>
+                                                decrementQuantity(index)
+                                            }
+                                        >
+                                            -
+                                        </button>
+                                    </td>
+                                    <td className="quantity"> {x.quantity} </td>
+                                    <td className="increment">
+                                        <button className="quantityBtn"
+                                            onClick={() =>
+                                                incrementQuantity(index)
+                                            }
+                                        >
+                                            +
+                                        </button>
+                                    </td>
+                                    <td className="priceTotal">{`${x.quantity * x.product!.price} ${
                                         x.product!.currency
                                     }`}</td>
-                                    <td>
+                                    <td className="giftwrapping">
                                         <label>
                                             <input
                                                 type="checkbox"
@@ -124,25 +144,7 @@ function ShoppingList() {
                                                 }
                                             />
                                         </label>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                incrementQuantity(index)
-                                            }
-                                        >
-                                            +
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() =>
-                                                decrementQuantity(index)
-                                            }
-                                        >
-                                            -
-                                        </button>
-                                    </td>
+                                    </td> 
                                     <td>
                                         <button
                                             onClick={() => removeItem(index)}
@@ -154,7 +156,7 @@ function ShoppingList() {
                             ))}
                         </tbody>
                     </table>
-                    <p>{`Pris i alt ${total} ${items[0].product!.currency}`}</p>
+                    <p className="total">{`Pris i alt ${total} ${items[0].product!.currency}`}</p>
                 </div>
             ) : (
                 <p>Din kurv er tom!</p>

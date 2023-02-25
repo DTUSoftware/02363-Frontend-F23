@@ -1,12 +1,15 @@
 version: '3'
 services:
-  shop-web:
-    container_name: shop-web
-    hostname: shop-web
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - NODE_ENV=production
-    ports:
-      - 5173:5173
+    shop-web:
+        container_name: shop-web
+        hostname: shop-web
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            - NODE_ENV=production
+        networks:
+            - shop_frontend
+networks:
+    shop_frontend:
+        name: shop_frontend
