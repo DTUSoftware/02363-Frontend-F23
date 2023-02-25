@@ -1,7 +1,12 @@
 FROM node
-WORKDIR /app
+
+WORKDIR /etc/node/app
+
 COPY package.json .
-RUN npm i
+COPY package-lock.json .
+RUN npm ci
+
 COPY . .
+
 EXPOSE 5173
 CMD ["npm", "run", "dev"]
