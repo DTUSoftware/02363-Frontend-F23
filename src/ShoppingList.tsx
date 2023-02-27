@@ -23,14 +23,19 @@ const itemList = [
         product: products["vitamin-c-500-250"],
         quantity: 2,
         giftWrap: false,
-        recurringOrder: false
+        recurringOrder: false,
     },
-    { product: products["kids-songbook"], quantity: 1, giftWrap: true, recurringOrder: false },
+    {
+        product: products["kids-songbook"],
+        quantity: 1,
+        giftWrap: true,
+        recurringOrder: false,
+    },
     {
         product: products["sugar-cane-1kg"],
         quantity: 2,
         giftWrap: false,
-        recurringOrder: true
+        recurringOrder: true,
     },
 ];
 
@@ -83,7 +88,15 @@ function ShoppingList() {
     );
 
     function toggleRecurringOrderSchedule(index: number) {
-        //TODO
+        setItems(
+            items.map((x, i) => {
+                if (i === index) {
+                    return { ...x, recurringOrder: !x.recurringOrder };
+                } else {
+                    return x;
+                }
+            })
+        );
     }
 
     const listEmpty = items === undefined || items.length == 0;
@@ -103,17 +116,23 @@ function ShoppingList() {
                                 <th> </th>
                                 <th className="priceTotal">Total</th>
                                 <th className="giftwrapping">Gavepapir</th>
+                                <th className="reoccuringorder">
+                                    Subscription
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {items.map((x, index) => (
                                 <tr key={index}>
-                                    <td className="product">{`${x.product!.name}`}</td>
-                                    <td className="price">{`${x.product!.price} ${
-                                        x.product!.currency
+                                    <td className="product">{`${
+                                        x.product!.name
                                     }`}</td>
+                                    <td className="price">{`${
+                                        x.product!.price
+                                    } ${x.product!.currency}`}</td>
                                     <td className="decrement">
-                                        <button className="quantityBtn"
+                                        <button
+                                            className="quantityBtn"
                                             onClick={() =>
                                                 decrementQuantity(index)
                                             }
@@ -123,7 +142,8 @@ function ShoppingList() {
                                     </td>
                                     <td className="quantity"> {x.quantity} </td>
                                     <td className="increment">
-                                        <button className="quantityBtn"
+                                        <button
+                                            className="quantityBtn"
                                             onClick={() =>
                                                 incrementQuantity(index)
                                             }
@@ -131,9 +151,9 @@ function ShoppingList() {
                                             +
                                         </button>
                                     </td>
-                                    <td className="priceTotal">{`${x.quantity * x.product!.price} ${
-                                        x.product!.currency
-                                    }`}</td>
+                                    <td className="priceTotal">{`${
+                                        x.quantity * x.product!.price
+                                    } ${x.product!.currency}`}</td>
                                     <td className="giftwrapping">
                                         <label>
                                             <input
@@ -144,7 +164,20 @@ function ShoppingList() {
                                                 }
                                             />
                                         </label>
-                                    </td> 
+                                    </td>
+                                    <td className="reoccuringorder">
+                                        <label>
+                                            <input
+                                                type="checkbox"
+                                                checked={x.recurringOrder}
+                                                onChange={() =>
+                                                    toggleRecurringOrderSchedule(
+                                                        index
+                                                    )
+                                                }
+                                            />
+                                        </label>
+                                    </td>
                                     <td>
                                         <button
                                             onClick={() => removeItem(index)}
@@ -156,7 +189,9 @@ function ShoppingList() {
                             ))}
                         </tbody>
                     </table>
-                    <p className="total">{`Pris i alt ${total} ${items[0].product!.currency}`}</p>
+                    <p className="total">{`Pris i alt ${total} ${
+                        items[0].product!.currency
+                    }`}</p>
                 </div>
             ) : (
                 <p>Din kurv er tom!</p>
