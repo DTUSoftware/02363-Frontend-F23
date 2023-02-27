@@ -10,11 +10,12 @@
 
 .product {
     text-align: left;
-    padding-right: 200px;
+    padding-right: 100px;
 }
 
 .price,
-.increment {
+.increment,
+.rebate {
     padding-right: 30px;
 }
 
