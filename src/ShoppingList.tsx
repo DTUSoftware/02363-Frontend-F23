@@ -3,7 +3,7 @@ import productsSJSON from "./assets/products.json";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
 
-interface Item {
+interface ProductItem {
     id: String;
     name: String;
     price: number;
@@ -13,7 +13,14 @@ interface Item {
     upsellProductId: String | null;
 }
 
-type Products = { [key: string]: Item };
+interface CartItem {
+    product: ProductItem,
+    quantity: number,
+    giftWrap: boolean,
+    recurringOrder: boolean,
+}
+
+type Products = { [key: string]: ProductItem };
 
 const products: Products = {};
 productsSJSON.forEach((x) => (products[x.id] = x));
@@ -70,7 +77,7 @@ function ShoppingList() {
         );
     }
 
-    function handleQuantityChange(product: Item, newQuantity: number) {
+    function handleQuantityChange(product: ProductItem, newQuantity: number) {
         setItems(
             items.map((x) => {
                 if (x.product.id === product.id) {
@@ -81,11 +88,6 @@ function ShoppingList() {
             })
         );
     }
-
-    const total = items.reduce(
-        (sum, x) => (sum += x.quantity * x.product!.price),
-        0
-    );
 
     function toggleRecurringOrderSchedule(index: number) {
         setItems(
@@ -98,6 +100,22 @@ function ShoppingList() {
             })
         );
     }
+
+    function itemTotal(x: CartItem) {
+        const priceSum = x.quantity * x.product!.price;
+            if (x.quantity >= x.product!.rebateQuantity) {
+                return priceSum*(1-(x.product!.rebatePercent/100));
+            } else {
+                return priceSum;
+            }
+    }
+
+    const cartTotal = items.reduce(
+        (sum, x) =>  {
+            return sum += itemTotal(x);
+        },
+        0
+    );
 
     const listEmpty = items === undefined || items.length == 0;
 
@@ -114,6 +132,7 @@ function ShoppingList() {
                                 <th> </th>
                                 <th className="quantity">Antal</th>
                                 <th> </th>
+                                <th className="rebate">Rabat</th>
                                 <th className="priceTotal">Total</th>
                                 <th className="giftwrapping">Gavepapir</th>
                                 <th className="reoccuringorder">
@@ -151,8 +170,17 @@ function ShoppingList() {
                                             +
                                         </button>
                                     </td>
+                                    <td className="rebate">
+                                        {x.product!.rebateQuantity > 0 ? (
+                                            `Køb ${
+                                                x.product!.rebateQuantity
+                                            }, spar ${
+                                                x.product!.rebatePercent
+                                            }%`
+                                        ) : ("-")}
+                                    </td>
                                     <td className="priceTotal">{`${
-                                        x.quantity * x.product!.price
+                                        itemTotal(x)
                                     } ${x.product!.currency}`}</td>
                                     <td className="giftwrapping">
                                         <label>
@@ -189,7 +217,7 @@ function ShoppingList() {
                             ))}
                         </tbody>
                     </table>
-                    <p className="total">{`Pris i alt ${total} ${
+                    <p className="total">{`Pris i alt ${cartTotal} ${
                         items[0].product!.currency
                     }`}</p>
                 </div>
