@@ -8,16 +8,15 @@
     font-weight: bolder;
 }
 
-
 .product {
     text-align: left;
     padding-right: 200px;
 }
 
-.price, .increment {
+.price,
+.increment {
     padding-right: 30px;
 }
-
 
 .quantity {
     text-align: center;
@@ -25,13 +24,12 @@
 
 .priceTotal {
     padding-right: 60px;
-
 }
 
-.giftwrapping {
+.giftwrapping,
+.reoccuringorder {
     text-align: center;
     padding-right: 30px;
-
 }
 
 .quantityBtn {
