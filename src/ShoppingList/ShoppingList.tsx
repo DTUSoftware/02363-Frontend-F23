@@ -116,7 +116,7 @@ function ShoppingList() {
                     removeItem = {removeItem}
                 />
             ) : (
-                <p>Din kurv er tom!</p>
+                <p className="empty" >Din kurv er tom!</p>
             )}
         </div>
     );
@@ -223,6 +223,7 @@ function ProductTableRow({index, x, decrementQuantity, incrementQuantity, itemTo
             } ${x.product!.currency}`}</td>
             <td className="decrement">
                 <button
+                    aria-label={`decrement ${index}`}
                     className="quantityBtn"
                     onClick={() =>
                         decrementQuantity(index)
@@ -234,6 +235,7 @@ function ProductTableRow({index, x, decrementQuantity, incrementQuantity, itemTo
             <td className="quantity"> {x.quantity} </td>
             <td className="increment">
                 <button
+                    aria-label={`increment ${index}`}
                     className="quantityBtn"
                     onClick={() =>
                         incrementQuantity(index)
@@ -257,6 +259,7 @@ function ProductTableRow({index, x, decrementQuantity, incrementQuantity, itemTo
             <td className="giftwrapping">
                 <label>
                     <input
+                        aria-label={`giftwrap ${index} ${x.giftWrap}`}
                         type="checkbox"
                         checked={x.giftWrap}
                         onChange={() =>
@@ -268,6 +271,7 @@ function ProductTableRow({index, x, decrementQuantity, incrementQuantity, itemTo
             <td className="reoccuringorder">
                 <label>
                     <input
+                        aria-label={`recurringorder ${index} ${x.recurringOrder}`}
                         type="checkbox"
                         checked={x.recurringOrder}
                         onChange={() =>
@@ -280,6 +284,7 @@ function ProductTableRow({index, x, decrementQuantity, incrementQuantity, itemTo
             </td>
             <td>
                 <button
+                    aria-label={`remove ${index}`}
                     onClick={() => removeItem(index)}
                 >
                     <FaRegTrashAlt />
