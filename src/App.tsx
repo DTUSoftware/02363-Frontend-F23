@@ -1,4 +1,4 @@
-import ShoppingList from './ShoppingList'
+import ShoppingList from './ShoppingList/ShoppingList'
 import './App.css'
 
 function App() {
