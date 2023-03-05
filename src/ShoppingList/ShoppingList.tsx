@@ -140,13 +140,6 @@ function ProductTable({items, decrementQuantity, incrementQuantity, toggleGiftWr
             }
     }
 
-    const cartTotal = items.reduce(
-        (sum, x) =>  {
-            return sum += itemTotal(x);
-        },
-        0
-    );
-
     return (
         <div className="shopTable">
             <table>
@@ -182,10 +175,30 @@ function ProductTable({items, decrementQuantity, incrementQuantity, toggleGiftWr
                     )}
                 </tbody>
             </table>
-            <p className="total">{`Pris i alt ${cartTotal} ${
-                items[0].product!.currency
-            }`}</p>
+            <CartTotal
+                items = {items}
+                itemTotal = {itemTotal}
+            />
         </div>
+    );
+}
+
+function CartTotal({items, itemTotal} : 
+    {items: CartItem[],
+        itemTotal: (x: CartItem) => number
+    }) {
+    
+    const cartTotal = items.reduce(
+        (sum, x) =>  {
+            return sum += itemTotal(x);
+        },
+        0
+    );
+
+    return (
+        <p className="total">{`Pris i alt ${cartTotal} ${
+            items[0].product!.currency
+        }`}</p>
     );
 }
 
