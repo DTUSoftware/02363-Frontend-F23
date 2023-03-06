@@ -2,6 +2,7 @@ import { useState } from "react";
 import productsSJSON from "./assets/products.json";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
+import { Link } from "react-router-dom";
 
 interface ProductItem {
     id: String;
@@ -220,6 +221,8 @@ function ShoppingList() {
                     <p className="total">{`Pris i alt ${cartTotal} ${
                         items[0].product!.currency
                     }`}</p>
+                    <br />
+                    <Link className= "link-style" to="/delivery" > Place Order </Link> 
                 </div>
             ) : (
                 <p>Din kurv er tom!</p>

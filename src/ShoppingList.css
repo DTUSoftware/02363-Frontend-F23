@@ -37,3 +37,13 @@
     border-radius: 50%;
     padding: 0.6em 1em;
 }
+
+.link-style{
+    background-color: #535bf2;
+    color: #f4f2f2;   
+}
+
+.link-style:hover{
+    background-color: #dc62ab;;
+    color: #f9f9f9;
+}
