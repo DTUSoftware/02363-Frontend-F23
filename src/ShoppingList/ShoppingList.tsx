@@ -53,11 +53,11 @@ function ShoppingList() {
 
     function toggleGiftWrap(index: number) {
         setItems(
-            items.map((x, i) => {
+            items.map((item, i) => {
                 if (i === index) {
-                    return { ...x, giftWrap: !x.giftWrap };
+                    return { ...item, giftWrap: !item.giftWrap };
                 } else {
-                    return x;
+                    return item;
                 }
             })
         );
@@ -65,11 +65,11 @@ function ShoppingList() {
 
     function handleQuantityChange(product: ProductItem, newQuantity: number) {
         setItems(
-            items.map((x) => {
-                if (x.product.id === product.id) {
-                    return { ...x, quantity: newQuantity };
+            items.map((item) => {
+                if (item.product.id === product.id) {
+                    return { ...item, quantity: newQuantity };
                 } else {
-                    return x;
+                    return item;
                 }
             })
         );
@@ -77,11 +77,11 @@ function ShoppingList() {
 
     function toggleRecurringOrderSchedule(index: number) {
         setItems(
-            items.map((x, i) => {
+            items.map((item, i) => {
                 if (i === index) {
-                    return { ...x, recurringOrder: !x.recurringOrder };
+                    return { ...item, recurringOrder: !item.recurringOrder };
                 } else {
-                    return x;
+                    return item;
                 }
             })
         );
@@ -123,10 +123,10 @@ function ProductTable({
     toggleRecurringOrderSchedule: (index: number) => void;
     removeItem: (index: number) => void;
 }) {
-    function itemTotal(x: CartItem) {
-        const priceSum = x.quantity * x.product!.price;
-        if (x.quantity >= x.product!.rebateQuantity) {
-            return priceSum * (1 - x.product!.rebatePercent / 100);
+    function itemTotal(item: CartItem) {
+        const priceSum = item.quantity * item.product!.price;
+        if (item.quantity >= item.product!.rebateQuantity) {
+            return priceSum * (1 - item.product!.rebatePercent / 100);
         } else {
             return priceSum;
         }
@@ -149,19 +149,18 @@ function ProductTable({
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((x, index) => (
+                    {items.map((item, index) => (
                         <ProductTableRow
                             key={index}
-                            index={index}
-                            x={x}
-                            decrementQuantity={decrementQuantity}
-                            incrementQuantity={incrementQuantity}
-                            itemTotal={itemTotal}
-                            toggleGiftWrap={toggleGiftWrap}
-                            toggleRecurringOrderSchedule={
-                                toggleRecurringOrderSchedule
+                            item={item}
+                            decrementQuantity={() => decrementQuantity(index)}
+                            incrementQuantity={() => incrementQuantity(index)}
+                            itemTotal={() => itemTotal(item)}
+                            toggleGiftWrap={() => toggleGiftWrap(index)}
+                            toggleRecurringOrderSchedule={() =>
+                                toggleRecurringOrderSchedule(index)
                             }
-                            removeItem={removeItem}
+                            removeItem={() => removeItem(index)}
                         />
                     ))}
                 </tbody>
@@ -181,10 +180,10 @@ function CartTotal({
     itemTotal,
 }: {
     items: CartItem[];
-    itemTotal: (x: CartItem) => number;
+    itemTotal: (item: CartItem) => number;
 }) {
-    const cartTotal = items.reduce((sum, x) => {
-        return (sum += itemTotal(x));
+    const cartTotal = items.reduce((sum, item) => {
+        return (sum += itemTotal(item));
     }, 0);
 
     return (
@@ -195,8 +194,7 @@ function CartTotal({
 }
 
 function ProductTableRow({
-    index,
-    x,
+    item,
     decrementQuantity,
     incrementQuantity,
     itemTotal,
@@ -204,74 +202,73 @@ function ProductTableRow({
     toggleRecurringOrderSchedule,
     removeItem,
 }: {
-    index: number;
-    x: CartItem;
-    decrementQuantity: (index: number) => void;
-    incrementQuantity: (index: number) => void;
-    itemTotal: (x: CartItem) => number;
-    toggleGiftWrap: (index: number) => void;
-    toggleRecurringOrderSchedule: (index: number) => void;
-    removeItem: (index: number) => void;
+    item: CartItem;
+    decrementQuantity: () => void;
+    incrementQuantity: () => void;
+    itemTotal: () => number;
+    toggleGiftWrap: () => void;
+    toggleRecurringOrderSchedule: () => void;
+    removeItem: () => void;
 }) {
     return (
         <tr>
-            <td className="product">{`${x.product!.name}`}</td>
-            <td className="price">{`${x.product!.price} ${
-                x.product!.currency
+            <td className="product">{`${item.product!.name}`}</td>
+            <td className="price">{`${item.product!.price} ${
+                item.product!.currency
             }`}</td>
             <td className="decrement">
                 <button
-                    aria-label={`reducer antal ${x.product.name}`}
+                    aria-label={`reducer antal ${item.product.name}`}
                     className="quantityBtn"
-                    onClick={() => decrementQuantity(index)}
+                    onClick={() => decrementQuantity()}
                 >
                     -
                 </button>
             </td>
-            <td className="quantity"> {x.quantity} </td>
+            <td className="quantity"> {item.quantity} </td>
             <td className="increment">
                 <button
-                    aria-label={`forøg antal ${x.product.name}`}
+                    aria-label={`forøg antal ${item.product.name}`}
                     className="quantityBtn"
-                    onClick={() => incrementQuantity(index)}
+                    onClick={() => incrementQuantity()}
                 >
                     +
                 </button>
             </td>
             <td className="rebate">
-                {x.product!.rebateQuantity > 0
-                    ? `Køb ${x.product!.rebateQuantity}, spar ${
-                          x.product!.rebatePercent
+                {item.product!.rebateQuantity > 0
+                    ? `Køb ${item.product!.rebateQuantity}, spar ${
+                          item.product!.rebatePercent
                       }%`
                     : "-"}
             </td>
-            <td className="priceTotal">{`${itemTotal(x)} ${
-                x.product!.currency
+            <td className="priceTotal">{`${itemTotal()} ${
+                item.product!.currency
             }`}</td>
             <td className="giftwrapping">
                 <label>
                     <input
-                        aria-label={`gavepapir ${x.product.name} ${x.giftWrap}`}
+                        aria-label={`gavepapir ${item.product.name} ${item.giftWrap}`}
                         type="checkbox"
-                        checked={x.giftWrap}
-                        onChange={() => toggleGiftWrap(index)}
+                        checked={item.giftWrap}
+                        onChange={() => toggleGiftWrap()}
                     />
                 </label>
             </td>
             <td className="reoccuringorder">
                 <label>
                     <input
-                        aria-label={`gentag order ${x.product.name} ${x.recurringOrder}`}
+                        aria-label={`gentag order ${item.product.name} ${item.recurringOrder}`}
                         type="checkbox"
-                        checked={x.recurringOrder}
-                        onChange={() => toggleRecurringOrderSchedule(index)}
+                        checked={item.recurringOrder}
+                        onChange={() => toggleRecurringOrderSchedule()}
                     />
                 </label>
             </td>
             <td>
                 <button
-                    aria-label={`fjern ${x.product.name}`}
-                    onClick={() => removeItem(index)}
+                    aria-label={`fjern ${item.product.name}`}
+                    onClick={() => removeItem()}
                 >
                     <FaRegTrashAlt />
                 </button>
