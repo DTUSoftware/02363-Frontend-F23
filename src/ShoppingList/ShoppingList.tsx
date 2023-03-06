@@ -145,25 +145,24 @@ function ProductTable({
                         <th className="rebate">Rabat</th>
                         <th className="priceTotal">Total</th>
                         <th className="giftwrapping">Gavepapir</th>
-                        <th className="reoccuringorder">Subscription</th>
+                        <th className="reoccuringorder">Gentag order</th>
                     </tr>
                 </thead>
                 <tbody>
                     {items.map((x, index) => (
-                        <React.Fragment key={index}>
-                            <ProductTableRow
-                                index={index}
-                                x={x}
-                                decrementQuantity={decrementQuantity}
-                                incrementQuantity={incrementQuantity}
-                                itemTotal={itemTotal}
-                                toggleGiftWrap={toggleGiftWrap}
-                                toggleRecurringOrderSchedule={
-                                    toggleRecurringOrderSchedule
-                                }
-                                removeItem={removeItem}
-                            />
-                        </React.Fragment>
+                        <ProductTableRow
+                            key={index}
+                            index={index}
+                            x={x}
+                            decrementQuantity={decrementQuantity}
+                            incrementQuantity={incrementQuantity}
+                            itemTotal={itemTotal}
+                            toggleGiftWrap={toggleGiftWrap}
+                            toggleRecurringOrderSchedule={
+                                toggleRecurringOrderSchedule
+                            }
+                            removeItem={removeItem}
+                        />
                     ))}
                 </tbody>
             </table>
@@ -222,7 +221,7 @@ function ProductTableRow({
             }`}</td>
             <td className="decrement">
                 <button
-                    aria-label={`decrement ${index}`}
+                    aria-label={`reducer antal ${x.product.name}`}
                     className="quantityBtn"
                     onClick={() => decrementQuantity(index)}
                 >
@@ -232,7 +231,7 @@ function ProductTableRow({
             <td className="quantity"> {x.quantity} </td>
             <td className="increment">
                 <button
-                    aria-label={`increment ${index}`}
+                    aria-label={`forøg antal ${x.product.name}`}
                     className="quantityBtn"
                     onClick={() => incrementQuantity(index)}
                 >
@@ -252,7 +251,7 @@ function ProductTableRow({
             <td className="giftwrapping">
                 <label>
                     <input
-                        aria-label={`giftwrap ${index} ${x.giftWrap}`}
+                        aria-label={`gavepapir ${x.product.name} ${x.giftWrap}`}
                         type="checkbox"
                         checked={x.giftWrap}
                         onChange={() => toggleGiftWrap(index)}
@@ -262,7 +261,7 @@ function ProductTableRow({
             <td className="reoccuringorder">
                 <label>
                     <input
-                        aria-label={`recurringorder ${index} ${x.recurringOrder}`}
+                        aria-label={`gentag order ${x.product.name} ${x.recurringOrder}`}
                         type="checkbox"
                         checked={x.recurringOrder}
                         onChange={() => toggleRecurringOrderSchedule(index)}
@@ -271,7 +270,7 @@ function ProductTableRow({
             </td>
             <td>
                 <button
-                    aria-label={`remove ${index}`}
+                    aria-label={`fjern ${x.product.name}`}
                     onClick={() => removeItem(index)}
                 >
                     <FaRegTrashAlt />
