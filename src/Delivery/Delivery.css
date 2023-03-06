@@ -4,14 +4,14 @@ body {
     place-items: top center;
 }
 
-.link-style{
+.link-style {
     background-color: #535bf2;
     color: #f4f2f2;
     padding: 1em 2em;
     margin: 5px;
 }
 
-.link-style:hover{
-    background-color: #dc62ab;;
+.link-style:hover {
+    background-color: #dc62ab;
     color: #f9f9f9;
 }
