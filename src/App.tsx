@@ -1,7 +1,7 @@
+import ShoppingList from './ShoppingList/ShoppingList'
 import './App.css'
-import Navbar from './Navbar'
-import Delivery from './Delivery'
-import ShoppingList from './ShoppingList'
+import Navbar from './Navigation/Navbar'
+import Delivery from './Delivery/Delivery'
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
 
 function App() {

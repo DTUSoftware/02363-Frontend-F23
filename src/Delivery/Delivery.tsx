@@ -1,4 +1,4 @@
-import {Address} from "./models/Address"
+import {Address} from "../models/Address"
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Delivery.css"
