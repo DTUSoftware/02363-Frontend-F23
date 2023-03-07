@@ -5,13 +5,13 @@ body {
 }
 
 .link-style {
-    background-color: #535bf2;
+    background-color: #6ecff6;
     color: #f4f2f2;
     padding: 1em 2em;
     margin: 5px;
 }
 
 .link-style:hover {
-    background-color: #dc62ab;
+    background-color: #41f94a;
     color: #f9f9f9;
 }

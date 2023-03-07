@@ -6,8 +6,7 @@ export interface Address {
     company: string;
     vatNr: number;
     country: string;
-    region: string;
-    zipCode: number;
+    zipCode: string;
     city: string;
     address1: string;
     address2: string;
