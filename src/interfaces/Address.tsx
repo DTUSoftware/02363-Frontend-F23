@@ -4,7 +4,7 @@ export interface Address {
     email: string;
     mobileNr: number;
     company: string;
-    vatNr: number;
+    vatNr: string;
     country: string;
     zipCode: string;
     city: string;

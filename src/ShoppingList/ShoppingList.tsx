@@ -167,9 +167,8 @@ function ProductTable({
             </table>
             <CartTotal items={items} itemTotal={itemTotal} />
             <br />
-            <Link className="link-style" to="/delivery">
-                {" "}
-                Bestil produkter{" "}
+            <Link className="order-btn" to="/delivery">
+                Bestil produkter
             </Link>
         </div>
     );
