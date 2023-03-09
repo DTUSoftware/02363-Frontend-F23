@@ -30,7 +30,7 @@ const Delivery = () => {
             setError(er)
         })
 
-    });
+    },[]);
 
     const [cityList, setCity]= useState<City[]>([]);
     let tempList: City[]=[]
@@ -46,7 +46,7 @@ const Delivery = () => {
 
     useEffect(()=>{
         filterList();
-    });
+    },[]);
 
     const [check, setCheck] = useState(false);
 
