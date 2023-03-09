@@ -37,3 +37,17 @@
     border-radius: 50%;
     padding: 0.6em 1em;
 }
+
+
+.order-btn {
+    background-color: #585ae9;
+    color: #f4f2f2;
+    padding: 1em 2em;
+    margin: 5px;
+    border-radius: 6px;
+}
+
+.order-btn:hover {
+    background-color: #7ef384;
+    color: #1c1a1a;
+}
