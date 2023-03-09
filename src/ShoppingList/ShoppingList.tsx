@@ -181,10 +181,13 @@ function CartTotal({
     items: CartItem[];
     itemTotal: (item: CartItem) => number;
 }) {
-    const cartTotal = items.reduce((sum, item) => {
+    let cartTotal: number = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
-
+    if(cartTotal>=300){
+        //Should probably make it clear to the user that the price gets changed.
+        cartTotal = cartTotal *0.9;
+    }
     return (
         <p className="total">{`Pris i alt ${cartTotal} ${
             items[0].product!.currency
