@@ -1,27 +1,54 @@
 import { Address } from "../interfaces/Address";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Delivery.css";
+import { City } from "../interfaces/City";
 
 const Delivery = () => {
-    const [check, setCheck] = useState(false);
 
     const navigate = useNavigate();
 
-    const [shippingAddress, setShipping] = useState<Address>({
-        firstName: "",
-        lastName: "",
-        email: "",
-        mobileNr: 0,
-        company: "",
-        vatNr: 0,
-        country: "",
-        region: "",
-        zipCode: 0,
-        city: "",
-        address1: "",
-        address2: "",
+    const [data, setData]= useState<City[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect( ()=>{
+        fetch("https://api.dataforsyningen.dk/postnumre")
+        .then( response =>{
+            if(response.ok){
+                return response.json()
+            }
+            throw Error("It is not possible to fetch the data from the API")
+        })
+        .then( data =>{
+            setIsLoading(false)
+            setData(data)
+            setError(null)
+        })
+        .catch(er => {
+            setIsLoading(false)
+            setError(er)
+        })
+
     });
+
+    const [cityList, setCity]= useState<City[]>([]);
+    let tempList: City[]=[]
+    function filterList(){
+        data.map(old => {
+            if(!tempList.find(n => n.navn == old.navn)){
+                tempList.push(old)                
+            }
+        })
+
+        setCity(tempList);
+    };
+
+    useEffect(()=>{
+        filterList();
+    });
+
+    const [check, setCheck] = useState(false);
 
     const [billingAddress, setBilling] = useState<Address>({
         firstName: "",
@@ -29,27 +56,50 @@ const Delivery = () => {
         email: "",
         mobileNr: 0,
         company: "",
-        vatNr: 0,
-        country: "",
-        region: "",
-        zipCode: 0,
-        city: "",
+        vatNr: "",
+        country: "Danmark",
+        zipCode: "select",
+        city: "select",
         address1: "",
         address2: "",
     });
 
-    const onChangeBilling = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
+    const [shippingAddress, setShipping] = useState<Address>({
+        firstName: "",
+        lastName: "",
+        email: "",
+        mobileNr: 0,
+        company: "",
+        vatNr: "",
+        country: "Danmark",        
+        zipCode: "select",
+        city: "select",
+        address1: "",
+        address2: "",
+    });
+
+    const onChangeBillingSelect = (event: React.ChangeEvent<HTMLSelectElement>): void =>{
+        setBilling({
+            ...billingAddress,
+            [event.target.name]: event.target.value
+        })
+    };  
+
+    const onChangeShippingSelect = (event: React.ChangeEvent<HTMLSelectElement>): void =>{
+        setShipping({
+            ...shippingAddress,
+            [event.target.name]: event.target.value
+        })
+    };  
+
+    const onChangeBilling = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setBilling({
             ...billingAddress,
             [event.target.name]: event.target.value,
         });
     };
 
-    const onChangeShipping = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
+    const onChangeShipping = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setShipping({
             ...shippingAddress,
             [event.target.name]: event.target.value,
@@ -65,376 +115,304 @@ const Delivery = () => {
     async function saveToDB() {}
 
     if (check) {
-        billingAddress.firstName = shippingAddress.firstName;
-        billingAddress.lastName = shippingAddress.lastName;
-        billingAddress.email = shippingAddress.email;
-        billingAddress.mobileNr = shippingAddress.mobileNr;
-        billingAddress.company = shippingAddress.company;
-        billingAddress.vatNr = shippingAddress.vatNr;
-        billingAddress.address1 = shippingAddress.address1;
-        billingAddress.address2 = shippingAddress.address2;
-        billingAddress.zipCode = shippingAddress.zipCode;
-        billingAddress.city = shippingAddress.city;
-        billingAddress.country = shippingAddress.country;
-        billingAddress.region = shippingAddress.region;
-    }
+        shippingAddress.firstName = billingAddress.firstName;
+        shippingAddress.lastName = billingAddress.lastName;
+        shippingAddress.email = billingAddress.email;
+        shippingAddress.mobileNr = billingAddress.mobileNr;
+        shippingAddress.company = billingAddress.company;
+        shippingAddress.vatNr = billingAddress.vatNr;
+        shippingAddress.address1 = billingAddress.address1;
+        shippingAddress.address2 = billingAddress.address2;
+        shippingAddress.zipCode = billingAddress.zipCode;
+        shippingAddress.city = billingAddress.city;
+        shippingAddress.country = billingAddress.country;
+    };
 
     return (
-        <div className="delivery">
+        <main>
             <form className="form" onSubmit={handleSubmit}>
-                <div className="shippingAddress">
-                    <table cellSpacing="2" align="center" cellPadding="8">
-                        <thead>
-                            <tr>
-                                <td>
-                                    <h2>Shipping Address</h2>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td> Firstname</td>
-                                <td>
-                                    <input
-                                        required
-                                        autoFocus
-                                        name="firstName"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter your firstname"
-                                        id="fn1"
-                                    />
-                                </td>
-                                <td> Lastname</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="lastName"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter your lastname"
-                                        id="ln1"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Email </td>
-                                <td>
-                                    <input
-                                        required
-                                        name="email"
-                                        onChange={onChangeShipping}
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        id="e1"
-                                    />
-                                </td>
-                                <td>Mobile nr </td>
-                                <td>
-                                    <input
-                                        required
-                                        name="mobileNr"
-                                        onChange={onChangeShipping}
-                                        type="tel"
-                                        placeholder="Enter your telephone"
-                                        id="m1"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Company name</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="company"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter the name of your company"
-                                    />
-                                </td>
-
-                                <td>Company VAT number</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="vatNr"
-                                        onChange={onChangeShipping}
-                                        type="number"
-                                        placeholder="Enter your company VAT number"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Address 1</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="address1"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter your address"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Adress 2</td>
-                                <td>
-                                    <input
-                                        name="address2"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter your address"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Zip code</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="zipCode"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter the zip code"
-                                        id="z1"
-                                    />
-                                </td>
-                                <td>City</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="city"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter the name of city"
-                                        id="p2"
-                                    />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Country</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="country"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter the name of your country"
-                                        id="c1"
-                                    />
-                                </td>
-                                <td>Region</td>
-                                <td>
-                                    <input
-                                        required
-                                        name="region"
-                                        onChange={onChangeShipping}
-                                        type="text"
-                                        placeholder="Enter the name of region"
-                                        id="r1"
-                                    />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <br />
-
-                <div className="check">
-                    <label htmlFor="checkbox">
-                        {" "}
-                        <b>
-                            My Billing address is as same as my Shipping Address
-                        </b>{" "}
-                    </label>
-                    <input
-                        type="checkbox"
-                        name="check"
-                        value="false"
-                        onChange={() => setCheck(!check)}
-                    />
-                </div>
-
-                <br />
 
                 <div className="billingAddress">
-                    {!check && (
-                        <table cellSpacing="2" align="center" cellPadding="8">
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <h2>Billing Address</h2>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td> Firstname</td>
-                                    <td>
-                                        <input
-                                            required
-                                            autoFocus
-                                            name="billingfirstName"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter your firstname"
-                                            id="fn1"
-                                        />
-                                    </td>
-                                    <td> Lastname</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billinglastName"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter your lastname"
-                                            id="ln1"
-                                        />
-                                    </td>
-                                </tr>
+                    <h2 className="full-width">Faktureringsadresse</h2>
+                    
+                    <div>
+                        <label htmlFor="Fornavn">Fornavn</label>
+                        <input
+                            required
+                            autoFocus
+                            type="text"
+                            name="firstName"
+                            onChange={onChangeBilling}                            
+                        />                                            
+                    </div>
 
-                                <tr>
-                                    <td>Email </td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingemail"
-                                            onChange={onChangeBilling}
-                                            type="email"
-                                            placeholder="Enter your email"
-                                            id="e1"
-                                        />
-                                    </td>
-                                    <td>Mobile nr </td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingmobileNr"
-                                            onChange={onChangeBilling}
-                                            type="tel"
-                                            placeholder="Enter your telephone"
-                                            id="m1"
-                                        />
-                                    </td>
-                                </tr>
+                    <div>
+                        <label htmlFor="Efternavn">Efternavn</label>
+                        <input
+                            required
+                            type="text"
+                            name="lastName"
+                            onChange={onChangeBilling}                            
+                        />                   
+                    </div>
 
-                                <tr>
-                                    <td>Company name</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingcompany"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter the name of your company"
-                                        />
-                                    </td>
+                    <div>
+                        <label htmlFor="Email">Email</label>
+                        <input
+                            required
+                            type="email"
+                            name="billingemail"
+                            onChange={onChangeBilling}                            
+                        />                                            
+                    </div>
 
-                                    <td>Company VAT number</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingvatNr"
-                                            onChange={onChangeBilling}
-                                            type="number"
-                                            placeholder="Enter your company VAT number"
-                                        />
-                                    </td>
-                                </tr>
+                    <div>
+                        <label htmlFor="Mobilnummer">Mobilnummer</label>
+                        <input
+                            required
+                            type="tel"
+                            name="mobileNr"
+                            onChange={onChangeBilling}                            
+                        />                                            
+                    </div>
 
-                                <tr>
-                                    <td>Address 1</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingaddress1"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter your address"
-                                        />
-                                    </td>
-                                </tr>
+                    <div>
+                        <label htmlFor="Firmanavn">Evt. firmanavn</label>
+                        <input
+                            required
+                            type="text"
+                            name="company"
+                            onChange={onChangeBilling}
+                        />                                            
+                    </div>
 
-                                <tr>
-                                    <td>Adress 2</td>
-                                    <td>
-                                        <input
-                                            name="billingaddress2"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter your address"
-                                        />
-                                    </td>
-                                </tr>
+                    <div>
+                        <label htmlFor="VAT-nummer">VirksomhedVAT-nummer</label>
+                        <input
+                            required
+                            pattern="\d{8}|\d{8}"
+                            type="text"
+                            name="vatNr"
+                            onChange={onChangeBilling}                            
+                        />                      
+                    </div>
 
-                                <tr>
-                                    <td>Zip code</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingzipCode"
-                                            onChange={onChangeBilling}
-                                            type="number"
-                                            placeholder="Enter the zipe code"
-                                            id="z1"
-                                        />
-                                    </td>
-                                    <td>City</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingcity"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter the name of city"
-                                            id="p2"
-                                        />
-                                    </td>
-                                </tr>
+                    <div className="full-width">
+                        <label htmlFor="BillingAddress">Adresselinje 1</label>
+                        <input
+                            required
+                            type="text"
+                            name="address1"
+                            onChange={onChangeBilling}
+                        />                                            
+                    </div>
 
-                                <tr>
-                                    <td>Country</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingcountry"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter the name of your country"
-                                            id="c1"
-                                        />
-                                    </td>
-                                    <td>Region</td>
-                                    <td>
-                                        <input
-                                            required
-                                            name="billingregion"
-                                            onChange={onChangeBilling}
-                                            type="text"
-                                            placeholder="Enter the name of region"
-                                            id="r1"
-                                        />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    )}
+                    <div className="full-width">
+                        <label htmlFor="BillingAddress">Adresselinje 2</label>
+                        <input
+                            required
+                            type="text"
+                            name="address2"
+                            onChange={onChangeBilling}
+                        />                                            
+                    </div>
+
+                    <div>
+                        <label htmlFor="Postnummer">Postnummer</label>
+                        <select name="zipCode"
+                                value={billingAddress.zipCode}
+                                onChange={onChangeBillingSelect}>
+                                {
+                                    data.map(city => 
+                                        <option key={city.nr} value={city.nr} >
+                                            {city.nr}
+                                        </option>
+                                    )
+                                }
+                        </select> 
+                    </div>
+
+                    <div>
+                        <label htmlFor="By">By</label>
+                        <select name="city"
+                                value={billingAddress.city}
+                                onChange={onChangeBillingSelect}>
+                                {
+                                    cityList.map(city=>
+                                        <option key={city.nr} value={city.navn}>
+                                            {city.navn}
+                                        </option>
+                                    )
+                                }
+                        </select>
+                    </div>
+
+                    <div>
+                        <label htmlFor="Land">Land</label>
+                        <input
+                            required
+                            type="text"
+                            name="country"
+                            disabled
+                            value={billingAddress.country}
+                            onChange={onChangeBilling}                            
+                        />                                            
+                    </div> 
+                    
+                    <div>
+                        <br /><br />
+                        <input
+                            type="checkbox"
+                            name="check"
+                            value="false"
+                            onChange={() => setCheck(!check)}
+                        />
+                        <label htmlFor="checkbox" id='checkbox-label'>
+                            Min leveringsadresse er den samme som min faktureringsadresse
+                        </label>
+                    </div>
+                                
                 </div>
 
+                    
+
+                {!check && (
+                    <div className="shippingAddress">
+
+                        <h2 className="full-width">Leveringsadresse</h2>
+
+                        <div>
+                            <label htmlFor="Fornavn">Fornavn</label>
+                            <input
+                                required
+                                autoFocus
+                                type="text"
+                                name="firstName"
+                                onChange={onChangeShipping}                            
+                            />                                            
+                        </div>
+
+                        <div>
+                            <label htmlFor="Efternavn">Efternavn</label>
+                            <input
+                                required
+                                type="text"
+                                name="lastName"
+                                onChange={onChangeShipping}                            
+                            />                   
+                        </div>
+
+                        <div>
+                            <label htmlFor="Email">Email</label>
+                            <input
+                                required
+                                type="email"
+                                name="billingemail"
+                                onChange={onChangeShipping}                            
+                            />                                            
+                        </div>
+
+                        <div>
+                            <label htmlFor="Mobilnummer">Mobilnummer</label>
+                            <input
+                                required
+                                type="tel"
+                                name="mobileNr"
+                                onChange={onChangeShipping}                            
+                            />                                            
+                        </div>
+
+                        <div>
+                            <label htmlFor="Firmanavn">Evt. firmanavn</label>
+                            <input
+                                required
+                                type="text"
+                                name="company"
+                                onChange={onChangeShipping}
+                            />                                            
+                        </div>
+
+                        <div>
+                            <label htmlFor="VAT-nummer">VirksomhedVAT-nummer</label>
+                            <input
+                                required
+                                type="text"
+                                name="vatNr"
+                                pattern="\d{8}|\d{8}" 
+                                onChange={onChangeShipping}                            
+                            />                      
+                        </div>
+
+                        <div>
+                            <label htmlFor="ShippingAddress">Adresselinje 1</label>
+                            <input
+                                required
+                                type="text"
+                                name="address1"
+                                onChange={onChangeShipping}
+                            />                                            
+                        </div>
+
+                        <div>
+                            <label htmlFor="ShippingAddress">Adresselinje 2</label>
+                            <input
+                                required
+                                type="text"
+                                name="address2"
+                                onChange={onChangeShipping}
+                            />                                            
+                        </div>
+
+                        <div>
+                            <label htmlFor="Postnummer">Postnummer</label>
+                            <select name="zipCode"
+                                    value={billingAddress.zipCode}
+                                    onChange={onChangeShippingSelect}>
+                                    {
+                                        data.map(city => 
+                                            <option key={city.nr} value={city.nr} >
+                                                {city.nr}
+                                            </option>
+                                        )
+                                    }
+                            </select> 
+                        </div>
+
+                        <div>
+                            <label htmlFor="By">By</label>
+                            <select name="city"
+                                    value={billingAddress.city}
+                                    onChange={onChangeShippingSelect}>
+                                    {
+                                        cityList.map(city=>
+                                            <option key={city.nr} value={city.navn}>
+                                                {city.navn}
+                                            </option>
+                                        )
+                                    }
+                            </select>
+                        </div>
+
+                        <div>
+                            <label htmlFor="Land">Land</label>
+                            <input
+                                required
+                                type="text"
+                                name="country"
+                                disabled
+                                value={shippingAddress.country}
+                                onChange={onChangeShipping}                            
+                            />                                            
+                        </div>                   
+                    </div> 
+                )}
+                    
                 <br />
-                <button className="link-style" type="submit">
+                <button className="payment-btn" type="submit">
                     Gå til betaling
                 </button>
             </form>
-        </div>
+        </main>
     );
 };
 

@@ -3,10 +3,11 @@
 }
     
 .nav-content a{
-    background-color: #535bf2;
+    background-color: #585ae9;
     color: #f9f9f9;
     padding: 1em 2em;
     margin: 5px;
+    border-radius: 6px;
 }
     
 .nav-content a:hover{
@@ -16,10 +17,10 @@
     
 .navbar{
     display: flex;
-    padding: 20px;
+    padding: 10px;
     max-width: 1000px;
     align-items: center;
-    border-bottom: 1px solid #535bf2;
+    border-bottom: 1px solid #585ae9;
 }
       
-.navbar h2{color: #dc62ab;}
+.navbar h2{color: #585ae9;}

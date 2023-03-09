@@ -38,12 +38,16 @@
     padding: 0.6em 1em;
 }
 
-.link-style{
-    background-color: #535bf2;
-    color: #f4f2f2;   
+
+.order-btn {
+    background-color: #585ae9;
+    color: #f4f2f2;
+    padding: 1em 2em;
+    margin: 5px;
+    border-radius: 6px;
 }
 
-.link-style:hover{
-    background-color: #dc62ab;;
-    color: #f9f9f9;
+.order-btn:hover {
+    background-color: #7ef384;
+    color: #1c1a1a;
 }
