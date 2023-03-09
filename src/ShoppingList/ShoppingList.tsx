@@ -90,6 +90,10 @@ function ShoppingList() {
     const listEmpty = items === undefined || items.length == 0;
 
     return (
+        <>
+        <div>
+            <p>Køb for 499 DKK og få fri fragt!</p>
+        </div>
         <div className="ShoppingList">
             <p className="heading">Din indkøbskurv</p>
             {!listEmpty ? (
@@ -99,12 +103,12 @@ function ShoppingList() {
                     incrementQuantity={incrementQuantity}
                     toggleGiftWrap={toggleGiftWrap}
                     toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
-                    removeItem={removeItem}
-                />
+                    removeItem={removeItem} />
             ) : (
                 <p className="empty">Din kurv er tom!</p>
             )}
         </div>
+        </>
     );
 }
 
@@ -182,15 +186,26 @@ function CartTotal({
     items: CartItem[];
     itemTotal: (item: CartItem) => number;
 }) {
-    const cartTotal = items.reduce((sum, item) => {
+    let cartTotal = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
 
-    return (
-        <p className="total">{`Pris i alt ${cartTotal} ${
-            items[0].product!.currency
-        }`}</p>
-    );
+    if(cartTotal>=499) {
+        return (
+            <>
+            <p className="subtotal">{`Subtotal: ${cartTotal} ${items[0].product!.currency}`}</p>
+            <p className="fragt">FRI FRAGT</p>
+            <p className="total">{`Pris i alt ${cartTotal} ${items[0].product!.currency}`}</p></>
+        );
+    } else {
+        return (
+            <>
+            <p className="subtotal">{`Subtotal: ${cartTotal} ${items[0].product!.currency}`}</p>
+            <p className="fragt">Fragt: 39 DKK</p>
+            <p className="total">{`Pris i alt ${cartTotal+39} ${items[0].product!.currency}`}</p>
+            </>
+        )
+    };
 }
 
 function ProductTableRow({
