@@ -5,51 +5,16 @@ import "./Delivery.css";
 import { City } from "../interfaces/City";
 
 const Delivery = () => {
-
     const navigate = useNavigate();
 
-    const [data, setData]= useState<City[]>([]);
+    type CityData = { [key: string]: City };
+
+    const [data, setData] = useState<CityData>({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect( ()=>{
-        fetch("https://api.dataforsyningen.dk/postnumre")
-        .then( response =>{
-            if(response.ok){
-                return response.json()
-            }
-            throw Error("It is not possible to fetch the data from the API")
-        })
-        .then( data =>{
-            setIsLoading(false)
-            setData(data)
-            setError(null)
-        })
-        .catch(er => {
-            setIsLoading(false)
-            setError(er)
-        })
-
-    });
-
-    const [cityList, setCity]= useState<City[]>([]);
-    let tempList: City[]=[]
-    function filterList(){
-        data.map(old => {
-            if(!tempList.find(n => n.navn == old.navn)){
-                tempList.push(old)                
-            }
-        })
-
-        setCity(tempList);
-    };
-
-    useEffect(()=>{
-        filterList();
-    });
-
+    const [zipCodeError, setZipCodeError] = useState(false);
+    const [phoneError, setPhoneError] = useState(false);
     const [check, setCheck] = useState(false);
-
     const [billingAddress, setBilling] = useState<Address>({
         firstName: "",
         lastName: "",
@@ -58,8 +23,8 @@ const Delivery = () => {
         company: "",
         vatNr: "",
         country: "Danmark",
-        zipCode: "select",
-        city: "select",
+        zipCode: "",
+        city: "",
         address1: "",
         address2: "",
     });
@@ -71,35 +36,85 @@ const Delivery = () => {
         mobileNr: 0,
         company: "",
         vatNr: "",
-        country: "Danmark",        
-        zipCode: "select",
-        city: "select",
+        country: "Danmark",
+        zipCode: "",
+        city: "",
         address1: "",
         address2: "",
     });
 
-    const onChangeBillingSelect = (event: React.ChangeEvent<HTMLSelectElement>): void =>{
+    useEffect(() => {
+        const cityData: CityData = {};
+
+        if (billingAddress.country === "Danmark") {
+            console.log("Fetching!");
+            fetch("https://api.dataforsyningen.dk/postnumre")
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw Error(
+                        "It is not possible to fetch the data from the API"
+                    );
+                })
+                .then((data: City[]) => {
+                    setIsLoading(false);
+                    data.forEach((city) => {
+                        cityData[city.nr] = city;
+                    });
+                    setData(cityData);
+                    setError(null);
+                })
+                .catch((er) => {
+                    setIsLoading(false);
+                    setError(er);
+                });
+        }
+    }, []);
+
+    const onChangeBillingSelect = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         setBilling({
             ...billingAddress,
-            [event.target.name]: event.target.value
-        })
-    };  
+            [event.target.name]: event.target.value,
+        });
+        const zip = data[event.target.value];
+        if (zip !== undefined) {
+            setBilling({
+                ...billingAddress,
+                city: zip.navn,
+            });
+        }
+        if (zip === undefined && billingAddress.city !== "") {
+            setBilling({
+                ...billingAddress,
+                city: "",
+            });
+        }
+    };
 
-    const onChangeShippingSelect = (event: React.ChangeEvent<HTMLSelectElement>): void =>{
+    const onChangeShippingSelect = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ): void => {
         setShipping({
             ...shippingAddress,
-            [event.target.name]: event.target.value
-        })
-    };  
+            [event.target.name]: event.target.value,
+        });
+    };
 
-    const onChangeBilling = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const onChangeBilling = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         setBilling({
             ...billingAddress,
             [event.target.name]: event.target.value,
         });
     };
 
-    const onChangeShipping = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const onChangeShipping = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         setShipping({
             ...shippingAddress,
             [event.target.name]: event.target.value,
@@ -126,15 +141,14 @@ const Delivery = () => {
         shippingAddress.zipCode = billingAddress.zipCode;
         shippingAddress.city = billingAddress.city;
         shippingAddress.country = billingAddress.country;
-    };
+    }
 
     return (
         <main>
             <form className="form" onSubmit={handleSubmit}>
-
                 <div className="billingAddress">
                     <h2 className="full-width">Faktureringsadresse</h2>
-                    
+
                     <div>
                         <label htmlFor="Fornavn">Fornavn</label>
                         <input
@@ -142,8 +156,8 @@ const Delivery = () => {
                             autoFocus
                             type="text"
                             name="firstName"
-                            onChange={onChangeBilling}                            
-                        />                                            
+                            onChange={onChangeBilling}
+                        />
                     </div>
 
                     <div>
@@ -152,8 +166,8 @@ const Delivery = () => {
                             required
                             type="text"
                             name="lastName"
-                            onChange={onChangeBilling}                            
-                        />                   
+                            onChange={onChangeBilling}
+                        />
                     </div>
 
                     <div>
@@ -162,8 +176,8 @@ const Delivery = () => {
                             required
                             type="email"
                             name="billingemail"
-                            onChange={onChangeBilling}                            
-                        />                                            
+                            onChange={onChangeBilling}
+                        />
                     </div>
 
                     <div>
@@ -172,8 +186,8 @@ const Delivery = () => {
                             required
                             type="tel"
                             name="mobileNr"
-                            onChange={onChangeBilling}                            
-                        />                                            
+                            onChange={onChangeBilling}
+                        />
                     </div>
 
                     <div>
@@ -183,7 +197,7 @@ const Delivery = () => {
                             type="text"
                             name="company"
                             onChange={onChangeBilling}
-                        />                                            
+                        />
                     </div>
 
                     <div>
@@ -193,8 +207,8 @@ const Delivery = () => {
                             pattern="\d{8}|\d{8}"
                             type="text"
                             name="vatNr"
-                            onChange={onChangeBilling}                            
-                        />                      
+                            onChange={onChangeBilling}
+                        />
                     </div>
 
                     <div className="full-width">
@@ -204,7 +218,7 @@ const Delivery = () => {
                             type="text"
                             name="address1"
                             onChange={onChangeBilling}
-                        />                                            
+                        />
                     </div>
 
                     <div className="full-width">
@@ -214,37 +228,27 @@ const Delivery = () => {
                             type="text"
                             name="address2"
                             onChange={onChangeBilling}
-                        />                                            
+                        />
                     </div>
 
                     <div>
                         <label htmlFor="Postnummer">Postnummer</label>
-                        <select name="zipCode"
-                                value={billingAddress.zipCode}
-                                onChange={onChangeBillingSelect}>
-                                {
-                                    data.map(city => 
-                                        <option key={city.nr} value={city.nr} >
-                                            {city.nr}
-                                        </option>
-                                    )
-                                }
-                        </select> 
+                        <input
+                            required
+                            type="text"
+                            pattern="[0-9]{4}"
+                            name="zipCode"
+                            onChange={onChangeBillingSelect}
+                        />
                     </div>
 
                     <div>
                         <label htmlFor="By">By</label>
-                        <select name="city"
-                                value={billingAddress.city}
-                                onChange={onChangeBillingSelect}>
-                                {
-                                    cityList.map(city=>
-                                        <option key={city.nr} value={city.navn}>
-                                            {city.navn}
-                                        </option>
-                                    )
-                                }
-                        </select>
+                        <input
+                            readOnly
+                            name="city"
+                            value={billingAddress.city}
+                        />
                     </div>
 
                     <div>
@@ -255,41 +259,38 @@ const Delivery = () => {
                             name="country"
                             disabled
                             value={billingAddress.country}
-                            onChange={onChangeBilling}                            
-                        />                                            
-                    </div> 
-                    
+                            onChange={onChangeBilling}
+                        />
+                    </div>
+
                     <div>
-                        <br /><br />
+                        <br />
+                        <br />
                         <input
                             type="checkbox"
                             name="check"
                             value="false"
                             onChange={() => setCheck(!check)}
                         />
-                        <label htmlFor="checkbox" id='checkbox-label'>
-                            Min leveringsadresse er den samme som min faktureringsadresse
+                        <label htmlFor="checkbox" id="checkbox-label">
+                            Min leveringsadresse er den samme som min
+                            faktureringsadresse
                         </label>
                     </div>
-                                
                 </div>
-
-                    
 
                 {!check && (
                     <div className="shippingAddress">
-
                         <h2 className="full-width">Leveringsadresse</h2>
 
                         <div>
                             <label htmlFor="Fornavn">Fornavn</label>
                             <input
                                 required
-                                autoFocus
                                 type="text"
                                 name="firstName"
-                                onChange={onChangeShipping}                            
-                            />                                            
+                                onChange={onChangeShipping}
+                            />
                         </div>
 
                         <div>
@@ -298,8 +299,8 @@ const Delivery = () => {
                                 required
                                 type="text"
                                 name="lastName"
-                                onChange={onChangeShipping}                            
-                            />                   
+                                onChange={onChangeShipping}
+                            />
                         </div>
 
                         <div>
@@ -308,8 +309,8 @@ const Delivery = () => {
                                 required
                                 type="email"
                                 name="billingemail"
-                                onChange={onChangeShipping}                            
-                            />                                            
+                                onChange={onChangeShipping}
+                            />
                         </div>
 
                         <div>
@@ -318,8 +319,8 @@ const Delivery = () => {
                                 required
                                 type="tel"
                                 name="mobileNr"
-                                onChange={onChangeShipping}                            
-                            />                                            
+                                onChange={onChangeShipping}
+                            />
                         </div>
 
                         <div>
@@ -329,68 +330,57 @@ const Delivery = () => {
                                 type="text"
                                 name="company"
                                 onChange={onChangeShipping}
-                            />                                            
+                            />
                         </div>
 
                         <div>
-                            <label htmlFor="VAT-nummer">VirksomhedVAT-nummer</label>
+                            <label htmlFor="VAT-nummer">
+                                VirksomhedVAT-nummer
+                            </label>
                             <input
                                 required
                                 type="text"
                                 name="vatNr"
-                                pattern="\d{8}|\d{8}" 
-                                onChange={onChangeShipping}                            
-                            />                      
+                                pattern="\d{8}|\d{8}"
+                                onChange={onChangeShipping}
+                            />
                         </div>
 
                         <div>
-                            <label htmlFor="ShippingAddress">Adresselinje 1</label>
+                            <label htmlFor="ShippingAddress">
+                                Adresselinje 1
+                            </label>
                             <input
                                 required
                                 type="text"
                                 name="address1"
                                 onChange={onChangeShipping}
-                            />                                            
+                            />
                         </div>
 
                         <div>
-                            <label htmlFor="ShippingAddress">Adresselinje 2</label>
+                            <label htmlFor="ShippingAddress">
+                                Adresselinje 2
+                            </label>
                             <input
                                 required
                                 type="text"
                                 name="address2"
                                 onChange={onChangeShipping}
-                            />                                            
+                            />
                         </div>
 
                         <div>
                             <label htmlFor="Postnummer">Postnummer</label>
-                            <select name="zipCode"
-                                    value={billingAddress.zipCode}
-                                    onChange={onChangeShippingSelect}>
-                                    {
-                                        data.map(city => 
-                                            <option key={city.nr} value={city.nr} >
-                                                {city.nr}
-                                            </option>
-                                        )
-                                    }
-                            </select> 
                         </div>
 
                         <div>
                             <label htmlFor="By">By</label>
-                            <select name="city"
-                                    value={billingAddress.city}
-                                    onChange={onChangeShippingSelect}>
-                                    {
-                                        cityList.map(city=>
-                                            <option key={city.nr} value={city.navn}>
-                                                {city.navn}
-                                            </option>
-                                        )
-                                    }
-                            </select>
+                            <input
+                                readOnly
+                                name="city"
+                                value={billingAddress.city}
+                            ></input>
                         </div>
 
                         <div>
@@ -401,12 +391,12 @@ const Delivery = () => {
                                 name="country"
                                 disabled
                                 value={shippingAddress.country}
-                                onChange={onChangeShipping}                            
-                            />                                            
-                        </div>                   
-                    </div> 
+                                onChange={onChangeShipping}
+                            />
+                        </div>
+                    </div>
                 )}
-                    
+
                 <br />
                 <button className="payment-btn" type="submit">
                     Gå til betaling

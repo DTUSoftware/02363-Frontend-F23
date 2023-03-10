@@ -87,7 +87,7 @@ function ShoppingList() {
         );
     }
 
-    const listEmpty = items === undefined || items.length == 0;
+    const listEmpty = items === undefined || items.length === 0;
 
     return (
         <div className="ShoppingList">
