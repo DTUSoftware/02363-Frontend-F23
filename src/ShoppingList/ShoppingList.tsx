@@ -91,23 +91,21 @@ function ShoppingList() {
 
     return (
         <>
-        <div>
-            <p>Køb for 499 DKK og få fri fragt!</p>
-        </div>
+        <><p className="deliveryheading">Køb for 499 DKK og få fri fragt!</p></>
         <div className="ShoppingList">
-            <p className="heading">Din indkøbskurv</p>
-            {!listEmpty ? (
-                <ProductTable
-                    items={items}
-                    decrementQuantity={decrementQuantity}
-                    incrementQuantity={incrementQuantity}
-                    toggleGiftWrap={toggleGiftWrap}
-                    toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
-                    removeItem={removeItem} />
-            ) : (
-                <p className="empty">Din kurv er tom!</p>
-            )}
-        </div>
+                <p className="heading">Din indkøbskurv</p>
+                {!listEmpty ? (
+                    <ProductTable
+                        items={items}
+                        decrementQuantity={decrementQuantity}
+                        incrementQuantity={incrementQuantity}
+                        toggleGiftWrap={toggleGiftWrap}
+                        toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
+                        removeItem={removeItem} />
+                ) : (
+                    <p className="empty">Din kurv er tom!</p>
+                )}
+            </div>
         </>
     );
 }
@@ -149,7 +147,7 @@ function ProductTable({
                         <th className="rebate">Rabat</th>
                         <th className="priceTotal">Total</th>
                         <th className="giftwrapping">Gavepapir</th>
-                        <th className="reoccuringorder">Gentag order</th>
+                        <th className="reoccuringorder">Gentag ordre</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -189,22 +187,24 @@ function CartTotal({
     let cartTotal = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
-
+    
     if(cartTotal>=499) {
         return (
-            <>
+            <><span className="totalborder">
             <p className="subtotal">{`Subtotal: ${cartTotal} ${items[0].product!.currency}`}</p>
             <p className="fragt">FRI FRAGT</p>
-            <p className="total">{`Pris i alt ${cartTotal} ${items[0].product!.currency}`}</p></>
+            <p className="total">{`Pris i alt ${cartTotal} ${items[0].product!.currency}`}</p>
+            </span></>
         );
     } else {
         return (
-            <>
+            <><span className="totalborder">
             <p className="subtotal">{`Subtotal: ${cartTotal} ${items[0].product!.currency}`}</p>
             <p className="fragt">Fragt: 39 DKK</p>
             <p className="total">{`Pris i alt ${cartTotal+39} ${items[0].product!.currency}`}</p>
-            </>
+            </span></>
         )
+
     };
 }
 
