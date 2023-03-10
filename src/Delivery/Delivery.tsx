@@ -46,7 +46,7 @@ const Delivery = () => {
 
     useEffect(()=>{
         filterList();
-    },[]);
+    },[data]);
 
     const [check, setCheck] = useState(false);
 
@@ -129,11 +129,11 @@ const Delivery = () => {
     };
 
     return (
-        <main>
+        <div className="delivery">
             <form className="form" onSubmit={handleSubmit}>
 
                 <div className="billingAddress">
-                    <h2 className="full-width">Faktureringsadresse</h2>
+                    <h2>Faktureringsadresse</h2>
                     
                     <div>
                         <label htmlFor="Fornavn">Fornavn</label>
@@ -161,7 +161,7 @@ const Delivery = () => {
                         <input
                             required
                             type="email"
-                            name="billingemail"
+                            name="email"
                             onChange={onChangeBilling}                            
                         />                                            
                     </div>
@@ -197,7 +197,7 @@ const Delivery = () => {
                         />                      
                     </div>
 
-                    <div className="full-width">
+                    <div className="address-row">
                         <label htmlFor="BillingAddress">Adresselinje 1</label>
                         <input
                             required
@@ -207,7 +207,7 @@ const Delivery = () => {
                         />                                            
                     </div>
 
-                    <div className="full-width">
+                    <div className="address-row">
                         <label htmlFor="BillingAddress">Adresselinje 2</label>
                         <input
                             required
@@ -279,7 +279,7 @@ const Delivery = () => {
                 {!check && (
                     <div className="shippingAddress">
 
-                        <h2 className="full-width">Leveringsadresse</h2>
+                        <h2>Leveringsadresse</h2>
 
                         <div>
                             <label htmlFor="Fornavn">Fornavn</label>
@@ -307,7 +307,7 @@ const Delivery = () => {
                             <input
                                 required
                                 type="email"
-                                name="billingemail"
+                                name="email"
                                 onChange={onChangeShipping}                            
                             />                                            
                         </div>
@@ -343,7 +343,7 @@ const Delivery = () => {
                             />                      
                         </div>
 
-                        <div>
+                        <div className="address-row">
                             <label htmlFor="ShippingAddress">Adresselinje 1</label>
                             <input
                                 required
@@ -353,7 +353,7 @@ const Delivery = () => {
                             />                                            
                         </div>
 
-                        <div>
+                        <div className="address-row">
                             <label htmlFor="ShippingAddress">Adresselinje 2</label>
                             <input
                                 required
@@ -412,7 +412,7 @@ const Delivery = () => {
                     Gå til betaling
                 </button>
             </form>
-        </main>
+        </div>
     );
 };
 
