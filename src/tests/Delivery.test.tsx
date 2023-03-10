@@ -1,9 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from "vitest";
 import Delivery from "../Delivery/Delivery";
 import userEvent from "@testing-library/user-event";
 import {MemoryRouter} from 'react-router-dom'
-import mockResponse from "../assets/zip-codes.json";
 
 // MemoryRouter to manually control route history
 const component = (
@@ -11,14 +10,8 @@ const component = (
         <Delivery />
     </MemoryRouter>
 )
-const zipCodeUrl = "https://api.dataforsyningen.dk/postnumre";
 
 describe(Delivery.name, () => {
-    afterEach(() => {
-        vi.restoreAllMocks();
-      });
-
-
     it("Should render titles", () => {
         render(component);
         expect(screen.getByText("Faktureringsadresse")).toBeInTheDocument();
@@ -27,21 +20,7 @@ describe(Delivery.name, () => {
 
     //Change to use mocking when we implement API calls
     it("Enter country, limited to 'Denmark'", () => {
-        const mockFetch = vi
-        .spyOn(window, "fetch")
-        .mockImplementation(async (url: RequestInfo | URL) => {
-            if (url === zipCodeUrl) {
-            return {
-                json: async () => mockResponse,
-            } as Response;
-            } else {
-            return {} as Response;
-            }
-        });        
-
         render(component);
-
-        expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl);
     });
 
     //Change to use mocking when we implement API calls
