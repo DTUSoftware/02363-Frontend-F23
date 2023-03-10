@@ -45,11 +45,8 @@ const Delivery = () => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await saveToDB();
         navigate("/payment");
     };
-
-    async function saveToDB() {}
 
     if (check) {
         shippingAddress.firstName = billingAddress.firstName;
@@ -66,10 +63,10 @@ const Delivery = () => {
     }
 
     return (
-        <div>
+        <div className="delivery">
             <form className="form" onSubmit={handleSubmit}>
                 <div className="billingAddress">
-                    <h2 className="full-width">Faktureringsadresse</h2>
+                    <h2 className="address-row">Faktureringsadresse</h2>
 
                     <AddressDetails
                         address={billingAddress}
@@ -83,7 +80,7 @@ const Delivery = () => {
 
                 {!check && (
                     <div className="shippingAddress">
-                        <h2 className="full-width">Leveringsadresse</h2>
+                        <h2 className="address-row">Leveringsadresse</h2>
 
                         <AddressDetails
                             address={shippingAddress}
@@ -246,7 +243,7 @@ function AddressDetails({
                 />
             </div>
 
-            <div className="full-width">
+            <div className="address-row">
                 <label htmlFor="address1">Adresselinje 1</label>
                 <input
                     required
@@ -257,7 +254,7 @@ function AddressDetails({
                 />
             </div>
 
-            <div className="full-width">
+            <div className="address-row">
                 <label htmlFor="address2">Adresselinje 2</label>
                 <input
                     required

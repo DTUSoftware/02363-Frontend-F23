@@ -1,14 +1,7 @@
-body {
-    margin: 0;
-    background-color: hsl(0, 0%, 98%);
-    color: #333;
-    font: 100% / normal sans-serif;
-}
-
-main {
+.delivery {
     margin: 0 auto;
     padding: 4rem 0;
-    width: 90%;
+    width: 100%;
     max-width: 60rem;
 }
 
@@ -23,7 +16,8 @@ main {
     gap: 2rem;
 }
 
-.full-width {
+h2,
+.address-row {
     grid-column: span 2;
 }
 
@@ -40,10 +34,7 @@ select {
     box-shadow: 0 0 8px #444;
 }
 
-.form input[type="text"]:hover,
-input[type="email"]:hover,
-input[type="tel"]:hover,
-input[type="number"]:hover,
+.form input:hover,
 select:hover {
     border: 1px solid #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.25) inset,
@@ -64,9 +55,9 @@ select:hover {
 .form label {
     display: block;
     text-align: left;
-    font-size: 15px;
+    font-size: 20px;
     padding: 10px 0;
-    text-shadow: 1px 1px 1px #222121;
+    font-weight: bolder;
 }
 
 .payment-btn {
