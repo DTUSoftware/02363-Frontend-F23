@@ -181,14 +181,22 @@ function CartTotal({
     items: CartItem[];
     itemTotal: (item: CartItem) => number;
 }) {
-    const cartTotal = items.reduce((sum, item) => {
+    let reductionmsg: string = "";
+    let cartTotal: number = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
-
+    
+    if(cartTotal>=300){
+        let oldTotal: number = cartTotal;
+        cartTotal = cartTotal *0.9;
+        reductionmsg = "Du sparer 10%: "+ oldTotal*0.1+" DKK";
+    } else{reductionmsg="Spar 10% ved køb over 300kr!"}
     return (
-        <p className="total">{`Pris i alt ${cartTotal} ${
-            items[0].product!.currency
-        }`}</p>
+        <p className="total">
+            <span style={{fontSize : 15}}> {reductionmsg}</span>
+            <br></br>
+            {`Pris i alt ${cartTotal} ${items[0].product!.currency}`}
+        </p>
     );
 }
 
