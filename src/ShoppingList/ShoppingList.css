@@ -57,8 +57,13 @@
 
 .price,
 .increment,
-.rebate {
+.rebate,
+.trash {
     padding-right: 30px;
+}
+
+.upsellBtn {
+   width: 10rem;
 }
 
 .quantity {
