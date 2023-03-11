@@ -1,16 +1,54 @@
 .heading {
     text-align: left;
+    background-color: rgb(247, 247, 247);
+    border-radius: 0.5em;
+    text-indent: 0.2em;
 }
 
-.total {
-    text-align: right;
-    font-size: 1.3em;
-    font-weight: bolder;
+.deliveryheading {
+    display: inline;
+    text-align: center;
+    font-size: 14px;
+    border-color: #9b9efa;
+    border-style: solid;
+    border-radius: 0.2em;
+    width: 215px;
+    margin: auto;
+    margin: 15px;
+    font-weight: bold;
 }
 
 .rebatetext {
-    font-size: 15px;
+    font-size: 14px;
 }
+
+.totalborder{
+    background-color: rgb(247, 247, 247);
+    display: block;
+    position: relative;
+    border-radius: 10px;
+    width: 210px;
+    position:relative;
+    margin-left: 910px;
+    margin-top: 30px;
+}
+
+.fragt,
+.subtotal {
+    text-align: right;
+    font-size: 1em;
+    background-color: rgb(247, 247, 247);
+    border-radius: 0.2em;
+}
+
+.total{
+    text-align: right;
+    font-size: 1.2em;
+    font-weight: bolder; 
+    background-color: rgb(247, 247, 247);
+    border-radius: 0.2em;
+}
+
 
 .product {
     text-align: left;
@@ -28,13 +66,14 @@
 }
 
 .priceTotal {
-    padding-right: 60px;
+    padding-right: 40px;
+    width: 90px;
 }
 
 .giftwrapping,
 .reoccuringorder {
     text-align: center;
-    padding-right: 30px;
+    padding-right: 20px;
 }
 
 .quantityBtn {
@@ -49,6 +88,11 @@
     padding: 1em 2em;
     margin: 5px;
     border-radius: 6px;
+}
+
+.link-style{
+    background-color: #535bf2;
+    color: #f4f2f2;  
 }
 
 .order-btn:hover {

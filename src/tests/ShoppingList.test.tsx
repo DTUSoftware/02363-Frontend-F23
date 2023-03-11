@@ -102,7 +102,7 @@ describe(ShoppingList.name, () => {
         await user.click(removeButton);
         expect(screen.getAllByRole("row")).toHaveLength(3);
         expect(
-            screen.getByText("Pris i alt: 200 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 200 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
     });
 

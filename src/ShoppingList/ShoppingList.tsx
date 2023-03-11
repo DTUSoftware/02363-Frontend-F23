@@ -91,6 +91,10 @@ function ShoppingList() {
 
     return (
         <div className="ShoppingList">
+            {!listEmpty && <div>
+            <p className="deliveryheading">Køb for 499 DKK og få FRI fragt!</p>
+            <p className="deliveryheading">Køb for over 300 DKK og få 10% rabat!</p>
+            </div>}
             <p className="heading">Din indkøbskurv</p>
             {!listEmpty ? (
                 <ProductTable
@@ -99,8 +103,7 @@ function ShoppingList() {
                     incrementQuantity={incrementQuantity}
                     toggleGiftWrap={toggleGiftWrap}
                     toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
-                    removeItem={removeItem}
-                />
+                    removeItem={removeItem} />
             ) : (
                 <p className="empty">Din kurv er tom!</p>
             )}
@@ -145,7 +148,7 @@ function ProductTable({
                         <th className="rebate">Rabat</th>
                         <th className="priceTotal">Total</th>
                         <th className="giftwrapping">Gavepapir</th>
-                        <th className="reoccuringorder">Gentag order</th>
+                        <th className="reoccuringorder">Gentag ordre</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -181,25 +184,23 @@ function CartTotal({
     items: CartItem[];
     itemTotal: (item: CartItem) => number;
 }) {
-    let reductionmsg: string = "";
+    const shippingPrice = 39;
+    const freeShipping = 499;
+    const totalRebate = 0.1;
     const cartTotal: number = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
     const hasRebate = cartTotal>=300;
     
-    if (hasRebate){
-        reductionmsg = `Du sparer 10%:  ${cartTotal*0.1} DKK`;
-    } 
-    else
-    {
-        reductionmsg="Spar 10% ved køb over 300 DKK"
-    }
     return (
         <p className="total">
-            {hasRebate && <div><span className="rebatetext"> {`Subtotal: ${cartTotal} DKK`}</span> <br/> </div> }
-            <span className="rebatetext"> {reductionmsg}</span>
+            <span className="rebatetext"> {`Subtotal: ${cartTotal} DKK`}</span>
             <br/>
-            {`Pris i alt: ${hasRebate ? cartTotal*0.9 : cartTotal} ${items[0].product!.currency}`}
+            <span className="rebatetext"> {cartTotal>=freeShipping ? "FRI FRAGT" : `Fragt: ${shippingPrice} DKK`}</span>
+            <br/>
+            <span className="rebatetext"> {hasRebate ? `Du sparer 10%:  ${cartTotal*totalRebate} DKK` : "Spar 10% ved køb over 300 DKK"}</span>
+            <br/>
+            <span>{`Pris i alt: ${hasRebate ? cartTotal*(1-totalRebate)+shippingPrice : cartTotal} ${items[0].product!.currency}`}</span>
         </p>
     );
 }
