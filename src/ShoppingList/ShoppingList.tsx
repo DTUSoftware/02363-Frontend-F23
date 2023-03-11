@@ -43,18 +43,18 @@ function ShoppingList() {
         handleQuantityChange(item.product, item.quantity + 1);
     }
 
+    function decrementQuantity(index: number) {
+        const item = items.at(index)!;
+        if (item.quantity > 1) {
+            handleQuantityChange(item.product, item.quantity - 1);
+        }
+    }
+
     function upsellItem(index: number){
         const item = items.at(index)!;
         if (item.product.upsellProductId != null){
             const upsell = `${item.product.upsellProductId}`;
             handleUpsellChange(item.product, upsell)
-        }
-    }
-
-    function decrementQuantity(index: number) {
-        const item = items.at(index)!;
-        if (item.quantity > 1) {
-            handleQuantityChange(item.product, item.quantity - 1);
         }
     }
 
@@ -232,7 +232,7 @@ function CartTotal({
             <br/>
             <span className="rebatetext"> {hasRebate ? `Du sparer 10%:  ${cartTotal*totalRebate} DKK` : "Spar 10% ved køb over 300 DKK"}</span>
             <br/>
-            <span>{`Pris i alt: ${hasRebate ? cartTotal*(1-totalRebate)+shippingPrice : cartTotal} ${items[0].product!.currency}`}</span>
+            <span className="totalprice">{`Pris i alt: ${hasRebate ? cartTotal*(1-totalRebate)+shippingPrice : cartTotal} ${items[0].product!.currency}`}</span>
         </p>
     );
 }
