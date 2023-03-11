@@ -8,6 +8,10 @@
     font-weight: bolder;
 }
 
+.rebatetext {
+    font-size: 15px;
+}
+
 .product {
     text-align: left;
     padding-right: 100px;

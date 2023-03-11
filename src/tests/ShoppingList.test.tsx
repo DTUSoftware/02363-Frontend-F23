@@ -55,7 +55,7 @@ describe(ShoppingList.name, () => {
     it("User can see total amount", () => {
         render(component);
         expect(
-            screen.getByText("Pris i alt 425 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 425 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
     });
 
@@ -64,14 +64,14 @@ describe(ShoppingList.name, () => {
         const user = userEvent.setup();
         render(component);
         expect(
-            screen.getByText("Pris i alt 425 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 425 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
         const incrementButton = screen.getByLabelText(
             "forøg antal De små synger"
         );
         await user.click(incrementButton);
         expect(
-            screen.getByText("Pris i alt 545 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 545 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
     });
 
@@ -80,14 +80,14 @@ describe(ShoppingList.name, () => {
         const user = userEvent.setup();
         render(component);
         expect(
-            screen.getByText("Pris i alt 425 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 425 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
             "reducer antal C-vitamin, 500mg, 250 stk"
         );
         await user.click(decrementButton);
         expect(
-            screen.getByText("Pris i alt 350 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 350 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
     });
 
@@ -102,7 +102,7 @@ describe(ShoppingList.name, () => {
         await user.click(removeButton);
         expect(screen.getAllByRole("row")).toHaveLength(3);
         expect(
-            screen.getByText("Pris i alt 200 DKK", { selector: ".total" })
+            screen.getByText("Pris i alt: 200 DKK", { selector: ".total" })
         ).toBeInTheDocument();
     });
 
@@ -153,7 +153,7 @@ describe(ShoppingList.name, () => {
         render(component);
 
         expect(
-            screen.getByText("Pris i alt 425 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 425 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
             "forøg antal Rørsukker, 1000g"
@@ -161,7 +161,7 @@ describe(ShoppingList.name, () => {
         //We add 2 more the basket. When buying 4 'Rørsukker, 1000g' one gets a rebate of 25%
         await user.dblClick(decrementButton);
         expect(
-            screen.getByText("Pris i alt 465 DKK", { selector: ".total" })
+            screen.getByText("Subtotal: 465 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
     });
 

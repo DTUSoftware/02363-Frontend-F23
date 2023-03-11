@@ -182,20 +182,24 @@ function CartTotal({
     itemTotal: (item: CartItem) => number;
 }) {
     let reductionmsg: string = "";
-    let cartTotal: number = items.reduce((sum, item) => {
+    const cartTotal: number = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
+    const hasRebate = cartTotal>=300;
     
-    if(cartTotal>=300){
-        let oldTotal: number = cartTotal;
-        cartTotal = cartTotal *0.9;
-        reductionmsg = "Du sparer 10%: "+ oldTotal*0.1+" DKK";
-    } else{reductionmsg="Spar 10% ved køb over 300kr!"}
+    if (hasRebate){
+        reductionmsg = `Du sparer 10%:  ${cartTotal*0.1} DKK`;
+    } 
+    else
+    {
+        reductionmsg="Spar 10% ved køb over 300 DKK"
+    }
     return (
         <p className="total">
-            <span style={{fontSize : 15}}> {reductionmsg}</span>
-            <br></br>
-            {`Pris i alt ${cartTotal} ${items[0].product!.currency}`}
+            {hasRebate && <div><span className="rebatetext"> {`Subtotal: ${cartTotal} DKK`}</span> <br/> </div> }
+            <span className="rebatetext"> {reductionmsg}</span>
+            <br/>
+            {`Pris i alt: ${hasRebate ? cartTotal*0.9 : cartTotal} ${items[0].product!.currency}`}
         </p>
     );
 }
