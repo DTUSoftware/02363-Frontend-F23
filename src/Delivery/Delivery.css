@@ -72,3 +72,8 @@ select:hover {
     background-color: #7ef384;
     color: #1c1a1a;
 }
+
+.ziperror {
+    color: red;
+    float: left;
+}

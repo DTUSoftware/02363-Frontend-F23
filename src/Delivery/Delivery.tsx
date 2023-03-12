@@ -9,11 +9,10 @@ type CityData = { [key: string]: City };
 const Delivery = () => {
     const navigate = useNavigate();
 
-    const [data, setData] = useState<CityData>({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [zipCodeError, setZipCodeError] = useState(false);
-    const [phoneError, setPhoneError] = useState(false);
+    // Allows for separate billing and shipping city/zip-code data (for example from different countries)
+    const [billingCityData, setBillingCityData] = useState<CityData>({});
+    const [shippingCityData, setShippingCityData] = useState<CityData>({});
+
     const [check, setCheck] = useState(false);
     const [billingAddress, setBilling] = useState<Address>({
         firstName: "",
@@ -45,7 +44,11 @@ const Delivery = () => {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        navigate("/payment");
+        const billingZipCode = billingCityData[billingAddress.zipCode];
+        const shippingZipCode = shippingCityData[shippingAddress.zipCode];
+        if (billingZipCode !== undefined && shippingZipCode !== undefined) {
+            navigate("/payment");
+        }
     };
 
     if (check) {
@@ -73,6 +76,8 @@ const Delivery = () => {
                         setAddress={(x: Address) => setBilling(x)}
                         check={check}
                         setCheck={(x: boolean) => setCheck(x)}
+                        data={billingCityData}
+                        setData={setBillingCityData}
                     />
                 </div>
 
@@ -87,6 +92,8 @@ const Delivery = () => {
                             setAddress={(x: Address) => setShipping(x)}
                             check={null}
                             setCheck={null}
+                            data={shippingCityData}
+                            setData={setShippingCityData}
                         />
                     </div>
                 )}
@@ -105,23 +112,24 @@ function AddressDetails({
     setAddress,
     check,
     setCheck,
+    data,
+    setData
 }: {
     address: Address;
     setAddress: (value: Address) => void;
     check: boolean | null;
     setCheck: ((value: boolean) => void) | null;
+    data: CityData;
+    setData: (value: CityData) => void;
 }) {
-    const [data, setData] = useState<CityData>({});
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [zipCodeError, setZipCodeError] = useState(false);
-    const [phoneError, setPhoneError] = useState(false);
 
     useEffect(() => {
         const cityData: CityData = {};
 
         if (address.country === "Danmark") {
-            console.log("Fetching!");
             fetch("https://api.dataforsyningen.dk/postnumre")
                 .then((response) => {
                     if (response.ok) {
@@ -149,21 +157,32 @@ function AddressDetails({
     const onChangeSelect = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
-        setAddress({
-            ...address,
-            [event.target.name]: event.target.value,
-        });
         const zip = data[event.target.value];
         if (zip !== undefined) {
             setAddress({
                 ...address,
+                [event.target.name]: event.target.value,
                 city: zip.navn,
             });
         } else if (address.city !== "") {
             setAddress({
                 ...address,
+                [event.target.name]: event.target.value,
                 city: "",
             });
+        } else {
+            setAddress({
+                ...address,
+                [event.target.name]: event.target.value,
+            });
+        }
+
+        if (zip === undefined && event.target.value.length === 4) { 
+            if (zipCodeError !== true) {
+                setZipCodeError(true);
+            }
+        } else if (zipCodeError === true) {
+            setZipCodeError(false);
         }
     };
 
@@ -213,6 +232,7 @@ function AddressDetails({
                 <label htmlFor="mobileNr">Mobilnummer</label>
                 <input
                     required
+                    pattern="[0-9]{8}"
                     type="tel"
                     id="mobileNr"
                     name="mobileNr"
@@ -235,7 +255,7 @@ function AddressDetails({
                 <label htmlFor="vatNr">VirksomhedVAT-nummer</label>
                 <input
                     required
-                    pattern="\d{8}|\d{8}"
+                    pattern="[0-9]{8}"
                     type="text"
                     id="vatNr"
                     name="vatNr"
@@ -275,6 +295,7 @@ function AddressDetails({
                     name="zipCode"
                     onChange={onChangeSelect}
                 />
+                {zipCodeError && <span className="ziperror">Det valgte postnummer er ikke korrekt!</span>}
             </div>
 
             <div>
