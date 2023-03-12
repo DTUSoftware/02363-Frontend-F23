@@ -5,9 +5,7 @@
     max-width: 60rem;
 }
 
-
-.billingAddress, 
-.shippingAddress {
+.address {
     box-sizing: border-box;
     padding: 2rem;
     border-radius: 1rem;
@@ -18,51 +16,49 @@
     gap: 2rem;
 }
 
-h2, .address-row {
+h2,
+.address-row {
     grid-column: span 2;
 }
 
-
-.form input, select {  
+.form input,
+select {
     width: 100%;
-    height: 40px;	
-	padding: 2px;
+    height: 40px;
+    padding: 2px;
     font: 1.25rem / 1.5 sans-serif;
-    display: block;  
-	box-sizing: border-box;
-	border-radius: 6px;
+    display: block;
+    box-sizing: border-box;
+    border-radius: 6px;
     border: 1px solid #fff;
-	box-shadow: 0 0 8px #444;	
+    box-shadow: 0 0 8px #444;
 }
 
-
-.form 
-input:hover,
+.form input:hover,
 select:hover {
-	border: 1px solid #fff;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.25) inset, 0 0 5px rgba(255, 255, 255, 0.4);
+    border: 1px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25) inset,
+        0 0 5px rgba(255, 255, 255, 0.4);
 }
 
 .form input[type="checkbox"] {
     height: 1.5em;
-    width: 1.5em;    
+    width: 1.5em;
     display: inline;
     vertical-align: middle;
 }
 
-#checkbox-label{
+#checkbox-label {
     display: inline;
 }
 
-
 .form label {
-	display: block;
+    display: block;
     text-align: left;
-	font-size: 20px;
+    font-size: 20px;
+    padding: 10px 0;
     font-weight: bolder;
-	padding: 10px 0;    
 }
-
 
 .payment-btn {
     background-color: #585ae9;
@@ -75,4 +71,9 @@ select:hover {
 .payment-btn:hover {
     background-color: #7ef384;
     color: #1c1a1a;
+}
+
+.ziperror {
+    color: red;
+    float: left;
 }
