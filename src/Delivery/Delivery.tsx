@@ -295,7 +295,7 @@ function AddressDetails({
                     name="zipCode"
                     onChange={onChangeSelect}
                 />
-                {zipCodeError && <span className="ziperror">Det valgte postnummer er ikke korrekt!</span>}
+                <span className="ziperror" hidden={!zipCodeError}>Det valgte postnummer er ikke korrekt!</span>
             </div>
 
             <div>
