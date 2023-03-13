@@ -1,8 +1,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Delivery from "../Delivery/Delivery";
 import userEvent from "@testing-library/user-event";
 import {MemoryRouter} from 'react-router-dom'
+import mockResponse from "../assets/zip-codes.json";
 
 // MemoryRouter to manually control route history
 const component = (
@@ -10,38 +11,94 @@ const component = (
         <Delivery />
     </MemoryRouter>
 )
+const zipCodeUrl = "https://api.dataforsyningen.dk/postnumre";
 
 describe(Delivery.name, () => {
+    afterEach(() => {
+        vi.restoreAllMocks();
+      });
 
     it("Should render titles", () => {
+        const mockFetch = vi
+        .spyOn(window, "fetch")
+        .mockImplementation(async (url: RequestInfo | URL) => {
+            if (url === zipCodeUrl) {
+            return {
+                json: async () => mockResponse,
+            } as Response;
+            } else {
+            return {} as Response;
+            }
+        });
         render(component);
+
+        expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl);
         expect(screen.getByText("Faktureringsadresse")).toBeInTheDocument();
         expect(screen.getByText("Leveringsadresse")).toBeInTheDocument();
     });
 
     it("Enter firstname", async () => {
+        const mockFetch = vi
+        .spyOn(window, "fetch")
+        .mockImplementation(async (url: RequestInfo | URL) => {
+            if (url === zipCodeUrl) {
+            return {
+                json: async () => mockResponse,
+            } as Response;
+            } else {
+            return {} as Response;
+            }
+        });
+        const enterFirstName = "test"
         render(component);
-        const fornavn = screen.getByRole('textbox', { name: /fornavn/i })
-        userEvent.type(fornavn, "Goli")      
+        const firstName = screen.getByRole('textbox', { name: /fornavn/i })
+        userEvent.type(firstName, enterFirstName)      
 
-        await waitFor(() => expect(fornavn).toHaveValue("Goli"));
+        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl));
+        await waitFor(() => expect(firstName).toHaveValue(enterFirstName));
     });
 
     it("Enter lastname", async () => {
+        const mockFetch = vi
+        .spyOn(window, "fetch")
+        .mockImplementation(async (url: RequestInfo | URL) => {
+            if (url === zipCodeUrl) {
+            return {
+                json: async () => mockResponse,
+            } as Response;
+            } else {
+            return {} as Response;
+            }
+        });
+        const enterLastName = "test"
         render(component);
-        const efternavn = screen.getByRole('textbox', { name: /efternavn/i })
-        userEvent.type(efternavn, "Haidari")      
+        const lastName = screen.getByRole('textbox', { name: /efternavn/i })
+        userEvent.type(lastName, enterLastName)      
 
-        await waitFor(() => expect(efternavn).toHaveValue("Haidari"));
+        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl));
+        await waitFor(() => expect(lastName).toHaveValue(enterLastName));
     });
 
-
+    //  Continue
     it("Enter email, validate as valid email address", async () => {
+        const mockFetch = vi
+        .spyOn(window, "fetch")
+        .mockImplementation(async (url: RequestInfo | URL) => {
+            if (url === zipCodeUrl) {
+            return {
+                json: async () => mockResponse,
+            } as Response;
+            } else {
+            return {} as Response;
+            }
+        });
+        const enterEmail = "test@test.com"
         render(component);
         const email = screen.getByRole('textbox', { name: /email/i })
-        userEvent.type(email, "goli@gmail.com") 
+        userEvent.type(email, enterEmail) 
 
-        await waitFor(() => expect(email).toHaveValue("goli@gmail.com")); 
+        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl));
+        await waitFor(() => expect(email).toHaveValue(enterEmail)); 
     });
 
 
@@ -57,9 +114,9 @@ describe(Delivery.name, () => {
     it("Enter company name", async () => {
         render(component);
         const firmanavn = screen.getByRole('textbox', { name: /Evt. firmanavn/i })
-        userEvent.type(firmanavn, "My compnay")  
+        userEvent.type(firmanavn, "My company")  
 
-        await waitFor(() => expect(firmanavn).toHaveValue("My compnay"));
+        await waitFor(() => expect(firmanavn).toHaveValue("My company"));
     });
 
     
@@ -89,16 +146,12 @@ describe(Delivery.name, () => {
         await waitFor(() => expect(address2).toHaveValue("1 sal"))        
     });
 
-    //Change to use mocking when we implement API calls
     it("Enter zip code, if Denmark, validate against https://api.dataforsyningen.dk/postnumre", async  () => {
         render(component);
-        /*const select = screen.getByRole("combobox", {name: /postnummer/i });
-        userEvent.selectOptions(select, within(select).getByRole('option', {name: /2000/i}) )
-
-        await waitFor(()=> expect(screen.getByDisplayValue(/2000/i)).toBeInTheDocument());*/
+        
     });
 
-    //Change to use mocking when we implement API calls
+    // TODO
     it("Enter city, if Denmark provide automatically from zip code", () => {
         render(component);
     });
