@@ -83,7 +83,7 @@ const Delivery = () => {
 
                 <br />
 
-                {!check && (
+                {check && (
                     <div className="shippingAddress">
                         <h2 className="address-row">Leveringsadresse</h2>
 
@@ -113,7 +113,7 @@ function AddressDetails({
     check,
     setCheck,
     data,
-    setData
+    setData,
 }: {
     address: Address;
     setAddress: (value: Address) => void;
@@ -126,10 +126,13 @@ function AddressDetails({
     const [error, setError] = useState(null);
     const [zipCodeError, setZipCodeError] = useState(false);
 
+    const isShipping = check !== null && setCheck !== null;
+
     useEffect(() => {
         const cityData: CityData = {};
 
         if (address.country === "Danmark") {
+            setIsLoading(true);
             fetch("https://api.dataforsyningen.dk/postnumre")
                 .then((response) => {
                     if (response.ok) {
@@ -140,11 +143,11 @@ function AddressDetails({
                     );
                 })
                 .then((data: City[]) => {
-                    setIsLoading(false);
                     data.forEach((city) => {
                         cityData[city.nr] = city;
                     });
                     setData(cityData);
+                    setIsLoading(false);
                     setError(null);
                 })
                 .catch((er) => {
@@ -177,7 +180,7 @@ function AddressDetails({
             });
         }
 
-        if (zip === undefined && event.target.value.length === 4) { 
+        if (zip === undefined && event.target.value.length === 4) {
             if (zipCodeError !== true) {
                 setZipCodeError(true);
             }
@@ -196,120 +199,153 @@ function AddressDetails({
     return (
         <div className="address">
             <div>
-                <label htmlFor="firstName">Fornavn</label>
+                <label
+                    htmlFor={!isShipping ? "shippingFirstName" : "firstName"}
+                >
+                    Fornavn
+                </label>
                 <input
                     required
                     type="text"
-                    id="firstName"
-                    name="firstName"
+                    id={!isShipping ? "shippingFirstName" : "firstName"}
+                    name={!isShipping ? "shippingFirstName" : "firstName"}
                     onChange={onChange}
                 />
             </div>
 
             <div>
-                <label htmlFor="lastName">Efternavn</label>
+                <label htmlFor={!isShipping ? "shippingLastName" : "lastName"}>
+                    Efternavn
+                </label>
                 <input
                     required
                     type="text"
-                    id="lastName"
-                    name="lastName"
+                    id={!isShipping ? "shippingLastName" : "lastName"}
+                    name={!isShipping ? "shippingLastName" : "lastName"}
                     onChange={onChange}
                 />
             </div>
 
             <div>
-                <label htmlFor="email">Email</label>
+                <label htmlFor={!isShipping ? "shippingEmail" : "email"}>
+                    Email
+                </label>
                 <input
                     required
                     type="email"
-                    id="email"
-                    name="email"
+                    id={!isShipping ? "shippingEmail" : "email"}
+                    name={!isShipping ? "shippingEmail" : "email"}
                     onChange={onChange}
                 />
             </div>
 
             <div>
-                <label htmlFor="mobileNr">Mobilnummer</label>
+                <label htmlFor={!isShipping ? "shippingMobileNr" : "mobileNr"}>
+                    Mobilnummer
+                </label>
                 <input
                     required
                     pattern="[0-9]{8}"
                     type="tel"
-                    id="mobileNr"
-                    name="mobileNr"
+                    id={!isShipping ? "shippingMobileNr" : "mobileNr"}
+                    name={!isShipping ? "shippingMobileNr" : "mobileNr"}
                     onChange={onChange}
                 />
             </div>
 
             <div>
-                <label htmlFor="company">Evt. firmanavn</label>
+                <label htmlFor={!isShipping ? "shippingCompany" : "company"}>
+                    Evt. firmanavn
+                </label>
                 <input
                     required
                     type="text"
-                    id="company"
-                    name="company"
+                    id={!isShipping ? "shippingCompany" : "company"}
+                    name={!isShipping ? "shippingCompany" : "company"}
                     onChange={onChange}
                 />
             </div>
 
             <div>
-                <label htmlFor="vatNr">VirksomhedVAT-nummer</label>
+                <label htmlFor={!isShipping ? "shippingVatNr" : "vatNr"}>
+                    VirksomhedVAT-nummer
+                </label>
                 <input
                     required
                     pattern="[0-9]{8}"
                     type="text"
-                    id="vatNr"
-                    name="vatNr"
+                    id={!isShipping ? "shippingVatNr" : "vatNr"}
+                    name={!isShipping ? "shippingVatNr" : "vatNr"}
                     onChange={onChange}
                 />
             </div>
 
             <div className="address-row">
-                <label htmlFor="address1">Adresselinje 1</label>
+                <label htmlFor={!isShipping ? "shippingAddress1" : "address1"}>
+                    Adresselinje 1
+                </label>
                 <input
                     required
                     type="text"
-                    id="address1"
-                    name="address1"
+                    id={!isShipping ? "shippingAddress1" : "address1"}
+                    name={!isShipping ? "shippingAddress1" : "address1"}
                     onChange={onChange}
                 />
             </div>
 
             <div className="address-row">
-                <label htmlFor="address2">Adresselinje 2</label>
+                <label htmlFor={!isShipping ? "shippingAddress2" : "address2"}>
+                    Adresselinje 2
+                </label>
                 <input
                     required
                     type="text"
-                    id="address2"
-                    name="address2"
+                    id={!isShipping ? "shippingAddress2" : "address2"}
+                    name={!isShipping ? "shippingAddress2" : "address2"}
                     onChange={onChange}
                 />
             </div>
 
             <div>
-                <label htmlFor="zipCode">Postnummer</label>
+                <label htmlFor={!isShipping ? "shippingZipCode" : "zipCode"}>
+                    Postnummer
+                </label>
                 <input
+                    disabled={isLoading}
                     required
                     type="text"
                     pattern="[0-9]{4}"
-                    id="zipCode"
-                    name="zipCode"
+                    id={!isShipping ? "shippingZipCode" : "zipCode"}
+                    name={!isShipping ? "shippingZipCode" : "zipCode"}
                     onChange={onChangeSelect}
                 />
-                <span className="ziperror" hidden={!zipCodeError}>Det valgte postnummer er ikke korrekt!</span>
+                <span className="ziperror" hidden={!zipCodeError}>
+                    Det valgte postnummer er ikke korrekt!
+                </span>
             </div>
 
             <div>
-                <label htmlFor="city">By</label>
-                <input readOnly id="city" name="city" value={address.city} />
+                <label htmlFor={!isShipping ? "shippingCity" : "city"}>
+                    By
+                </label>
+                <input
+                    readOnly
+                    type="text"
+                    id={!isShipping ? "shippingCity" : "city"}
+                    name={!isShipping ? "shippingCity" : "city"}
+                    value={address.city}
+                />
             </div>
 
             <div>
-                <label htmlFor="country">Land</label>
+                <label htmlFor={!isShipping ? "shippingContry" : "country"}>
+                    Land
+                </label>
                 <input
                     required
                     type="text"
-                    id="country"
-                    name="country"
+                    id={!isShipping ? "shippingContry" : "country"}
+                    name={!isShipping ? "shippingContry" : "country"}
                     disabled
                     value={address.country}
                     onChange={onChange}
@@ -317,9 +353,7 @@ function AddressDetails({
             </div>
 
             <div>
-                {check !== null && setCheck !== null && (
-                    <CheckBox check={check} setCheck={setCheck} />
-                )}
+                {isShipping && <CheckBox check={check} setCheck={setCheck} />}
             </div>
         </div>
     );
@@ -338,12 +372,13 @@ function CheckBox({
             <br />
             <input
                 type="checkbox"
-                name="check"
+                name="checkbox"
+                id="checkbox"
                 value="false"
                 onChange={() => setCheck(!check)}
             />
             <label htmlFor="checkbox" id="checkbox-label">
-                Min leveringsadresse er den samme som min faktureringsadresse
+                Min leveringsadresse er en anden end min faktureringsadresse
             </label>
         </div>
     );

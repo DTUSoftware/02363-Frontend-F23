@@ -1,29 +1,29 @@
-.navbar .nav-content{
+.navbar .nav-content {
     margin-left: auto;
 }
-    
-.nav-content a{
+
+.nav-content a {
     background-color: #585ae9;
     color: #f9f9f9;
     padding: 1em 2em;
     margin: 5px;
     border-radius: 6px;
 }
-    
-.nav-content a:hover{
-    background-color: #dc62ab;;
+
+.nav-content a:hover {
+    background-color: #dc62ab;
     color: #f9f9f9;
 }
-    
-.navbar{
+
+.navbar {
     display: flex;
+    margin: 1rem;
     padding: 10px;
-    max-width: 1000px;
+    max-width: 100%;
     align-items: center;
-<<<<<<< HEAD
     border-bottom: 1px solid #585ae9;
-=======
->>>>>>> nudge
 }
-      
-.navbar h2{color: #585ae9;}
+
+.navbar h2 {
+    color: #585ae9;
+}
