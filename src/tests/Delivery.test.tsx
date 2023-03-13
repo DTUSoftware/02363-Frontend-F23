@@ -295,7 +295,7 @@ describe(Delivery.name, () => {
         expect(country).toHaveValue("Danmark");
     });
 
-    it("Let user enter a delivery address and a billing address if different", async () => {
+    it.only("Let user enter a delivery address and a billing address if different", async () => {
         const mockFetch = vi
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
@@ -327,7 +327,8 @@ describe(Delivery.name, () => {
         await userEvent.type(zipCode[1], enterZipCode2);
 
         const city = screen.getAllByRole("textbox", { name: "By" });
+        expect(city).toHaveLength(2);
         await waitFor(() => expect(city[0]).toHaveValue("Bagsværd"));
-        //await waitFor(() => expect(city[1]).toHaveValue("Kongens Lyngby"));
+        await waitFor(() => expect(city[1]).toHaveValue("Kongens Lyngby"));
     });
 });
