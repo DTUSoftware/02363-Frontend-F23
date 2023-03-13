@@ -295,7 +295,7 @@ describe(Delivery.name, () => {
         expect(country).toHaveValue("Danmark");
     });
 
-    it.only("Let user enter a delivery address and a billing address if different", async () => {
+    it("Let user enter a delivery address and a billing address if different", async () => {
         const mockFetch = vi
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
