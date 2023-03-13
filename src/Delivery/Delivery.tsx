@@ -6,6 +6,20 @@ import { City } from "../interfaces/City";
 
 type CityData = { [key: string]: City };
 
+const address: Address = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNr: 0,
+    company: "",
+    vatNr: "",
+    country: "Danmark",
+    zipCode: "",
+    city: "",
+    address1: "",
+    address2: "",
+};
+
 const Delivery = () => {
     const navigate = useNavigate();
 
@@ -14,33 +28,9 @@ const Delivery = () => {
     const [shippingCityData, setShippingCityData] = useState<CityData>({});
 
     const [check, setCheck] = useState(false);
-    const [billingAddress, setBilling] = useState<Address>({
-        firstName: "",
-        lastName: "",
-        email: "",
-        mobileNr: 0,
-        company: "",
-        vatNr: "",
-        country: "Danmark",
-        zipCode: "",
-        city: "",
-        address1: "",
-        address2: "",
-    });
+    const [billingAddress, setBilling] = useState<Address>(address);
 
-    const [shippingAddress, setShipping] = useState<Address>({
-        firstName: "",
-        lastName: "",
-        email: "",
-        mobileNr: 0,
-        company: "",
-        vatNr: "",
-        country: "Danmark",
-        zipCode: "",
-        city: "",
-        address1: "",
-        address2: "",
-    });
+    const [shippingAddress, setShipping] = useState<Address>(address);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -51,19 +41,13 @@ const Delivery = () => {
         }
     };
 
-    if (check) {
-        shippingAddress.firstName = billingAddress.firstName;
-        shippingAddress.lastName = billingAddress.lastName;
-        shippingAddress.email = billingAddress.email;
-        shippingAddress.mobileNr = billingAddress.mobileNr;
-        shippingAddress.company = billingAddress.company;
-        shippingAddress.vatNr = billingAddress.vatNr;
-        shippingAddress.address1 = billingAddress.address1;
-        shippingAddress.address2 = billingAddress.address2;
-        shippingAddress.zipCode = billingAddress.zipCode;
-        shippingAddress.city = billingAddress.city;
-        shippingAddress.country = billingAddress.country;
-    }
+    useEffect(() => {
+        if (check) {
+            setShipping(billingAddress);
+        } else {
+            setShipping(address);
+        }
+    }, []);
 
     return (
         <div className="delivery">
