@@ -23,7 +23,7 @@ describe(ShoppingList.name, () => {
         const tableRows = screen.getAllByRole("row");
         expect(tableRows).toHaveLength(4);
         expect(
-            screen.getByText("C-vitamin, 500mg, 250 stk", {
+            screen.getByText("C-vitamin, 500mg, 200 stk", {
                 selector: ".product",
             })
         ).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe(ShoppingList.name, () => {
             screen.getByText("Subtotal: 425 DKK", { selector: ".rebatetext" })
         ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
-            "reducer antal C-vitamin, 500mg, 250 stk"
+            "reducer antal C-vitamin, 500mg, 200 stk"
         );
         await user.click(decrementButton);
         expect(
@@ -92,7 +92,7 @@ describe(ShoppingList.name, () => {
         render(component);
         expect(screen.getAllByRole("row")).toHaveLength(4);
         const removeButton = screen.getByLabelText(
-            "fjern C-vitamin, 500mg, 250 stk"
+            "fjern C-vitamin, 500mg, 200 stk"
         );
         await user.click(removeButton);
         expect(screen.getAllByRole("row")).toHaveLength(3);
@@ -105,7 +105,7 @@ describe(ShoppingList.name, () => {
         const user = userEvent.setup();
         render(component);
         const removeButton = screen.getByLabelText(
-            "fjern C-vitamin, 500mg, 250 stk"
+            "fjern C-vitamin, 500mg, 200 stk"
         );
         await user.tripleClick(removeButton);
         expect(
@@ -117,12 +117,12 @@ describe(ShoppingList.name, () => {
         const user = userEvent.setup();
         render(component);
         const giftwrap = screen.getByLabelText(
-            "gavepapir C-vitamin, 500mg, 250 stk false"
+            "gavepapir C-vitamin, 500mg, 200 stk false"
         );
         expect(giftwrap).toBeInTheDocument();
         await user.click(giftwrap);
         expect(
-            screen.getByLabelText("gavepapir C-vitamin, 500mg, 250 stk true")
+            screen.getByLabelText("gavepapir C-vitamin, 500mg, 200 stk true")
         ).toBeInTheDocument();
     });
 
@@ -130,12 +130,12 @@ describe(ShoppingList.name, () => {
         const user = userEvent.setup();
         render(component);
         const recurringorder = screen.getByLabelText(
-            "gentag order C-vitamin, 500mg, 250 stk false"
+            "gentag order C-vitamin, 500mg, 200 stk false"
         );
         expect(recurringorder).toBeInTheDocument();
         await user.click(recurringorder);
         expect(
-            screen.getByLabelText("gentag order C-vitamin, 500mg, 250 stk true")
+            screen.getByLabelText("gentag order C-vitamin, 500mg, 200 stk true")
         ).toBeInTheDocument();
     });
 
@@ -177,10 +177,10 @@ describe(ShoppingList.name, () => {
     it("Nudge user to choose a more expensive product if available for upsell", async () => {
         const user = userEvent.setup();
         render(component);
-        expect(screen.getByText("C-vitamin, 500mg, 250 stk", { selector: ".product" })).toBeInTheDocument();
+        expect(screen.getByText("C-vitamin, 500mg, 200 stk", { selector: ".product" })).toBeInTheDocument();
         const upsellButton = screen.getByLabelText("Andre har valgt vitamin-c-depot-500-250");
         expect(upsellButton).toBeInTheDocument();
         await user.click(upsellButton);
-        expect(screen.getByText("C-vitamin Depot, 500mg, 250 stk", { selector: ".product" })).toBeInTheDocument();
+        expect(screen.getByText("C-vitamin Depot, 500mg, 200 stk", { selector: ".product" })).toBeInTheDocument();
     });
 });

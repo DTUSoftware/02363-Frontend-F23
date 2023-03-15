@@ -1,3 +1,4 @@
+import productsSJSON from "../assets/products.json";
 import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
@@ -9,37 +10,74 @@ import useFetchData from "../hooks/useFetchData";
 type Products = { [key: string]: ProductItem };
 
 const products: Products = {};
+productsSJSON.forEach((x) => (products[x.id] = x));
+
+const itemList = [
+    {
+        product: products["vitamin-c-500-200"],
+        quantity: 2,
+        giftWrap: false,
+        recurringOrder: false,
+    },
+    {
+        product: products["kids-songbook"],
+        quantity: 1,
+        giftWrap: true,
+        recurringOrder: false,
+    },
+    {
+        product: products["sugar-cane-1kg"],
+        quantity: 2,
+        giftWrap: false,
+        recurringOrder: true,
+    },
+];
 
 
 function ShoppingList() {
     const {isLoading, data, error}= useFetchData<ProductItem[]>("https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json",[])
 
     const [productList, setList]= useState<Products>({})
-    const [items, setItems] = useState<CartItem[]>([]);
+    const [items, setItems] = useState<CartItem[]>(itemList);
 
     useEffect(()=>{
-        const products: Products = {};
-        let list:CartItem[]=[]
-        
-        let i=0;
+        const products: Products = {};  
 
         data.forEach((product) => {
             products[product.id] = product;
-            if(3<i && i<7){
-                let item:CartItem={
-                    product: product,
-                    quantity: 1,
-                    giftWrap: true,
-                    recurringOrder: true
-                }
-                list.push(item);                
-            }
-            i++;
         })
 
         setList(products);
-        setItems(list);
     },[data])
+
+    useEffect(()=>{
+        const p1= productList["vitamin-c-500-200"];
+        const p2= productList["kids-songbook"]
+        const p3=  productList["sugar-cane-1kg"]
+        if(p1 != undefined && p2 != undefined && p3 != undefined){
+            const list:CartItem[]=[
+                {
+                   product: p1,
+                   quantity: 2,
+                   giftWrap: false,
+                   recurringOrder: false
+               },
+               {
+                   product: p2,
+                   quantity: 1,
+                   giftWrap: true,
+                   recurringOrder: false
+               },
+               {
+                   product:p3,
+                   quantity: 2,
+                   giftWrap: false,
+                   recurringOrder: true
+               }
+           ];
+           setItems(list);
+        }
+    },[productList])
 
     function incrementQuantity(index: number) {
         const item = items.at(index)!;
@@ -114,9 +152,7 @@ function ShoppingList() {
     }
 
     const listEmpty = items === undefined || items.length === 0;
-    if(isLoading) return( <h1>Loading....</h1>)
-    else if(error != null) return( <h1>Error occured!</h1>)
-    else return (
+    return (
         <div className="ShoppingList">
             {!listEmpty && <div>
             <p className="deliveryheading">Køb for 499 DKK og få FRI fragt!</p>
