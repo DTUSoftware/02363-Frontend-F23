@@ -27,7 +27,7 @@ const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, add
     };
 
     useEffect(() => {
-        if (check) {
+        if (!check) {
             setShipping(address);
         }
     }, [check, billingAddress]);
@@ -157,7 +157,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingFirstName" : "firstName"}
-                    name={!isShipping ? "shippingFirstName" : "firstName"}
+                    name="firstName"
+                    value={address.firstName}
                     onChange={onChange}
                 />
             </div>
@@ -170,7 +171,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingLastName" : "lastName"}
-                    name={!isShipping ? "shippingLastName" : "lastName"}
+                    name="lastName"
+                    value={address.lastName}
                     onChange={onChange}
                 />
             </div>
@@ -183,7 +185,8 @@ function AddressDetails({
                     required
                     type="email"
                     id={!isShipping ? "shippingEmail" : "email"}
-                    name={!isShipping ? "shippingEmail" : "email"}
+                    name="email"
+                    value={address.email}
                     onChange={onChange}
                 />
             </div>
@@ -197,7 +200,8 @@ function AddressDetails({
                     pattern="[0-9]{8}"
                     type="tel"
                     id={!isShipping ? "shippingMobileNr" : "mobileNr"}
-                    name={!isShipping ? "shippingMobileNr" : "mobileNr"}
+                    name="mobileNr"
+                    value={address.mobileNr !== 0 ? address.mobileNr : ""}
                     onChange={onChange}
                 />
             </div>
@@ -209,7 +213,8 @@ function AddressDetails({
                 <input
                     type="text"
                     id={!isShipping ? "shippingCompany" : "company"}
-                    name={!isShipping ? "shippingCompany" : "company"}
+                    name="company"
+                    value={address.company}
                     onChange={onChange}
                 />
             </div>
@@ -223,7 +228,8 @@ function AddressDetails({
                     pattern="[0-9]{8}"
                     type="text"
                     id={!isShipping ? "shippingVatNr" : "vatNr"}
-                    name={!isShipping ? "shippingVatNr" : "vatNr"}
+                    name="vatNr"
+                    value={address.vatNr}
                     onChange={onChange}
                 />
             </div>
@@ -236,7 +242,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingAddress1" : "address1"}
-                    name={!isShipping ? "shippingAddress1" : "address1"}
+                    name="address1"
+                    value={address.address1}
                     onChange={onChange}
                 />
             </div>
@@ -249,7 +256,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingAddress2" : "address2"}
-                    name={!isShipping ? "shippingAddress2" : "address2"}
+                    name="address2"
+                    value={address.address2}
                     onChange={onChange}
                 />
             </div>
@@ -264,7 +272,8 @@ function AddressDetails({
                     type="text"
                     pattern="[0-9]{4}"
                     id={!isShipping ? "shippingZipCode" : "zipCode"}
-                    name={!isShipping ? "shippingZipCode" : "zipCode"}
+                    name="zipCode"
+                    value={address.zipCode}
                     onChange={onChangeSelect}
                 />
                 <span className="ziperror" hidden={!zipCodeError}>
@@ -280,7 +289,7 @@ function AddressDetails({
                     readOnly
                     type="text"
                     id={!isShipping ? "shippingCity" : "city"}
-                    name={!isShipping ? "shippingCity" : "city"}
+                    name="city"
                     value={address.city}
                 />
             </div>
@@ -293,7 +302,7 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingContry" : "country"}
-                    name={!isShipping ? "shippingContry" : "country"}
+                    name="country"
                     disabled
                     value={address.country}
                     onChange={onChange}
