@@ -1,4 +1,3 @@
-import productsSJSON from "../assets/products.json";
 import { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
@@ -11,11 +10,10 @@ type Products = { [key: string]: ProductItem };
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
-function ShoppingList() {
+function ShoppingList({items, setItems} : {items: CartItem[], setItems: (items: CartItem[]) => void }) {
     const {isLoading, data, error}= useFetchData<ProductItem[]>(dataUrl,[])
 
     const [productList, setList]= useState<Products>({})
-    const [items, setItems] = useState<CartItem[]>([]);
 
     useEffect(()=>{
         const products: Products = {};  
@@ -27,32 +25,35 @@ function ShoppingList() {
         setList(products);
     },[data])
 
+    // Populates cart with dummy items
     useEffect(()=>{
-        const p1= productList["vitamin-c-500-200"];
-        const p2= productList["kids-songbook"]
-        const p3=  productList["sugar-cane-1kg"]
-        if(p1 != undefined && p2 != undefined && p3 != undefined){
-            const list:CartItem[]=[
+        if (items.length === 0) {
+            const p1= productList["vitamin-c-500-200"];
+            const p2= productList["kids-songbook"]
+            const p3=  productList["sugar-cane-1kg"]
+            if(p1 != undefined && p2 != undefined && p3 != undefined){
+                const list:CartItem[]=[
+                    {
+                    product: p1,
+                    quantity: 2,
+                    giftWrap: false,
+                    recurringOrder: false
+                },
                 {
-                   product: p1,
-                   quantity: 2,
-                   giftWrap: false,
-                   recurringOrder: false
-               },
-               {
-                   product: p2,
-                   quantity: 1,
-                   giftWrap: true,
-                   recurringOrder: false
-               },
-               {
-                   product:p3,
-                   quantity: 2,
-                   giftWrap: false,
-                   recurringOrder: true
-               }
-           ];
-           setItems(list);
+                    product: p2,
+                    quantity: 1,
+                    giftWrap: true,
+                    recurringOrder: false
+                },
+                {
+                    product:p3,
+                    quantity: 2,
+                    giftWrap: false,
+                    recurringOrder: true
+                }
+            ];
+            setItems(list);
+            }
         }
     },[productList])
 

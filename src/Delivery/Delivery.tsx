@@ -7,45 +7,27 @@ import useFetchData from "../hooks/useFetchData";
 
 type CityData = { [key: string]: City };
 
-const address: Address = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    mobileNr: 0,
-    company: "",
-    vatNr: "",
-    country: "Danmark",
-    zipCode: "",
-    city: "",
-    address1: "",
-    address2: "",
-};
-
-const Delivery = () => {
+const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, address, check, setCheck} : {billingAddress: Address, setBilling: (address: Address) => void, shippingAddress: Address, setShipping: (address: Address) => void, address: Address, check: boolean, setCheck: (check: boolean) => void }) => {
     const navigate = useNavigate();
 
     // Allows for separate billing and shipping city/zip-code data (for example from different countries)
     const [billingCityData, setBillingCityData] = useState<CityData>({});
     const [shippingCityData, setShippingCityData] = useState<CityData>({});
 
-    const [check, setCheck] = useState(false);
-    const [billingAddress, setBilling] = useState<Address>(address);
-
-    const [shippingAddress, setShipping] = useState<Address>(address);
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const billingZipCode = billingCityData[billingAddress.zipCode];
         const shippingZipCode = shippingCityData[shippingAddress.zipCode];
         if (billingZipCode !== undefined && shippingZipCode !== undefined) {
+            if (!check) {
+                setShipping({...billingAddress});
+            }
             navigate("/payment");
         }
     };
 
     useEffect(() => {
-        if (!check) {
-            setShipping(billingAddress);
-        } else {
+        if (check) {
             setShipping(address);
         }
     }, [check, billingAddress]);
@@ -225,7 +207,6 @@ function AddressDetails({
                     Evt. firmanavn
                 </label>
                 <input
-                    required
                     type="text"
                     id={!isShipping ? "shippingCompany" : "company"}
                     name={!isShipping ? "shippingCompany" : "company"}
@@ -341,7 +322,7 @@ function CheckBox({
                 type="checkbox"
                 name="checkbox"
                 id="checkbox"
-                value="false"
+                checked={check}
                 onChange={() => setCheck(!check)}
             />
             <label htmlFor="checkbox" id="checkbox-label">
