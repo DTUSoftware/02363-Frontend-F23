@@ -1,9 +1,10 @@
 export interface ProductItem {
-    id: String;
-    name: String;
+    id: string;
+    name: string;
     price: number;
-    currency: String;
+    currency: string;
     rebateQuantity: number;
     rebatePercent: number;
-    upsellProductId: String | null;
+    upsellProductId: string | null;  
+    imageUrl: string; 
 }

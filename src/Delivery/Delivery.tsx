@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Delivery.css";
 import { City } from "../interfaces/City";
+import useFetchData from "../hooks/useFetchData";
 
 type CityData = { [key: string]: City };
 
@@ -42,12 +43,12 @@ const Delivery = () => {
     };
 
     useEffect(() => {
-        if (check) {
+        if (!check) {
             setShipping(billingAddress);
         } else {
             setShipping(address);
         }
-    }, []);
+    }, [check, billingAddress]);
 
     return (
         <div className="delivery">
@@ -60,8 +61,8 @@ const Delivery = () => {
                         setAddress={(x: Address) => setBilling(x)}
                         check={check}
                         setCheck={(x: boolean) => setCheck(x)}
-                        data={billingCityData}
-                        setData={setBillingCityData}
+                        cityData={billingCityData}
+                        setCityData={setBillingCityData}
                     />
                 </div>
 
@@ -76,8 +77,8 @@ const Delivery = () => {
                             setAddress={(x: Address) => setShipping(x)}
                             check={null}
                             setCheck={null}
-                            data={shippingCityData}
-                            setData={setShippingCityData}
+                            cityData={shippingCityData}
+                            setCityData={setShippingCityData}
                         />
                     </div>
                 )}
@@ -96,55 +97,37 @@ function AddressDetails({
     setAddress,
     check,
     setCheck,
-    data,
-    setData,
+    cityData,
+    setCityData,
 }: {
     address: Address;
     setAddress: (value: Address) => void;
     check: boolean | null;
     setCheck: ((value: boolean) => void) | null;
-    data: CityData;
-    setData: (value: CityData) => void;
+    cityData: CityData;
+    setCityData: (value: CityData) => void;
 }) {
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    
     const [zipCodeError, setZipCodeError] = useState(false);
 
     const isShipping = check !== null && setCheck !== null;
 
+    const {data, isLoading, error}= useFetchData<City[]>("https://api.dataforsyningen.dk/postnumre",[]);
+
     useEffect(() => {
         const cityData: CityData = {};
+        data.forEach(city => {
+            cityData[city.nr]=city;
+        });
+        setCityData(cityData);
+    },[data]);
 
-        if (address.country === "Danmark") {
-            setIsLoading(true);
-            fetch("https://api.dataforsyningen.dk/postnumre")
-                .then((response) => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw Error(
-                        "It is not possible to fetch the data from the API"
-                    );
-                })
-                .then((data: City[]) => {
-                    data.forEach((city) => {
-                        cityData[city.nr] = city;
-                    });
-                    setData(cityData);
-                    setIsLoading(false);
-                    setError(null);
-                })
-                .catch((er) => {
-                    setIsLoading(false);
-                    setError(er);
-                });
-        }
-    }, []);
+
 
     const onChangeSelect = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
-        const zip = data[event.target.value];
+        const zip = cityData[event.target.value];
         if (zip !== undefined) {
             setAddress({
                 ...address,
