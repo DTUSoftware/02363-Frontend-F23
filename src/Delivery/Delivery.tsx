@@ -30,7 +30,7 @@ const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, add
         if (!check) {
             setShipping(address);
         }
-    }, [check, billingAddress]);
+    }, [check]);
 
     return (
         <div className="delivery">
