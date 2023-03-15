@@ -1,21 +1,26 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import ShoppingList from "../ShoppingList/ShoppingList";
+import App from "../App"
 import userEvent from "@testing-library/user-event";
-import {MemoryRouter} from 'react-router-dom'
 import mockResponse from "../assets/products.json";
-
-// MemoryRouter to manually control route history
-const component = (
-    <MemoryRouter initialEntries={['/']}>
-        <ShoppingList />
-    </MemoryRouter>
-)
+import { CartItem } from "../interfaces/CartItem";
+import { useState } from "react";
+import { MemoryRouter } from "react-router-dom";
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
-//Change to use mocking when we implement API calls
-describe(ShoppingList.name, () => {
+const TestComponent = () => {
+    const [items, setItems] = useState<CartItem[]>([]);
+    return (
+        // MemoryRouter to manually control route history
+        <MemoryRouter initialEntries={["/"]}>
+            <ShoppingList items={items} setItems={setItems} />
+        </MemoryRouter>
+    );
+};
+
+describe("ShoppingList", () => {
     beforeEach(async () => {
         const mockFetch = vi
             .spyOn(window, "fetch")
@@ -29,7 +34,7 @@ describe(ShoppingList.name, () => {
                     return {} as Response;
                 }
             });
-        render(component);
+        render(<TestComponent/>);
         await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(dataUrl));
         await waitFor(() => expect(screen.queryByText("Din kurv er tom!")).not.toBeInTheDocument());
     });
