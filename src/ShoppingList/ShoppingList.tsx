@@ -11,12 +11,13 @@ type Products = { [key: string]: ProductItem };
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
-function ShoppingList() {
+function ShoppingList({items, setItems}:{items:CartItem[], setItems:(values:CartItem[]) =>void}) {
     const {isLoading, data, error}= useFetchData<ProductItem[]>(dataUrl,[])
 
-    const [productList, setList]= useState<Products>({})
-    const [items, setItems] = useState<CartItem[]>([]);
 
+    
+    const [productList, setList]= useState<Products>({})
+    
     useEffect(()=>{
         const products: Products = {};  
 
@@ -27,6 +28,7 @@ function ShoppingList() {
         setList(products);
     },[data])
 
+   /*
     useEffect(()=>{
         const p1= productList["vitamin-c-500-200"];
         const p2= productList["kids-songbook"]
@@ -55,6 +57,7 @@ function ShoppingList() {
            setItems(list);
         }
     },[productList])
+    */
 
     function incrementQuantity(index: number) {
         const item = items.at(index)!;
