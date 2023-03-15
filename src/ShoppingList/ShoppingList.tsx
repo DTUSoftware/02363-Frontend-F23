@@ -9,36 +9,13 @@ import useFetchData from "../hooks/useFetchData";
 
 type Products = { [key: string]: ProductItem };
 
-const products: Products = {};
-productsSJSON.forEach((x) => (products[x.id] = x));
-
-const itemList = [
-    {
-        product: products["vitamin-c-500-200"],
-        quantity: 2,
-        giftWrap: false,
-        recurringOrder: false,
-    },
-    {
-        product: products["kids-songbook"],
-        quantity: 1,
-        giftWrap: true,
-        recurringOrder: false,
-    },
-    {
-        product: products["sugar-cane-1kg"],
-        quantity: 2,
-        giftWrap: false,
-        recurringOrder: true,
-    },
-];
-
+const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
 function ShoppingList() {
-    const {isLoading, data, error}= useFetchData<ProductItem[]>("https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json",[])
+    const {isLoading, data, error}= useFetchData<ProductItem[]>(dataUrl,[])
 
     const [productList, setList]= useState<Products>({})
-    const [items, setItems] = useState<CartItem[]>(itemList);
+    const [items, setItems] = useState<CartItem[]>([]);
 
     useEffect(()=>{
         const products: Products = {};  
@@ -131,7 +108,7 @@ function ShoppingList() {
         setItems(
             items.map((item) =>{
                 if (item.product.id === product.id){
-                    return {...item, product: products[upsell]};
+                    return {...item, product: productList[upsell]};
                 } else {
                     return item;
                 }
@@ -298,7 +275,9 @@ function ProductTableRow({
     return (
         <tr>
             <td className="product">{`${item.product!.name}`}</td>
-            <td className="price">{`${item.product!.price} ${
+            <td className="price" aria-label={`Pris ${item.product!.price} ${
+                item.product!.currency
+            }`}>{`${item.product!.price} ${
                 item.product!.currency
             }`}</td>
             <td className="decrement">

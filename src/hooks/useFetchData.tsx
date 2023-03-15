@@ -31,10 +31,7 @@ const useFetchData = <T,>(url: string, initialEntries: T) => {
     
 
     useEffect(() => {
-        setTimeout(()=>{
-            getApiData();
-        }, 2000)
-           
+        getApiData();
     }, [url]);
 
     return {data, isLoading, error};
