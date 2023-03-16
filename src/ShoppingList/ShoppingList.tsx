@@ -31,7 +31,7 @@ function ShoppingList({items, setItems} : {items: CartItem[], setItems: (items: 
             const p1= productList["vitamin-c-500-200"];
             const p2= productList["kids-songbook"]
             const p3=  productList["sugar-cane-1kg"]
-            if(p1 != undefined && p2 != undefined && p3 != undefined){
+            if(p1 !== undefined && p2 !== undefined && p3 !== undefined){
                 const list:CartItem[]=[
                     {
                     product: p1,
@@ -58,27 +58,29 @@ function ShoppingList({items, setItems} : {items: CartItem[], setItems: (items: 
     },[productList])
 
     function incrementQuantity(index: number) {
-        const item = items.at(index)!;
-        handleQuantityChange(item.product, item.quantity + 1);
+        const item = items.at(index);
+        if (item !== undefined) {
+            handleQuantityChange(item.product, item.quantity + 1);
+        }
     }
 
     function decrementQuantity(index: number) {
-        const item = items.at(index)!;
-        if (item.quantity > 1) {
+        const item = items.at(index);
+        if (item !== undefined && item.quantity > 1) {
             handleQuantityChange(item.product, item.quantity - 1);
         }
     }
 
     function upsellItem(index: number){
-        const item = items.at(index)!;
-        if (item.product.upsellProductId != null){
+        const item = items.at(index);
+        if (item !== undefined && item.product.upsellProductId !== null){
             const upsell = `${item.product.upsellProductId}`;
             handleUpsellChange(item.product, upsell)
         }
     }
 
     function removeItem(index: number) {
-        setItems(items.filter((p, i) => i != index));
+        setItems(items.filter((p, i) => i !== index));
     }
 
     function toggleGiftWrap(index: number) {
@@ -172,9 +174,9 @@ function ProductTable({
     upsellItem: (index: number) => void;
 }) {
     function itemTotal(item: CartItem) {
-        const priceSum = item.quantity * item.product!.price;
-        if (item.quantity >= item.product!.rebateQuantity) {
-            return priceSum * (1 - item.product!.rebatePercent / 100);
+        const priceSum = item.quantity * item.product.price;
+        if (item.quantity >= item.product.rebateQuantity) {
+            return priceSum * (1 - item.product.rebatePercent / 100);
         } else {
             return priceSum;
         }
@@ -249,7 +251,7 @@ function CartTotal({
             <br/>
             <span className="rebatetext"> {hasRebate ? `Du sparer 10%:  ${(cartTotal*totalRebate).toFixed(2)} DKK` : "Spar 10% ved køb over 300 DKK"}</span>
             <br/>
-            <span className="totalprice">{`Pris i alt: ${hasRebate ? (cartTotal*(1-totalRebate)+shippingPrice).toFixed(2) : cartTotal.toFixed(2)} ${items[0].product!.currency}`}</span>
+            <span className="totalprice">{`Pris i alt: ${hasRebate ? (cartTotal*(1-totalRebate)+shippingPrice).toFixed(2) : cartTotal.toFixed(2)} ${items[0].product.currency}`}</span>
         </p>
     );
 }
@@ -275,11 +277,11 @@ function ProductTableRow({
 }) {
     return (
         <tr>
-            <td className="product">{`${item.product!.name}`}</td>
-            <td className="price" aria-label={`Pris ${item.product!.price.toFixed(2)} ${
-                item.product!.currency
-            }`}>{`${item.product!.price.toFixed(2)} ${
-                item.product!.currency
+            <td className="product">{`${item.product.name}`}</td>
+            <td className="price" aria-label={`Pris ${item.product.price.toFixed(2)} ${
+                item.product.currency
+            }`}>{`${item.product.price.toFixed(2)} ${
+                item.product.currency
             }`}</td>
             <td className="decrement">
                 <button
@@ -301,13 +303,13 @@ function ProductTableRow({
                 </button>
             </td>
             <td className="rebate">
-                {item.product!.rebateQuantity > 0
-                    && `Køb ${item.product!.rebateQuantity}, spar ${
-                          item.product!.rebatePercent
+                {item.product.rebateQuantity > 0
+                    && `Køb ${item.product.rebateQuantity}, spar ${
+                          item.product.rebatePercent
                       }%`}
             </td>
             <td className="priceTotal">{`${itemTotal().toFixed(2)} ${
-                item.product!.currency
+                item.product.currency
             }`}</td>
             <td className="giftwrapping">
                 <label>
@@ -337,13 +339,13 @@ function ProductTableRow({
                     <FaRegTrashAlt />
                 </button>
             </td>
-            <td>{item.product!.upsellProductId !== null &&
+            <td>{item.product.upsellProductId !== null &&
                 <button 
                 className="upsellBtn"
                 aria-label={`Andre har valgt ${item.product.upsellProductId}`}
                 onClick={()=> upsellItem()}
                 >
-                    {`${item.product!.upsellProductId}`}
+                    {`${item.product.upsellProductId}`}
                 </button>
 }
             </td>
