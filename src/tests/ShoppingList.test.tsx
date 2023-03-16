@@ -65,47 +65,47 @@ describe("ShoppingList", () => {
         const tableRows = screen.getAllByRole("row");
         expect(tableRows).toHaveLength(4);
         expect(
-            screen.getByLabelText("Pris 150 DKK")
+            screen.getByLabelText("Pris 150.00 DKK")
         ).toBeInTheDocument();
         expect(
-            screen.getByLabelText("Pris 120 DKK")
+            screen.getByLabelText("Pris 120.00 DKK")
         ).toBeInTheDocument();
         expect(
-            screen.getByLabelText("Pris 40 DKK")
+            screen.getByLabelText("Pris 40.00 DKK")
         ).toBeInTheDocument();
     });
 
     it("User can see total amount", () => {
         expect(
-            screen.getByText("Subtotal: 425 DKK")
+            screen.getByText("Subtotal: 425.00 DKK")
         ).toBeInTheDocument();
     });
 
     it("Let user increment quantity of item", async () => {
         const user = userEvent.setup();
         expect(
-            screen.getByText("Subtotal: 425 DKK")
+            screen.getByText("Subtotal: 425.00 DKK")
         ).toBeInTheDocument();
         const incrementButton = screen.getByLabelText(
             "forøg antal De små synger"
         );
         await user.click(incrementButton);
         expect(
-            screen.getByText("Subtotal: 545 DKK")
+            screen.getByText("Subtotal: 545.00 DKK")
         ).toBeInTheDocument();
     });
 
     it("Let user decrement quantity of item", async () => {
         const user = userEvent.setup();
         expect(
-            screen.getByText("Subtotal: 425 DKK")
+            screen.getByText("Subtotal: 425.00 DKK")
         ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
             "reducer antal C-vitamin, 500mg, 200 stk"
         );
         await user.click(decrementButton);
         expect(
-            screen.getByText("Subtotal: 350 DKK")
+            screen.getByText("Subtotal: 350.00 DKK")
         ).toBeInTheDocument();
     });
 
@@ -118,7 +118,7 @@ describe("ShoppingList", () => {
         await user.click(removeButton);
         expect(screen.getAllByRole("row")).toHaveLength(3);
         expect(
-            screen.getByText("Subtotal: 200 DKK")
+            screen.getByText("Subtotal: 200.00 DKK")
         ).toBeInTheDocument();
     });
 
@@ -160,7 +160,7 @@ describe("ShoppingList", () => {
     it("Deduce from total price: rebate for larger quantities, per item", async () => {
         const user = userEvent.setup();
         expect(
-            screen.getByText("Subtotal: 425 DKK")
+            screen.getByText("Subtotal: 425.00 DKK")
         ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
             "forøg antal Rørsukker, 1000g"
@@ -168,7 +168,7 @@ describe("ShoppingList", () => {
         //We add 2 more the basket. When buying 4 'Rørsukker, 1000g' one gets a rebate of 25%
         await user.dblClick(decrementButton);
         expect(
-            screen.getByText("Subtotal: 465 DKK")
+            screen.getByText("Subtotal: 465.00 DKK")
         ).toBeInTheDocument();
     });
 
@@ -176,8 +176,8 @@ describe("ShoppingList", () => {
         const subtotal = 425;
         const rebate = 0.1;
         const transport = 39;
-        expect(screen.getByText(`Subtotal: ${subtotal} DKK`)).toBeInTheDocument();
-        expect(screen.getByText(`Pris i alt: ${subtotal*(1-rebate)+transport} DKK`)).toBeInTheDocument();
+        expect(screen.getByText(`Subtotal: ${subtotal.toFixed(2)} DKK`)).toBeInTheDocument();
+        expect(screen.getByText(`Pris i alt: ${(subtotal*(1-rebate)+transport).toFixed(2)} DKK`)).toBeInTheDocument();
     });
 
     it("Nudge user to increase for quantity to get rebate", async () => {
@@ -185,7 +185,7 @@ describe("ShoppingList", () => {
         const quantity1 = 2;
         const rebate = 0.25;
         expect(screen.getByText(`Køb 2, spar ${rebate*100}%`)).toBeInTheDocument();
-        expect(screen.getByText(`${price1*quantity1*(1-rebate)} DKK`)).toBeInTheDocument();
+        expect(screen.getByText(`${(price1*quantity1*(1-rebate)).toFixed(2)} DKK`)).toBeInTheDocument();
     });
 
     it("Nudge user to choose a more expensive product if available for upsell", async () => {

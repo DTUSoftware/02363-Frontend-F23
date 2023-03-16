@@ -16,9 +16,9 @@ const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, add
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const billingZipCode = billingCityData[billingAddress.zipCode];
-        const shippingZipCode = shippingCityData[shippingAddress.zipCode];
-        if (billingZipCode !== undefined && shippingZipCode !== undefined) {
+        const billingZipCodeValid = billingCityData[billingAddress.zipCode] !== undefined;
+        const shippingZipCodeValid = shippingCityData[shippingAddress.zipCode] !== undefined;
+        if (!check && billingZipCodeValid || check && billingZipCodeValid && shippingZipCodeValid) {
             if (!check) {
                 setShipping({...billingAddress});
             }
@@ -129,7 +129,7 @@ function AddressDetails({
             });
         }
 
-        if (zip === undefined && event.target.value.length === 4) {
+        if (zip === undefined && event.target.value.length >= 4) {
             if (zipCodeError !== true) {
                 setZipCodeError(true);
             }
@@ -203,7 +203,11 @@ function AddressDetails({
                     name="mobileNr"
                     value={address.mobileNr !== 0 ? address.mobileNr : ""}
                     onChange={onChange}
+                    //onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Mobilnummeret skal være 8 tal langt.")}
                 />
+                <span className="error" hidden={address.mobileNr.toString().length <= 8}>
+                    Mobilnummeret må ikke være mere end 8 tal langt!
+                </span>
             </div>
 
             <div>
@@ -224,14 +228,17 @@ function AddressDetails({
                     VirksomhedVAT-nummer
                 </label>
                 <input
-                    required
                     pattern="[0-9]{8}"
                     type="text"
                     id={!isShipping ? "shippingVatNr" : "vatNr"}
                     name="vatNr"
                     value={address.vatNr}
                     onChange={onChange}
+                    //onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("VAT-nummeret skal være 8 tal langt.")}
                 />
+                <span className="error" hidden={address.vatNr.toString().length <= 8}>
+                    VAT-nummeret må ikke være mere end 8 tal langt!
+                </span>
             </div>
 
             <div className="address-row">
@@ -276,7 +283,7 @@ function AddressDetails({
                     value={address.zipCode}
                     onChange={onChangeSelect}
                 />
-                <span className="ziperror" hidden={!zipCodeError}>
+                <span className="error" hidden={!zipCodeError}>
                     Det valgte postnummer er ikke korrekt!
                 </span>
             </div>

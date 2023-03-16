@@ -243,13 +243,13 @@ function CartTotal({
     
     return (
         <p className="total">
-            <span className="rebatetext"> {`Subtotal: ${cartTotal} DKK`}</span>
+            <span className="rebatetext"> {`Subtotal: ${cartTotal.toFixed(2)} DKK`}</span>
             <br/>
-            <span className="rebatetext"> {cartTotal>=freeShipping ? "FRI FRAGT" : `Fragt: ${shippingPrice} DKK`}</span>
+            <span className="rebatetext"> {cartTotal>=freeShipping ? "FRI FRAGT" : `Fragt: ${shippingPrice.toFixed(2)} DKK`}</span>
             <br/>
-            <span className="rebatetext"> {hasRebate ? `Du sparer 10%:  ${cartTotal*totalRebate} DKK` : "Spar 10% ved køb over 300 DKK"}</span>
+            <span className="rebatetext"> {hasRebate ? `Du sparer 10%:  ${(cartTotal*totalRebate).toFixed(2)} DKK` : "Spar 10% ved køb over 300 DKK"}</span>
             <br/>
-            <span className="totalprice">{`Pris i alt: ${hasRebate ? cartTotal*(1-totalRebate)+shippingPrice : cartTotal} ${items[0].product!.currency}`}</span>
+            <span className="totalprice">{`Pris i alt: ${hasRebate ? (cartTotal*(1-totalRebate)+shippingPrice).toFixed(2) : cartTotal.toFixed(2)} ${items[0].product!.currency}`}</span>
         </p>
     );
 }
@@ -276,9 +276,9 @@ function ProductTableRow({
     return (
         <tr>
             <td className="product">{`${item.product!.name}`}</td>
-            <td className="price" aria-label={`Pris ${item.product!.price} ${
+            <td className="price" aria-label={`Pris ${item.product!.price.toFixed(2)} ${
                 item.product!.currency
-            }`}>{`${item.product!.price} ${
+            }`}>{`${item.product!.price.toFixed(2)} ${
                 item.product!.currency
             }`}</td>
             <td className="decrement">
@@ -306,7 +306,7 @@ function ProductTableRow({
                           item.product!.rebatePercent
                       }%`}
             </td>
-            <td className="priceTotal">{`${itemTotal()} ${
+            <td className="priceTotal">{`${itemTotal().toFixed(2)} ${
                 item.product!.currency
             }`}</td>
             <td className="giftwrapping">
