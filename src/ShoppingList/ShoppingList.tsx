@@ -1,36 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
 import { Link } from "react-router-dom";
-import { ProductItem } from '../interfaces/ProductItem';
 import { CartItem } from '../interfaces/CartItem';
-import useFetchData from "../hooks/useFetchData";
+import {Products} from '../interfaces/Products'
 
-type Products = { [key: string]: ProductItem };
+const dataUrl = "https://dtu-api.herogamers.dev/api/products";
 
-const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
-
-function ShoppingList({items, setItems} : {items: CartItem[], setItems: (items: CartItem[]) => void }) {
-    const {isLoading, data, error}= useFetchData<ProductItem[]>(dataUrl,[])
-
-    const [productList, setList]= useState<Products>({})
-
-    useEffect(()=>{
-        const products: Products = {};  
-
-        data.forEach((product) => {
-            products[product.id] = product;
-        })
-
-        setList(products);
-    },[data])
+function ShoppingList({items, setItems, productList} : {items: CartItem[], setItems: (items: CartItem[]) => void, productList: Products}) {
 
     // Populates cart with dummy items
     useEffect(()=>{
         if (items.length === 0) {
-            const p1= productList["vitamin-c-500-200"];
-            const p2= productList["kids-songbook"]
-            const p3=  productList["sugar-cane-1kg"]
+            const p1 = productList["vitamin-c-500-200"];
+            const p2 = productList["kids-songbook"]
+            const p3 = productList["sugar-cane-1kg"]
             if(p1 !== undefined && p2 !== undefined && p3 !== undefined){
                 const list:CartItem[]=[
                     {
@@ -55,7 +39,7 @@ function ShoppingList({items, setItems} : {items: CartItem[], setItems: (items: 
             setItems(list);
             }
         }
-    },[productList])
+    },[])
 
     function incrementQuantity(index: number) {
         const item = items.at(index);

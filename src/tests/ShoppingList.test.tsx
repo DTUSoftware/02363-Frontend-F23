@@ -3,39 +3,27 @@ import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import ShoppingList from "../ShoppingList/ShoppingList";
 import App from "../App"
 import userEvent from "@testing-library/user-event";
-import mockResponse from "../assets/products.json";
+import mockData from "../assets/products.json";
 import { CartItem } from "../interfaces/CartItem";
 import { useState } from "react";
 import { MemoryRouter } from "react-router-dom";
-
-const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
+import {Products} from '../interfaces/Products'
 
 const TestComponent = () => {
+    const products: Products = {};
+    mockData.forEach((x) => (products[x.id] = x));
     const [items, setItems] = useState<CartItem[]>([]);
     return (
         // MemoryRouter to manually control route history
-        <MemoryRouter initialEntries={["/"]}>
-            <ShoppingList items={items} setItems={setItems} />
+        <MemoryRouter initialEntries={["/cart"]}>
+            <ShoppingList items={items} setItems={setItems} productList={products} />
         </MemoryRouter>
     );
 };
 
 describe("ShoppingList", () => {
     beforeEach(async () => {
-        const mockFetch = vi
-            .spyOn(window, "fetch")
-            .mockImplementation(async (url: RequestInfo | URL) => {
-                if (url === dataUrl) {
-                    return {
-                        json: async () => mockResponse,
-                        ok: true,
-                    } as Response;
-                } else {
-                    return {} as Response;
-                }
-            });
         render(<TestComponent/>);
-        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(dataUrl));
         await waitFor(() => expect(screen.queryByText("Din kurv er tom!")).not.toBeInTheDocument());
     });
     

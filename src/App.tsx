@@ -6,6 +6,11 @@ import './App.css'
 import Navbar from './Navigation/Navbar'
 import Delivery from './Delivery/Delivery'
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
+import ProductList from './ProductList/ProductList'
+import { ProductItem } from './interfaces/ProductItem';
+import React from 'react'
+
+type Products = { [key: string]: ProductItem };
 
 const address: Address = {
     firstName: "",
@@ -22,7 +27,8 @@ const address: Address = {
 };
 
 function App() {
-    const [items, setItems] = useState<CartItem[]>([]);
+    const [basket, setBasket] = React.useState<CartItem[]>([]);
+    const [productList, setList] = useState<Products>({})
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
     const [check, setCheck] = useState(false);
@@ -33,7 +39,8 @@ function App() {
             <Navbar/>
             <div className="content">
                 <Routes>
-                    <Route path='/' element= { <ShoppingList items={items} setItems={setItems} /> } />
+                    <Route path='/' element= { <ProductList basket={basket} setBasket={setBasket} setList={setList}/> } />
+                    <Route path='/cart' element= { <ShoppingList items={basket} setItems={setBasket} productList={productList}/> } />
                     <Route path='/delivery' element={<Delivery billingAddress={billingAddress} setBilling={setBilling} shippingAddress={shippingAddress} setShipping={setShipping} address={address} check={check} setCheck={setCheck}/>}/>
                 </Routes>                  
             </div>
