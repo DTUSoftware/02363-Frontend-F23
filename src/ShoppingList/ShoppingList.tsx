@@ -4,8 +4,7 @@ import "./ShoppingList.css";
 import { Link } from "react-router-dom";
 import { CartItem } from '../interfaces/CartItem';
 import {Products} from '../interfaces/Products'
-
-const dataUrl = "https://dtu-api.herogamers.dev/api/products";
+import {ProductItem} from '../interfaces/ProductItem'
 
 function ShoppingList({items, setItems, productList} : {items: CartItem[], setItems: (items: CartItem[]) => void, productList: Products}) {
 
