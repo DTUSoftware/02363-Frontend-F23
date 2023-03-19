@@ -1,0 +1,36 @@
+.terms-box {
+    padding-top: 4rem;
+}
+
+.submitbox {
+    max-width: 30rem;
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: hsl(180, 67%, 96%);
+    border: 4px solid hsl(0, 0%, 90%);
+    margin-bottom: 2rem;
+}
+
+.submitcomment {
+    width: 100%;
+    resize: vertical;
+    min-height: 60px;
+    max-height: 200px;
+}
+
+.checkbox-paragraf {
+    display: grid;
+    align-items:center;
+    grid-template-columns: min-content auto;
+    gap: 10px;
+}
+
+.form label {
+    font-size: small;
+    text-align: start;
+}
+
+.submitinfo {
+    text-align: start;
+}
