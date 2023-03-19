@@ -11,11 +11,12 @@ function Submit({cartItems, billingAddress, shippingAddress} : {cartItems: CartI
     const navigate = useNavigate();
     const [marketing, setMarketing] = useState(false);
     const [comment, setComment] = useState("");
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState(null);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setIsLoading(true);
         const order: Order = {
             cartItems: cartItems,
             billingAddress: billingAddress,
@@ -43,7 +44,7 @@ function Submit({cartItems, billingAddress, shippingAddress} : {cartItems: CartI
                 .then(() =>{
                     setIsLoading(false);
                     setError(null);
-                    //navigate("/finish");
+                    navigate("/finish");
                 })
                 .catch((er) => {
                     setIsLoading(false);
@@ -59,9 +60,15 @@ function Submit({cartItems, billingAddress, shippingAddress} : {cartItems: CartI
         setComment(event.target.value);
     };
 
+    const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        setError(null);
+    };
+
     return (
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
+            {error === null ? 
             <form className="form" onSubmit={handleSubmit}>
                 <div className="submitbox">
                     <p className="submitinfo">
@@ -106,10 +113,23 @@ function Submit({cartItems, billingAddress, shippingAddress} : {cartItems: CartI
                         />
                     </p>
                 </div>
-                <button className="payment-btn" type="submit">
+                {!isLoading ?
+                <button className="payment-btn" disabled={isLoading} type="submit">
                     Indsend order
                 </button>
+                :
+                <p>Loading...</p> 
+                }
             </form>
+            :
+            <div>
+                <p>Vi beklager ulejligheden, noget gik galt.</p>
+                <p>Prøv venligst igen om et par minutter.</p>
+                <button className="payment-btn" onClick={retryButton}>
+                    Prøv igen
+                </button>
+            </div>
+            }
         </div>
     );
 }
