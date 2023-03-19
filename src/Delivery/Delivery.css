@@ -73,7 +73,7 @@ select:hover {
     color: #1c1a1a;
 }
 
-.ziperror {
+.error {
     color: red;
     float: left;
 }
