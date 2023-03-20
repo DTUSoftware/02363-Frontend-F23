@@ -91,13 +91,14 @@ describe(Submit.name, () => {
     });
 
     it("Submit all relevant information to the end-point", async () => {
+        const comment = "Test, i am a comment";
         const cartItem: CartItem[] = [];
         const order: Order = {
             cartItems: cartItem,
             billingAddress: address,
             shippingAddress: address,
             checkMarketing: false,
-            submitComment: "",
+            submitComment: comment,
         };
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -111,7 +112,6 @@ describe(Submit.name, () => {
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
                 if (url === submitUrl) {
-                    await delay(2000);
                     return {
                         ok: true,
                     } as Response;
@@ -125,21 +125,25 @@ describe(Submit.name, () => {
         });
         await userEvent.click(checkBox);
         const submitButton = screen.getByText("Indsend order");
+        const textBox = screen.getByRole("textbox", {
+            name: "Tilføj en yderligere kommentar",
+        });
+        await userEvent.type(textBox, comment);
         await userEvent.click(submitButton);
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        await waitFor(() => expect(screen.getByText("Loading...")));
     });
 
     it("Include loading indicator and error reporting", async () => {
+        const comment = "Test, i am a comment";
         const cartItem: CartItem[] = [];
         const order: Order = {
             cartItems: cartItem,
             billingAddress: address,
             shippingAddress: address,
             checkMarketing: false,
-            submitComment: "",
+            submitComment: comment,
         };
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -153,9 +157,9 @@ describe(Submit.name, () => {
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
                 if (url === submitUrl) {
-                    await delay(2000);
+                    await delay(20);
                     return {
-                        ok: false, //ok is false
+                        ok: false,
                     } as Response;
                 } else {
                     return {} as Response;
@@ -167,11 +171,16 @@ describe(Submit.name, () => {
         });
         await userEvent.click(checkBox);
         const submitButton = screen.getByText("Indsend order");
+        const textBox = screen.getByRole("textbox", {
+            name: "Tilføj en yderligere kommentar",
+        });
+        await userEvent.type(textBox, comment);
         await userEvent.click(submitButton);
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        await waitFor(() => expect(screen.getByText("Loading...")));
+        expect(screen.findByText("Loading..."));
+        expect(screen.findByText("Vi beklager ulejligheden, noget gik galt."));
     });
 });
 

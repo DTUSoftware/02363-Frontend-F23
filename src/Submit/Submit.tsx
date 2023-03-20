@@ -22,12 +22,11 @@ function Submit({
     const [marketing, setMarketing] = useState(false);
     const [comment, setComment] = useState("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
-        console.log("Test here!");
         const order: Order = {
             cartItems: cartItems,
             billingAddress: billingAddress,
@@ -48,17 +47,19 @@ function Submit({
                 if (response.ok) {
                     return;
                 }
-                throw Error("This request failed and no data was sent!");
+                throw Error();
             })
             .then(() => {
                 setIsLoading(false);
-                setError(null);
+                setError("");
                 resetAfterSubmit();
                 navigate("/finish");
             })
             .catch((er) => {
                 setIsLoading(false);
-                setError(er);
+                setError(
+                    "Vi beklager ulejligheden, noget gik galt. Prøv venligst igen om et par minutter."
+                );
             });
     };
 
@@ -72,13 +73,13 @@ function Submit({
 
     const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        setError(null);
+        setError("");
     };
 
     return (
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
-            {error === null ? (
+            {error === "" ? (
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
@@ -141,8 +142,7 @@ function Submit({
                 </form>
             ) : (
                 <div>
-                    <p>Vi beklager ulejligheden, noget gik galt.</p>
-                    <p>Prøv venligst igen om et par minutter.</p>
+                    <p>{error}</p>
                     <button className="payment-btn" onClick={retryButton}>
                         Prøv igen
                     </button>

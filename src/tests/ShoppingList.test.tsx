@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 import ShoppingList from "../ShoppingList/ShoppingList";
 import userEvent from "@testing-library/user-event";
@@ -27,11 +27,7 @@ const TestComponent = () => {
 describe(ShoppingList.name, () => {
     beforeEach(async () => {
         render(<TestComponent />);
-        await waitFor(() =>
-            expect(
-                screen.queryByText("Din kurv er tom!")
-            ).not.toBeInTheDocument()
-        );
+        expect(screen.queryByText("Din kurv er tom!")).not.toBeInTheDocument();
     });
 
     afterEach(() => {
