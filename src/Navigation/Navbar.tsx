@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
-import  "./Navbar.css"
+import "./Navbar.css";
 
 const Navbar = () => {
-    return ( 
+    return (
         <nav className="navbar">
             <ul className="nav-content">
-                {/*<Link to="/">Cart</Link>*/}          
+                <Link to="/">Produkter</Link>
+                <Link to="/cart">kurv</Link>
             </ul>
         </nav>
-     );
-}
- 
+    );
+};
+
 export default Navbar;
