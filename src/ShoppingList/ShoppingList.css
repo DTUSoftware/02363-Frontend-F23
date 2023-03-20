@@ -9,8 +9,6 @@
     display: inline;
     text-align: center;
     font-size: 14px;
-    border-color: #9b9efa;
-    border-style: solid;
     border-radius: 0.2em;
     width: 215px;
     margin: auto;
@@ -49,7 +47,83 @@
     border-radius: 0.2em;
 }
 
+@media only screen and (max-width: 768px) {
 
+    .product {
+        display: flex;
+        margin-left: 10px;
+        flex-wrap: nowrap;
+    }
+
+    .picture {
+        width: 46px;
+        height: 70px;
+    }
+
+    .product-name {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 10px;
+        white-space: nowrap;
+        margin-bottom: 0;
+        margin-top: 7px;
+    }
+
+    .rebate-container {
+        display: flex;
+        justify-content: left;
+
+    }
+
+    .rebate {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 10px;
+        margin-top: 7px;
+        margin-bottom: 0px;
+        background-color: #FFC1C1;
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+
+    .price {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 13px;
+        white-space: nowrap;
+        font-weight: 700;
+        margin-top: 7px;
+        display: table;
+        justify-content: center;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        table-layout: fixed;
+
+    }
+
+    .upsale {
+        border-radius: 20px;
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        table-layout: fixed;
+        border-collapse: collapse;
+
+    }
+
+    .upsale-container {
+        background-color: white;
+        display: inline;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
+
+}
+
+/*
 .product {
     text-align: left;
     padding-right: 100px;
@@ -93,7 +167,7 @@
     padding: 1em 2em;
     margin: 5px;
     border-radius: 6px;
-}
+}*/
 
 .link-style{
     background-color: #535bf2;

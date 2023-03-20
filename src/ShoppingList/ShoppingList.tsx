@@ -133,10 +133,9 @@ function ShoppingList({items, setItems} : {items: CartItem[], setItems: (items: 
     return (
         <div className="ShoppingList">
             {!listEmpty && <div>
-            <p className="deliveryheading">Køb for 499 DKK og få FRI fragt!</p>
-            <p className="deliveryheading">Køb for over 300 DKK og få 10% rabat!</p>
+            <h1 className="deliveryheading">Køb for 499 DKK og få FRI fragt!</h1>
+            <h1 className="deliveryheading">Køb for over 300 DKK og få 10% rabat!</h1>
             </div>}
-            <p className="heading">Din indkøbskurv</p>
             {!listEmpty ? (
                 <ProductTable
                     items={items}
@@ -183,6 +182,7 @@ function ProductTable({
     return (
         <div className="shopTable">
             <table>
+            <caption>Din indkøbskurv</caption>
                 <thead>
                     <tr>
                         <th className="product">Produkt</th>
@@ -190,7 +190,7 @@ function ProductTable({
                         <th> </th>
                         <th className="quantity">Antal</th>
                         <th> </th>
-                        <th className="rebate">Rabat</th>
+                        {/*<th className="rebate">Rabat</th>*/}
                         <th className="priceTotal">Total</th>
                         <th className="giftwrapping">Gavepapir</th>
                         <th className="reoccuringorder">Gentag order</th>
@@ -224,7 +224,6 @@ function ProductTable({
         </div>
     );
 }
-
 
 function CartTotal({
     items,
@@ -275,12 +274,29 @@ function ProductTableRow({
 }) {
     return (
         <tr>
-            <td className="product">{`${item.product!.name}`}</td>
-            <td className="price" aria-label={`Pris ${item.product!.price} ${
+            <td className="product">
+            <div className="picture">
+                <img 
+                    className="picture"
+                    src={item.product!.imageUrl}>
+                    </img>
+                </div>
+                <span className="product-info">
+                <p className="product-name">{`${item.product!.name}`}</p>
+                <span className="rebate-container">
+                <p className="rebate">{item.product!.rebateQuantity > 0
+                    && `Køb ${item.product!.rebateQuantity}, spar ${
+                          item.product!.rebatePercent
+                      }%`}
+                </p>
+                </span>
+                <p className="price" aria-label={`Pris ${item.product!.price} ${
                 item.product!.currency
             }`}>{`${item.product!.price} ${
                 item.product!.currency
-            }`}</td>
+            }`}</p>
+                </span>
+            </td>
             <td className="decrement">
                 <button
                     aria-label={`reducer antal ${item.product.name}`}
@@ -299,12 +315,6 @@ function ProductTableRow({
                 >
                     +
                 </button>
-            </td>
-            <td className="rebate">
-                {item.product!.rebateQuantity > 0
-                    && `Køb ${item.product!.rebateQuantity}, spar ${
-                          item.product!.rebatePercent
-                      }%`}
             </td>
             <td className="priceTotal">{`${itemTotal()} ${
                 item.product!.currency
