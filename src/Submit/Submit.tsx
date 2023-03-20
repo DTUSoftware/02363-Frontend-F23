@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Order } from "../interfaces/Order";
 import { CartItem } from "../interfaces/CartItem";
 import "./Submit.css";
 import { Address } from "../interfaces/Address";
+import navigate from "../Navigation/navigate";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
@@ -18,7 +18,6 @@ function Submit({
     shippingAddress: Address;
     resetAfterSubmit: () => void;
 }) {
-    const navigate = useNavigate();
     const [marketing, setMarketing] = useState(false);
     const [comment, setComment] = useState("");
     const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event";
 import mockData from "../assets/products.json";
 import { CartItem } from "../interfaces/CartItem";
 import { useState } from "react";
-import { MemoryRouter } from "react-router-dom";
 import { Products } from "../interfaces/Products";
 
 const TestComponent = () => {
@@ -13,14 +12,11 @@ const TestComponent = () => {
     mockData.forEach((x) => (products[x.id] = x));
     const [items, setItems] = useState<CartItem[]>([]);
     return (
-        // MemoryRouter to manually control route history
-        <MemoryRouter initialEntries={["/cart"]}>
-            <ShoppingList
-                items={items}
-                setItems={setItems}
-                productList={products}
-            />
-        </MemoryRouter>
+        <ShoppingList
+            items={items}
+            setItems={setItems}
+            productList={products}
+        />
     );
 };
 

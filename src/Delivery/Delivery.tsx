@@ -1,15 +1,13 @@
 import { Address } from "../interfaces/Address";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Delivery.css";
 import { City } from "../interfaces/City";
 import useFetchData from "../hooks/useFetchData";
+import navigate from "../Navigation/navigate";
 
 type CityData = { [key: string]: City };
 
 const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, address, check, setCheck} : {billingAddress: Address, setBilling: (address: Address) => void, shippingAddress: Address, setShipping: (address: Address) => void, address: Address, check: boolean, setCheck: (check: boolean) => void }) => {
-    const navigate = useNavigate();
-
     // Allows for separate billing and shipping city/zip-code data (for example from different countries)
     const [billingCityData, setBillingCityData] = useState<CityData>({});
     const [shippingCityData, setShippingCityData] = useState<CityData>({});

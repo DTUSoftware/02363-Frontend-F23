@@ -3,7 +3,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import Submit from "../Submit/Submit";
 import { CartItem } from "../interfaces/CartItem";
 import { useState } from "react";
-import { MemoryRouter } from "react-router-dom";
 import { Address } from "../interfaces/Address";
 import userEvent from "@testing-library/user-event";
 import { Order } from "../interfaces/Order";
@@ -28,25 +27,20 @@ const TestComponent = () => {
     const [basket, setBasket] = useState<CartItem[]>([]);
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
-    const [check, setCheck] = useState(false);
 
     const resetAfterSubmit = () => {
         setBasket([]);
         setBilling(address);
         setShipping(address);
-        setCheck(false);
     };
 
     return (
-        // MemoryRouter to manually control route history
-        <MemoryRouter initialEntries={["/submit"]}>
-            <Submit
-                cartItems={basket}
-                billingAddress={billingAddress}
-                shippingAddress={shippingAddress}
-                resetAfterSubmit={resetAfterSubmit}
-            />
-        </MemoryRouter>
+        <Submit
+            cartItems={basket}
+            billingAddress={billingAddress}
+            shippingAddress={shippingAddress}
+            resetAfterSubmit={resetAfterSubmit}
+        />
     );
 };
 

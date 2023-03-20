@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
-import { Link } from "react-router-dom";
 import { CartItem } from '../interfaces/CartItem';
 import {Products} from '../interfaces/Products'
 import {ProductItem} from '../interfaces/ProductItem'
+import Link from "../Navigation/Link";
 
 function ShoppingList({items, setItems, productList} : {items: CartItem[], setItems: (items: CartItem[]) => void, productList: Products}) {
 
