@@ -29,38 +29,43 @@
       border-collapse: collapse;
       display: flex;
       flex-direction:column;
-      background-color: white;
+      background-color: var(--secondary-background-color);
       border-radius: 20px;
-      width: 338px;
-      height: 444px;
-      position: relative;
+    }
+
+    .shop-table {
+        overflow-y: auto;
+        height: 350px;
+        overflow-x: auto;
+        width: 338px;
     }
 
     caption {
         width: 140px;
         font-weight: 600;
         font-size: 16px;
-        color: --primary-text-color;
-        margin-bottom: 12px;
+        color: var(--primary-text-color);
     }
 
     thead {
         display: none;
     }
 
-    td {
-        border-bottom: #EAEAEA solid 0.2px;
-    }
-
     tbody {
         padding: 2px;
-
     }
+
+  }
+
+tr {
+    border-bottom: #EAEAEA solid 0.5px;
   }
 
 p {
-    font-size: large;
-    text-align: center;
+    font-size: 20px;
+    text-align: left;
+    font-weight: 400px;
+
 }
 
 table {
@@ -93,7 +98,7 @@ h1 {
 }
 
 button {
-    border-radius: 8px;
+    border-radius: 3px;
     border: 1px solid transparent;
     padding: 0.3em 0.6em;
     font-size: 1em;

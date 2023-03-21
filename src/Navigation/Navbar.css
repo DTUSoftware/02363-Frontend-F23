@@ -1,7 +1,16 @@
-/*.navbar .nav-content {
-    margin-left: auto;
+
+
+.navbar {
+    align-items: center;
+    justify-content: center;
 }
 
+.nav-content {
+    align-items: center;
+}
+
+
+/*
 .nav-content a {
     background-color: #585ae9;
     color: #f9f9f9;

@@ -5,14 +5,12 @@
     text-indent: 0.2em;
 }
 
-.deliveryheading {
-    display: inline;
+.delivery-heading {
+    display: inline-flex;
     text-align: center;
     font-size: 14px;
-    border-radius: 0.2em;
     width: 215px;
-    margin: auto;
-    margin: 15px;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
@@ -21,7 +19,7 @@
 }
 
 .totalborder{
-    background-color: rgb(247, 247, 247);
+    background-color: black;
     display: block;
     position: relative;
     border-radius: 10px;
@@ -35,7 +33,7 @@
 .subtotal {
     text-align: right;
     font-size: 1em;
-    background-color: rgb(247, 247, 247);
+    background-color: --secondary-background-color;
     border-radius: 0.2em;
 }
 
@@ -43,7 +41,7 @@
     text-align: right;
     font-size: 1.2em;
     font-weight: bolder; 
-    background-color: rgb(247, 247, 247);
+    background-color: --secondary-background-color;
     border-radius: 0.2em;
 }
 
@@ -52,6 +50,7 @@
     .product {
         display: flex;
         margin-left: 10px;
+        margin-top: 10px;
         flex-wrap: nowrap;
     }
 
@@ -64,21 +63,23 @@
         margin-left: 5px;
         text-align: left;
         font-size: 10px;
+        font-weight: 500;
         white-space: nowrap;
         margin-bottom: 0;
         margin-top: 7px;
     }
 
-    .rebate-container {
+    .discount-container {
         display: flex;
         justify-content: left;
 
     }
 
-    .rebate {
+    .discount {
         margin-left: 5px;
         text-align: left;
         font-size: 10px;
+        font-weight: 500;
         margin-top: 7px;
         margin-bottom: 0px;
         background-color: #FFC1C1;
@@ -86,10 +87,10 @@
         padding-left: 2px;
     }
 
-    .price {
+    .product-price {
         margin-left: 5px;
         text-align: left;
-        font-size: 13px;
+        font-size: 12px;
         white-space: nowrap;
         font-weight: 700;
         margin-top: 7px;
@@ -101,24 +102,88 @@
         display: flex;
         flex-direction: column;
         table-layout: fixed;
+    }
+    
+    .quantity-container {
+        display: flex;
+        border: #1c1a1a solid 0.3px;
+        border-radius: 10px;
+        align-items: center;
+    }
+
+    .decrement-quantityBtn {
+        background-color: var(--secondary-background-color);
+        color: var(--primary-text-color);
+        border-radius: 30px;
 
     }
 
-    .upsale {
-        border-radius: 20px;
-        background-color: white;
+    .increment-quantityBtn {
+        background-color: var(--secondary-background-color);
+        color: var(--primary-text-color);
+        border-radius: 30px;
+    }
+
+    .quantity {
+        font-size: 12px;
+        margin: 0px;
+    }
+
+    .input {
         display: flex;
         flex-direction: row;
-        table-layout: fixed;
-        border-collapse: collapse;
-
+        align-items: center;
+        margin-bottom: 10px;
     }
 
-    .upsale-container {
-        background-color: white;
+    .gift,
+    .subscription {
+        font-size: 10px;
+        font-weight: 500;
+        margin-right: 30px;
+        text-align: center;
+    }
+
+    .price-total {
+        font-weight: 700;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+
+    .upsell-table {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        align-items: center;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 338px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .upsell-content {
         display: inline;
-        border-collapse: collapse;
-        table-layout: fixed;
+        justify-content: center;
+        margin: 20px;
+        overflow-x: auto;
+        width: 338px;
+    }
+
+    .upsell-heading {
+        font-size: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .cart-total {
+        border-radius: 20px;
+        background-color: var(--secondary-background-color);
+    }
+
+    .order-btn {
+
     }
 
 }

@@ -5,8 +5,12 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <ul className="nav-content">
-                <Link to="/">Produkter</Link>
-                <Link to="/cart">kurv</Link>
+                <Link to="/">
+                    <button className="add-product">1. Produkter</button>
+                </Link>
+                <Link to="/cart">
+                    <button>2. Kurv</button>
+                </Link>
             </ul>
         </nav>
     );
