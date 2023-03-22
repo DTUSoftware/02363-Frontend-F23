@@ -21,17 +21,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-    table {
-      width: 100%;
-      table-layout: fixed;
-      text-align: center;
-      font-size: 10px;
-      border-collapse: collapse;
-      display: flex;
-      flex-direction:column;
-      background-color: var(--secondary-background-color);
-      border-radius: 20px;
-    }
 
     .shop-table {
         overflow-y: auto;
@@ -51,27 +40,79 @@
         display: none;
     }
 
-    tbody {
-        padding: 2px;
-    }
-
   }
+
+@media only screen and (min-width: 768px) {
+
+    .shop-table {
+          overflow-y: auto;
+          height: 500px;
+          overflow-x: auto;
+          width: 778px;
+      }
+  
+      caption {
+          width: 140px;
+          font-weight: 600;
+          font-size: 18px;
+          color: var(--primary-text-color);
+      }
+  
+      thead {
+        display: none;
+    }
+    
+}
+
+@media only screen and (min-width: 992px) { 
+    
+    .shop-table {
+          overflow-y: auto;
+          height: 350px;
+          overflow-x: auto;
+          width: 992px;
+        }
+  
+    caption {
+          width: fit-content;
+          font-weight: 600;
+          font-size: 20px;
+          color: var(--primary-text-color);
+          margin-left: 10px;
+        }
+  
+    thead {
+        display: table;
+    }
+  
+}
+
+tbody {
+    padding: 2px;
+}
 
 tr {
     border-bottom: #EAEAEA solid 0.5px;
-  }
+    display: table;
+    width: 100%;
+}
 
 p {
     font-size: 20px;
     text-align: left;
     font-weight: 400px;
-
 }
 
 table {
+    width: 100%;
     table-layout: fixed;
     text-align: center;
+    font-size: 10px;
     border-collapse: collapse;
+    display: flex;
+    flex-direction:column;
+    background-color: var(--secondary-background-color);
+    border-radius: 20px;
 }
 
 a {
@@ -88,8 +129,6 @@ body {
     margin: 0;
     display: flex;
     place-items: center;
-    min-width: 320px;
-    min-height: 100%;
 }
 
 h1 {

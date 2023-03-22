@@ -6,10 +6,10 @@ const Navbar = () => {
         <nav className="navbar">
             <ul className="nav-content">
                 <Link to="/">
-                    <button className="add-product">1. Produkter</button>
+                    <button className="nav-button">1. Produkter</button>
                 </Link>
                 <Link to="/cart">
-                    <button>2. Kurv</button>
+                    <button className="nav-button">2. Kurv</button>
                 </Link>
             </ul>
         </nav>

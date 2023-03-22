@@ -1,11 +1,5 @@
-
-
-.navbar {
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-content {
+.navbar .nav-content .nav-button {
+    font-size: 10px;
     align-items: center;
 }
 

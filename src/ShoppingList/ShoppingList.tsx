@@ -182,16 +182,11 @@ function ProductTable({
                 <thead>
                     <tr>
                         <th className="product-heading">Produkt</th>
-                        <th className="price">Pris</th>
                         <th> </th>
-                        <th className="quantity">Antal</th>
+                        <th className="quantity-heading">Antal</th>
                         <th> </th>
                         {/*<th className="rebate">Rabat</th>*/}
-                        <th className="priceTotal">Total</th>
-                        <th className="giftwrapping-heading">Gavepapir</th>
-                        <th className="reoccuringorder-heading">Gentag order</th>
-                        <th></th>
-                        <th className="upsell">Andre populære valg</th>
+                        <th className="priceTotal-heading">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -292,8 +287,8 @@ function UpsellItems ({
         <tr className="upsell-content">
             <td>
             <div>
-            <div className="picture">
-                <img className="picture" src={item.product!.imageUrl}></img>
+            <div className="upsell-picture">
+                <img className="upsell-picture" src={item.product!.imageUrl}></img>
             </div>
             {item.product.upsellProductId !== null && (
             <button
