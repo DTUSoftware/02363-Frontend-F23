@@ -182,10 +182,7 @@ function ProductTable({
                 <thead>
                     <tr>
                         <th className="product-heading">Produkt</th>
-                        <th> </th>
                         <th className="quantity-heading">Antal</th>
-                        <th> </th>
-                        {/*<th className="rebate">Rabat</th>*/}
                         <th className="priceTotal-heading">Total</th>
                     </tr>
                 </thead>
@@ -222,10 +219,12 @@ function ProductTable({
 
         <div className="cart-total">
         <CartTotal items={items} itemTotal={itemTotal} />
-            <Link className="order-btn" to="/delivery">
+        <br />
+        <Link className="order-btn" to="/delivery">
                 <button>Gå til levering</button>
-            </Link>
-        </div></>
+        </Link>
+        </div>
+        </>
     );
 }
 
@@ -246,28 +245,27 @@ function CartTotal({
 
     return (
         <p className="total">
-            <span className="rebatetext">
-                {" "}
-                {`Subtotal: ${cartTotal.toFixed(2)} DKK`}
-            </span>
+            <span className="text-left">Subtotal</span>
+            <span className="text-right">{`${cartTotal.toFixed(2)} DKK`}</span>
             <br />
-            <span className="rebatetext">
-                {" "}
+            <span className="text-left">{" "}Fragt</span>
+            <span className="text-right">
                 {cartTotal >= freeShipping
                     ? "FRI FRAGT"
-                    : `Fragt: ${shippingPrice.toFixed(2)} DKK`}
+                    : ` ${shippingPrice.toFixed(2)} DKK`}
             </span>
             <br />
-            <span className="rebatetext">
-                {" "}
+            <span>Du sparer 10%:</span>
+            <span className="text-right">
                 {hasRebate
-                    ? `Du sparer 10%:  ${(cartTotal * totalRebate).toFixed(
+                    ? ` ${(cartTotal * totalRebate).toFixed(
                           2
                       )} DKK`
                     : "Spar 10% ved køb over 300 DKK"}
             </span>
             <br />
-            <span className="totalprice">{`Pris i alt: ${
+            <span className="text-left">Pris i alt</span>
+            <span className="text-right">{`${
                 hasRebate
                     ? (cartTotal * (1 - totalRebate) + shippingPrice).toFixed(2)
                     : cartTotal.toFixed(2)
@@ -326,7 +324,7 @@ function ProductTableRow({
 }) {
     return (
         <tr>
-            <td rowSpan={2} className="product">
+            <td className="product">
                 <div className="picture">
                     <img className="picture" src={item.product!.imageUrl}></img>
                 </div>
@@ -384,25 +382,6 @@ function ProductTableRow({
                         </button>
                     </span>
                 </td>
-                {/*<td className="decrement">
-        <button
-            aria-label={`reducer antal ${item.product.name}`}
-            className="quantityBtn"
-            onClick={() => decrementQuantity()}
-        >
-            -
-        </button>
-    </td>
-    <td className="quantity"> {item.quantity} </td>
-    <td className="increment">
-        <button
-            aria-label={`forøg antal ${item.product.name}`}
-            className="quantityBtn"
-            onClick={() => incrementQuantity()}
-        >
-            +
-        </button>
-            </td>*/}
                 <td className="price-total">{`${itemTotal().toFixed(2)} ${item.product!.currency}`}</td>
                 <td className="trash">
                     <button
