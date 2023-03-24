@@ -5,6 +5,7 @@ import "./ShoppingList.css";
 import { Link } from "react-router-dom";
 import { ProductItem } from '../interfaces/ProductItem';
 import { CartItem } from '../interfaces/CartItem';
+import { BeatLoader } from "react-spinners";
 import useFetchData from "../hooks/useFetchData";
 
 type Products = { [key: string]: ProductItem };
@@ -28,36 +29,6 @@ function ShoppingList({items, setItems}:{items:CartItem[], setItems:(values:Cart
         setList(products);
     },[data])
 
-   /*
-    useEffect(()=>{
-        const p1= productList["vitamin-c-500-200"];
-        const p2= productList["kids-songbook"]
-        const p3=  productList["sugar-cane-1kg"]
-        if(p1 != undefined && p2 != undefined && p3 != undefined){
-            const list:CartItem[]=[
-                {
-                   product: p1,
-                   quantity: 2,
-                   giftWrap: false,
-                   recurringOrder: false
-               },
-               {
-                   product: p2,
-                   quantity: 1,
-                   giftWrap: true,
-                   recurringOrder: false
-               },
-               {
-                   product:p3,
-                   quantity: 2,
-                   giftWrap: false,
-                   recurringOrder: true
-               }
-           ];
-           setItems(list);
-        }
-    },[productList])
-    */
 
     function incrementQuantity(index: number) {
         const item = items.at(index)!;
@@ -132,6 +103,8 @@ function ShoppingList({items, setItems}:{items:CartItem[], setItems:(values:Cart
     }
 
     const listEmpty = items === undefined || items.length === 0;
+    //if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
+    //else if(error != null) {return (<h1> {error} </h1>)}
     return (
         <div className="ShoppingList">
             {!listEmpty && <div>

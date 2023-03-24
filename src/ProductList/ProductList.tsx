@@ -1,15 +1,16 @@
 import { useNavigate } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
 import useFetchData from "../hooks/useFetchData";
 import { CartItem } from "../interfaces/CartItem";
 import { ProductItem } from "../interfaces/ProductItem";
 import "./ProductList.css";
 
-function ProductList({basket, setBasket}:{basket:CartItem[], setBasket:(values:CartItem[]) =>void})  {
+function ProductList({items, setItems}:{items:CartItem[], setItems:(values:CartItem[]) =>void})  {
 
-    const AddToBasket= (product: ProductItem)=>{
-        if(basket.some((item)=>item.product.id === product.id)){
-            setBasket(
-                basket.map((item)=> 
+    const AddToItems= (product: ProductItem)=>{
+        if(items.some((item)=>item.product.id === product.id)){
+            setItems(
+                items.map((item)=> 
                     item.product.id ===product.id ?{
                         ...item, 
                         quantity: item.quantity + 1
@@ -24,15 +25,15 @@ function ProductList({basket, setBasket}:{basket:CartItem[], setBasket:(values:C
                 giftWrap: false,
                 recurringOrder:false
             }
-            setBasket([...basket,item])
+            setItems([...items,item])
         }
         
     }
 
     const {data, isLoading, error}=useFetchData<ProductItem[]>("https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json",[])
     
-    if(isLoading) return( <h1>loading....</h1> )
-    else if(error != null) return( <h1>{error}</h1> )
+    if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
+    else if(error != null) {return (<h1> {error} </h1>)}
     else return ( 
         <div className="ProductList">
             { data &&
@@ -49,7 +50,7 @@ function ProductList({basket, setBasket}:{basket:CartItem[], setBasket:(values:C
                                :(<p> <br /></p>)                                    
                             }
 
-                            <p className="button"><button onClick={()=> AddToBasket(product)}><b><i>Læg i inkøbskurv</i></b></button></p>
+                            <p className="button"><button onClick={()=> AddToItems(product)}><b><i>Læg i inkøbskurv</i></b></button></p>
                         </div>
                         
                     ) 

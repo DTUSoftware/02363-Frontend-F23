@@ -8,7 +8,7 @@ import { CartItem } from './interfaces/CartItem'
 import React from 'react'
 
 function App() {
-    const [basket, setBasket] = React.useState<CartItem[]>([]);
+    const [items, setItems] = React.useState<CartItem[]>([]);
 
     return (
         <Router>
@@ -16,8 +16,8 @@ function App() {
             <Navbar/>
             <div className="content">
                 <Routes>
-                    <Route path='/' element= { <ProductList basket={basket} setBasket={setBasket}/> } />
-                    <Route path='/cart' element= { <ShoppingList items={basket} setItems={setBasket}/> } />
+                    <Route path='/' element= { <ProductList items={items} setItems={setItems}/> } />
+                    <Route path='/cart' element= { <ShoppingList items={items} setItems={setItems}/> } />
                     <Route path='/delivery' element={<Delivery/>}/>
                 </Routes>                  
             </div>
