@@ -165,7 +165,7 @@ describe(ShoppingList.name, () => {
             screen.getByText("C-vitamin, 500mg, 200 stk")
         ).toBeInTheDocument();
         const upsellButton = screen.getByLabelText(
-            "Andre har valgt vitamin-c-depot-500-250"
+            "Andre har valgt C-vitamin Depot, 500mg, 200 stk"
         );
         expect(upsellButton).toBeInTheDocument();
         await user.click(upsellButton);

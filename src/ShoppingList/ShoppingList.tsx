@@ -321,7 +321,7 @@ function UpsellItems ({
             </div>
             <button
                 className="upsellBtn"
-                aria-label={`Andre har valgt ${upsellProduct.upsellProductId}`}
+                aria-label={`Andre har valgt ${upsellProduct.name}`}
                 onClick={() => upsellItem()}
             >
                 Erstat vare
