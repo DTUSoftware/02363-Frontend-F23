@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
 import { CartItem } from '../interfaces/CartItem';
+import { BeatLoader } from "react-spinners";
+import useFetchData from "../hooks/useFetchData";
 import {Products} from '../interfaces/Products'
 import {ProductItem} from '../interfaces/ProductItem'
 import Link from "../Navigation/Link";
@@ -115,6 +117,8 @@ function ShoppingList({items, setItems, productList} : {items: CartItem[], setIt
     }
 
     const listEmpty = items === undefined || items.length === 0;
+    //if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
+    //else if(error != null) {return (<h1> {error} </h1>)}
     return (
         <div className="ShoppingList">
             {!listEmpty && <div>

@@ -23,6 +23,23 @@ const address: Address = {
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
+const comment = "Test, i am a comment";
+const order: Order = {
+    orderDetails: [],
+    billingAddress: address,
+    shippingAddress: address,
+    checkMarketing: false,
+    submitComment: comment,
+};
+const headers = new Headers();
+headers.append("Content-Type", "application/json");
+const options: RequestInit = {
+    method: "POST",
+    headers,
+    mode: "cors",
+    body: JSON.stringify(order),
+};
+
 const TestComponent = () => {
     const [basket, setBasket] = useState<CartItem[]>([]);
     const [billingAddress, setBilling] = useState<Address>(address);
@@ -85,23 +102,6 @@ describe(Submit.name, () => {
     });
 
     it("Submit all relevant information to the end-point", async () => {
-        const comment = "Test, i am a comment";
-        const cartItem: CartItem[] = [];
-        const order: Order = {
-            cartItems: cartItem,
-            billingAddress: address,
-            shippingAddress: address,
-            checkMarketing: false,
-            submitComment: comment,
-        };
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        const options: RequestInit = {
-            method: "POST",
-            headers,
-            mode: "cors",
-            body: JSON.stringify(order),
-        };
         const mockFetch = vi
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
@@ -130,23 +130,6 @@ describe(Submit.name, () => {
     });
 
     it("Include loading indicator and error reporting", async () => {
-        const comment = "Test, i am a comment";
-        const cartItem: CartItem[] = [];
-        const order: Order = {
-            cartItems: cartItem,
-            billingAddress: address,
-            shippingAddress: address,
-            checkMarketing: false,
-            submitComment: comment,
-        };
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        const options: RequestInit = {
-            method: "POST",
-            headers,
-            mode: "cors",
-            body: JSON.stringify(order),
-        };
         const mockFetch = vi
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
