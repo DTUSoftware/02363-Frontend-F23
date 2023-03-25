@@ -5,7 +5,8 @@ import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 
-const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
+//const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
+const submitUrl = "http://localhost:5114/api/orders";
 
 function Submit({
     cartItems,
@@ -26,13 +27,21 @@ function Submit({
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
+        const orderDetails = cartItems.map((x) => {
+            return { 
+                productId: x.product.id,
+                quantity: x.quantity,
+                giftWrap: x.giftWrap,
+                recurringOrder: x.recurringOrder };
+          });
         const order: Order = {
-            cartItems: cartItems,
+            orderDetails: orderDetails,
             billingAddress: billingAddress,
             shippingAddress: shippingAddress,
             checkMarketing: marketing,
             submitComment: comment,
         };
+        console.log(JSON.stringify(order));
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
         const options: RequestInit = {
@@ -51,8 +60,8 @@ function Submit({
             .then(() => {
                 setIsLoading(false);
                 setError("");
-                resetAfterSubmit();
-                navigate("/finish");
+                //resetAfterSubmit();
+                //navigate("/finish");
             })
             .catch((er) => {
                 setIsLoading(false);
