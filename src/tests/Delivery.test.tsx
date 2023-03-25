@@ -1,16 +1,41 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
-import Delivery from "../Delivery/Delivery";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
 import mockResponse from "../assets/zip-codes.json";
+import Delivery from "../Delivery/Delivery";
+import { useState } from "react";
+import { Address } from "../interfaces/Address";
 
-// MemoryRouter to manually control route history
-const component = (
-    <MemoryRouter initialEntries={["/delivery"]}>
-        <Delivery />
-    </MemoryRouter>
-);
+const address: Address = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNr: 0,
+    company: "",
+    vatNr: "",
+    country: "Danmark",
+    zipCode: "",
+    city: "",
+    address1: "",
+    address2: "",
+};
+
+const TestComponent = () => {
+    const [billingAddress, setBilling] = useState<Address>(address);
+    const [shippingAddress, setShipping] = useState<Address>(address);
+    const [check, setCheck] = useState(false);
+    return (
+        <Delivery
+            billingAddress={billingAddress}
+            setBilling={setBilling}
+            shippingAddress={shippingAddress}
+            setShipping={setShipping}
+            address={address}
+            check={check}
+            setCheck={setCheck}
+        />
+    );
+};
 
 const zipCodeUrl = "https://api.dataforsyningen.dk/postnumre";
 
@@ -28,11 +53,15 @@ describe(Delivery.name, () => {
                     return {} as Response;
                 }
             });
-        render(component);
+        render(<TestComponent />);
         await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl));
-        await waitFor(() => expect(screen.getByRole('textbox', { name: /postnummer/i })).not.toBeDisabled());
+        await waitFor(() =>
+            expect(
+                screen.getByRole("textbox", { name: /postnummer/i })
+            ).not.toBeDisabled()
+        );
     });
-    
+
     afterEach(() => {
         vi.restoreAllMocks();
     });
@@ -127,17 +156,21 @@ describe(Delivery.name, () => {
         expect(address).toBeValid();
     });
 
-    it("Enter zip code, if Denmark, validate against https://api.dataforsyningen.dk/postnumre", async  () => {
+    it("Enter zip code, if Denmark, validate against https://api.dataforsyningen.dk/postnumre", async () => {
         const invalidZipCode = "9999";
         const validZipCode = "2800";
-        const zipCode = screen.getByRole('textbox', { name: /postnummer/i })
-        
+        const zipCode = screen.getByRole("textbox", { name: /postnummer/i });
+
         await waitFor(() => expect(zipCode).not.toBeDisabled());
         await userEvent.type(zipCode, invalidZipCode);
-        expect(screen.queryAllByText("Det valgte postnummer er ikke korrekt!")[0]).toBeVisible();
+        expect(
+            screen.queryAllByText("Det valgte postnummer er ikke korrekt!")[0]
+        ).toBeVisible();
         await userEvent.clear(zipCode);
-        await userEvent.type(zipCode,validZipCode);
-        expect(screen.queryAllByText("Det valgte postnummer er ikke korrekt!")[0]).not.toBeVisible();
+        await userEvent.type(zipCode, validZipCode);
+        expect(
+            screen.queryAllByText("Det valgte postnummer er ikke korrekt!")[0]
+        ).not.toBeVisible();
         expect(zipCode).toBeValid();
     });
 

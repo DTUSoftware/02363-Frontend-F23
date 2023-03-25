@@ -1,55 +1,35 @@
 import { Address } from "../interfaces/Address";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Delivery.css";
 import { City } from "../interfaces/City";
 import useFetchData from "../hooks/useFetchData";
 import { BeatLoader } from "react-spinners";
+import navigate from "../Navigation/navigate";
 
 type CityData = { [key: string]: City };
 
-const address: Address = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    mobileNr: 0,
-    company: "",
-    vatNr: "",
-    country: "Danmark",
-    zipCode: "",
-    city: "",
-    address1: "",
-    address2: "",
-};
-
-const Delivery = () => {
-    const navigate = useNavigate();
-
+const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, address, check, setCheck} : {billingAddress: Address, setBilling: (address: Address) => void, shippingAddress: Address, setShipping: (address: Address) => void, address: Address, check: boolean, setCheck: (check: boolean) => void }) => {
     // Allows for separate billing and shipping city/zip-code data (for example from different countries)
     const [billingCityData, setBillingCityData] = useState<CityData>({});
     const [shippingCityData, setShippingCityData] = useState<CityData>({});
 
-    const [check, setCheck] = useState(false);
-    const [billingAddress, setBilling] = useState<Address>(address);
-
-    const [shippingAddress, setShipping] = useState<Address>(address);
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const billingZipCode = billingCityData[billingAddress.zipCode];
-        const shippingZipCode = shippingCityData[shippingAddress.zipCode];
-        if (billingZipCode !== undefined && shippingZipCode !== undefined) {
-            navigate("/payment");
+        const billingZipCodeValid = billingCityData[billingAddress.zipCode] !== undefined;
+        const shippingZipCodeValid = shippingCityData[shippingAddress.zipCode] !== undefined;
+        if (!check && billingZipCodeValid || check && billingZipCodeValid && shippingZipCodeValid) {
+            if (!check) {
+                setShipping({...billingAddress});
+            }
+            navigate("/submit");
         }
     };
 
     useEffect(() => {
         if (!check) {
-            setShipping(billingAddress);
-        } else {
             setShipping(address);
         }
-    }, [check, billingAddress]);
+    }, [check]);
 
     return (
         <div className="delivery">
@@ -148,7 +128,7 @@ function AddressDetails({
             });
         }
 
-        if (zip === undefined && event.target.value.length === 4) {
+        if (zip === undefined && event.target.value.length >= 4) {
             if (zipCodeError !== true) {
                 setZipCodeError(true);
             }
@@ -177,7 +157,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingFirstName" : "firstName"}
-                    name={!isShipping ? "shippingFirstName" : "firstName"}
+                    name="firstName"
+                    value={address.firstName}
                     onChange={onChange}
                 />
             </div>
@@ -190,7 +171,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingLastName" : "lastName"}
-                    name={!isShipping ? "shippingLastName" : "lastName"}
+                    name="lastName"
+                    value={address.lastName}
                     onChange={onChange}
                 />
             </div>
@@ -203,7 +185,8 @@ function AddressDetails({
                     required
                     type="email"
                     id={!isShipping ? "shippingEmail" : "email"}
-                    name={!isShipping ? "shippingEmail" : "email"}
+                    name="email"
+                    value={address.email}
                     onChange={onChange}
                 />
             </div>
@@ -217,9 +200,14 @@ function AddressDetails({
                     pattern="[0-9]{8}"
                     type="tel"
                     id={!isShipping ? "shippingMobileNr" : "mobileNr"}
-                    name={!isShipping ? "shippingMobileNr" : "mobileNr"}
+                    name="mobileNr"
+                    value={address.mobileNr !== 0 ? address.mobileNr : ""}
                     onChange={onChange}
+                    //onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Mobilnummeret skal være 8 tal langt.")}
                 />
+                <span className="error" hidden={address.mobileNr.toString().length <= 8}>
+                    Mobilnummeret må ikke være mere end 8 tal langt!
+                </span>
             </div>
 
             <div>
@@ -227,10 +215,10 @@ function AddressDetails({
                     Evt. firmanavn
                 </label>
                 <input
-                    required
                     type="text"
                     id={!isShipping ? "shippingCompany" : "company"}
-                    name={!isShipping ? "shippingCompany" : "company"}
+                    name="company"
+                    value={address.company}
                     onChange={onChange}
                 />
             </div>
@@ -240,13 +228,17 @@ function AddressDetails({
                     VirksomhedVAT-nummer
                 </label>
                 <input
-                    required
                     pattern="[0-9]{8}"
                     type="text"
                     id={!isShipping ? "shippingVatNr" : "vatNr"}
-                    name={!isShipping ? "shippingVatNr" : "vatNr"}
+                    name="vatNr"
+                    value={address.vatNr}
                     onChange={onChange}
+                    //onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("VAT-nummeret skal være 8 tal langt.")}
                 />
+                <span className="error" hidden={address.vatNr.toString().length <= 8}>
+                    VAT-nummeret må ikke være mere end 8 tal langt!
+                </span>
             </div>
 
             <div className="address-row">
@@ -257,7 +249,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingAddress1" : "address1"}
-                    name={!isShipping ? "shippingAddress1" : "address1"}
+                    name="address1"
+                    value={address.address1}
                     onChange={onChange}
                 />
             </div>
@@ -270,7 +263,8 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingAddress2" : "address2"}
-                    name={!isShipping ? "shippingAddress2" : "address2"}
+                    name="address2"
+                    value={address.address2}
                     onChange={onChange}
                 />
             </div>
@@ -318,7 +312,7 @@ function AddressDetails({
                     required
                     type="text"
                     id={!isShipping ? "shippingContry" : "country"}
-                    name={!isShipping ? "shippingContry" : "country"}
+                    name="country"
                     disabled
                     value={address.country}
                     onChange={onChange}
@@ -347,7 +341,7 @@ function CheckBox({
                 type="checkbox"
                 name="checkbox"
                 id="checkbox"
-                value="false"
+                checked={check}
                 onChange={() => setCheck(!check)}
             />
             <label htmlFor="checkbox" id="checkbox-label">

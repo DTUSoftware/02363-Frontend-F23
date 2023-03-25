@@ -1,11 +1,26 @@
-import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import useFetchData from "../hooks/useFetchData";
 import { CartItem } from "../interfaces/CartItem";
 import { ProductItem } from "../interfaces/ProductItem";
+import { useEffect } from "react";
 import "./ProductList.css";
+import {Products} from '../interfaces/Products'
 
-function ProductList({items, setItems}:{items:CartItem[], setItems:(values:CartItem[]) =>void})  {
+const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
+
+function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(values:CartItem[]) => void, setList: (products:Products) => void})  {
+
+    const {data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl,[])
+
+    useEffect(()=>{
+        const products: Products = {};  
+
+        data.forEach((product) => {
+            products[product.id] = product;
+        })
+
+        setList(products);
+    },[data])
 
     const AddToItems= (product: ProductItem)=>{
         if(items.some((item)=>item.product.id === product.id)){
@@ -29,8 +44,6 @@ function ProductList({items, setItems}:{items:CartItem[], setItems:(values:CartI
         }
         
     }
-
-    const {data, isLoading, error}=useFetchData<ProductItem[]>("https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json",[])
     
     if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
     else if(error != null) {return (<h1> {error} </h1>)}
