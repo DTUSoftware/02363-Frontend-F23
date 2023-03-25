@@ -1,15 +1,15 @@
 import { Address } from "../interfaces/Address";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Delivery.css";
 import { City } from "../interfaces/City";
 import useFetchData from "../hooks/useFetchData";
+import { BeatLoader } from "react-spinners";
+import navigate from "../Navigation/navigate";
 
 type CityData = { [key: string]: City };
 
 const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, address, check, setCheck} : {billingAddress: Address, setBilling: (address: Address) => void, shippingAddress: Address, setShipping: (address: Address) => void, address: Address, check: boolean, setCheck: (check: boolean) => void }) => {
-    const navigate = useNavigate();
-
+    
     // Allows for separate billing and shipping city/zip-code data (for example from different countries)
     const [billingCityData, setBillingCityData] = useState<CityData>({});
     const [shippingCityData, setShippingCityData] = useState<CityData>({});
@@ -145,6 +145,7 @@ function AddressDetails({
         });
     };
 
+    if(error != null) return( <h1>{error}</h1> )
     return (
         <div className="address">
             <div>
@@ -273,17 +274,18 @@ function AddressDetails({
                 <label htmlFor={!isShipping ? "shippingZipCode" : "zipCode"}>
                     Postnummer
                 </label>
-                <input
-                    disabled={isLoading}
-                    required
-                    type="text"
-                    pattern="[0-9]{4}"
-                    id={!isShipping ? "shippingZipCode" : "zipCode"}
-                    name="zipCode"
-                    value={address.zipCode}
-                    onChange={onChangeSelect}
-                />
-                <span className="error" hidden={!zipCodeError}>
+                {isLoading? <BeatLoader size={24} color='#dc62ab' loading={isLoading} /> :
+                    <input
+                        disabled={isLoading}
+                        required
+                        type="text"
+                        pattern="[0-9]{4}"
+                        id={!isShipping ? "shippingZipCode" : "zipCode"}
+                        name={!isShipping ? "shippingZipCode" : "zipCode"}
+                        onChange={onChangeSelect}
+                    />
+                }
+                <span className="ziperror" hidden={!zipCodeError}>
                     Det valgte postnummer er ikke korrekt!
                 </span>
             </div>
@@ -292,13 +294,15 @@ function AddressDetails({
                 <label htmlFor={!isShipping ? "shippingCity" : "city"}>
                     By
                 </label>
-                <input
-                    readOnly
-                    type="text"
-                    id={!isShipping ? "shippingCity" : "city"}
-                    name="city"
-                    value={address.city}
-                />
+                {isLoading? <BeatLoader size={24} color='#dc62ab' loading={isLoading} /> :
+                    <input
+                        readOnly
+                        type="text"
+                        id={!isShipping ? "shippingCity" : "city"}
+                        name={!isShipping ? "shippingCity" : "city"}
+                        value={address.city}
+                    />
+                }
             </div>
 
             <div>

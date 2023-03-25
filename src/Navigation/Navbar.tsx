@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
 import { FaShoppingCart} from "react-icons/fa";
 import "./Navbar.css";
+import Link from "./Link";
+import  "./Navbar.css"
 
 const Navbar = () => {
     return (        
@@ -8,14 +9,10 @@ const Navbar = () => {
             <label className="logo">Shopping App</label>
             <ul className="nav-content">
                 <li>
-                    <Link to="/"> 
-                        <button className="nav-button"> Produkter </button>
-                    </Link>
+                    <Link to="/" className="nav-button">Produkter</Link>
                 </li>
                 <li>
-                    <Link to="/cart">
-                        <button className="nav-button"> <FaShoppingCart/> Kurv </button>
-                    </Link>
+                    <Link to="/cart" className="nav-button"> <><FaShoppingCart/> Kurv </> </Link>
                 </li>
             </ul>
         </nav>

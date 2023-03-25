@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import navigate from "../Navigation/navigate";
 import "./Finish.css";
 
 
 function Finish() {
-    const navigate = useNavigate();
-
     const continueShopping = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         navigate("/");
