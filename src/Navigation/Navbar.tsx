@@ -1,16 +1,22 @@
 import { Link } from "react-router-dom";
+import { FaShoppingCart} from "react-icons/fa";
 import "./Navbar.css";
 
 const Navbar = () => {
-    return (
+    return (        
         <nav className="navbar">
+            <label className="logo">Shopping App</label>
             <ul className="nav-content">
-                <Link to="/">
-                    <button className="nav-button">1. Produkter</button>
-                </Link>
-                <Link to="/cart">
-                    <button className="nav-button">2. Kurv</button>
-                </Link>
+                <li>
+                    <Link to="/"> 
+                        <button className="nav-button"> Produkter </button>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/cart">
+                        <button className="nav-button"> <FaShoppingCart/> Kurv </button>
+                    </Link>
+                </li>
             </ul>
         </nav>
     );
