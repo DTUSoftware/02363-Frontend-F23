@@ -1,5 +1,4 @@
 import { Address } from "./Address";
-import { CartItem } from "./CartItem";
 
 export interface Order {
     orderDetails: SubmitCartItem[];

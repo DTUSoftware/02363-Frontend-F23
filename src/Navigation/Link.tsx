@@ -1,7 +1,7 @@
 import React from "react";
 
 // Build using inspiration from https://dev.to/franciscomendes10866/create-your-own-react-router-53ng
-const Link = ({ to, children, className } : { to : string, children : string, className? : string}) => {
+const Link = ({ to, children, className } : { to : string, children : any, className? : string}) => {
   const preventReload = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     window.history.pushState({}, "", to);

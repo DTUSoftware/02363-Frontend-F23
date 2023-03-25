@@ -9,6 +9,7 @@ import navigate from "../Navigation/navigate";
 type CityData = { [key: string]: City };
 
 const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, address, check, setCheck} : {billingAddress: Address, setBilling: (address: Address) => void, shippingAddress: Address, setShipping: (address: Address) => void, address: Address, check: boolean, setCheck: (check: boolean) => void }) => {
+    
     // Allows for separate billing and shipping city/zip-code data (for example from different countries)
     const [billingCityData, setBillingCityData] = useState<CityData>({});
     const [shippingCityData, setShippingCityData] = useState<CityData>({});

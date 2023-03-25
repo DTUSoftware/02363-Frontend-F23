@@ -3,8 +3,8 @@ import useFetchData from "../hooks/useFetchData";
 import { CartItem } from "../interfaces/CartItem";
 import { ProductItem } from "../interfaces/ProductItem";
 import { useEffect } from "react";
+import {Products} from '../interfaces/Products';
 import "./ProductList.css";
-import {Products} from '../interfaces/Products'
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
@@ -54,18 +54,17 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
                     (product)=> (
                         
                         <div className="card" key={product.id}>
-                            <img src={product.imageUrl} alt={product.name} width="250" height="250" ></img>
-                            <h3 className="name">{product.name}</h3>                        
+                            <img src={product.imageUrl} alt={product.name}></img><br/>
+                            <label className="name">{product.name}</label>                        
                             <p className="price">{product.price},00 {product.currency}</p>
 
                             {((product.rebatePercent > 0) && (product.rebateQuantity > 0 )) 
                                ?( <p>Køb for {product.rebateQuantity} Stk (Spar<span className="rabat"> <i>{product.rebatePercent}%</i></span> )</p> )
-                               :(<p> <br /></p>)                                    
+                               :( <p> <br /></p>)                                    
                             }
 
-                            <p className="button"><button onClick={()=> AddToItems(product)}><b><i>Læg i inkøbskurv</i></b></button></p>
+                            <p className="add-button"><button onClick={()=> AddToItems(product)}><b><i>Læg i inkøbskurv</i></b></button></p>
                         </div>
-                        
                     ) 
                 )
             }
