@@ -20,7 +20,7 @@ const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, add
             if (!check) {
                 setShipping({...billingAddress});
             }
-            navigate("/submit");
+            navigate("/payment");
         }
     };
 
