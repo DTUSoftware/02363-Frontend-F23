@@ -7,6 +7,17 @@
     font-weight: bold;
 }
 
+.product-heading,
+.quantity-heading {
+    text-align: left;
+    padding-left: 30px;
+}
+
+.priceTotal-heading {
+    text-align: left;
+    padding-right: 10px;
+}
+
 
 
 @media only screen and (max-width: 768px) {
@@ -68,7 +79,7 @@
         flex-direction: column;
         table-layout: fixed;
     }
-    
+
     .quantity-container {
         display: flex;
         border: #1c1a1a solid 0.3px;
@@ -143,7 +154,7 @@
     }
 
     .cart-total {
-        background-color: var(--secondary-background-color); 
+        background-color: var(--secondary-background-color);
         border-radius: 20px;
         padding-left: 5px;
         padding-right: 5px;
@@ -159,7 +170,7 @@
     }
 
     .text-right {
-        float:right;
+        float: right;
     }
 
 
@@ -173,6 +184,7 @@
         margin-left: 10px;
         margin-top: 10px;
         flex-wrap: nowrap;
+        width: 200px;
     }
 
     .picture,
@@ -225,7 +237,7 @@
         flex-direction: column;
         table-layout: fixed;
     }
-    
+
     .quantity-container {
         display: flex;
         border: #1c1a1a solid 0.4px;
@@ -233,6 +245,11 @@
         align-items: center;
         width: fit-content;
         margin-left: 130px;
+        white-space: nowrap;
+    }
+
+    td {
+        width: fit-content;
     }
 
     .decrement-quantityBtn {
@@ -289,7 +306,7 @@
         width: 778px;
         overflow-x: auto;
         background-color: var(--secondary-background-color);
-        border-radius: 20px;       
+        border-radius: 20px;
     }
 
     .upsell-content {
@@ -307,7 +324,7 @@
     }
 
     .cart-total {
-        background-color: var(--secondary-background-color); 
+        background-color: var(--secondary-background-color);
         border-radius: 20px;
         padding-left: 5px;
         padding-right: 5px;
@@ -323,7 +340,7 @@
     }
 
     .text-right {
-        float:right;
+        float: right;
     }
 }
 
@@ -354,58 +371,12 @@
     .cart-total {
         border-radius: 20px;
         background-color: var(--secondary-background-color);
-    } 
+    }
 }
 
-/*
-.product {
-    text-align: left;
-    padding-right: 100px;
-}
-
-.price,
-.increment,
-.rebate,
-.trash {
-    padding-right: 30px;
-}
-
-.upsellBtn {
-   width: 10rem;
-}
-
-.quantity {
-    text-align: center;
-}
-
-.priceTotal {
-    padding-right: 40px;
-    width: 90px;
-}
-
-.giftwrapping,
-.reoccuringorder {
-    text-align: center;
-    padding-right: 20px;
-}
-
-.quantityBtn {
-    border-radius: 50%;
-    padding: 0.6em 1em;
-}
-
-
-.order-btn {
-    background-color: #585ae9;
-    color: #f4f2f2;
-    padding: 1em 2em;
-    margin: 5px;
-    border-radius: 6px;
-}*/
-
-.link-style{
+.link-style {
     background-color: #535bf2;
-    color: #f4f2f2;  
+    color: #f4f2f2;
 }
 
 .order-btn:hover {

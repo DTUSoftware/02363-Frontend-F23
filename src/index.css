@@ -18,6 +18,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+
 }
 
 @media only screen and (max-width: 768px) {
@@ -40,51 +41,51 @@
         display: none;
     }
 
-  }
+}
 
 @media only screen and (min-width: 768px) {
 
     .shop-table {
-          overflow-y: auto;
-          height: 500px;
-          overflow-x: auto;
-          width: 778px;
-      }
-  
-      caption {
-          width: 140px;
-          font-weight: 600;
-          font-size: 18px;
-          color: var(--primary-text-color);
-      }
-  
-      thead {
+        overflow-y: auto;
+        height: 500px;
+        overflow-x: auto;
+        width: 778px;
+    }
+
+    caption {
+        width: 140px;
+        font-weight: 600;
+        font-size: 18px;
+        color: var(--primary-text-color);
+    }
+
+    thead {
         display: none;
     }
-    
+
 }
 
-@media only screen and (min-width: 992px) { 
-    
+@media only screen and (min-width: 992px) {
+
     .shop-table {
-          overflow-y: auto;
-          height: 350px;
-          overflow-x: auto;
-          width: 992px;
-        }
-  
+        overflow-y: auto;
+        height: 350px;
+        overflow-x: auto;
+        width: 992px;
+    }
+
     caption {
-          width: fit-content;
-          font-weight: 600;
-          font-size: 20px;
-          color: var(--primary-text-color);
-          margin-left: 10px;
-        }
-  
+        width: fit-content;
+        font-weight: 600;
+        font-size: 20px;
+        color: var(--primary-text-color);
+        margin-left: 10px;
+    }
+
     thead {
         display: table;
     }
-  
+
 }
 
 tbody {
@@ -96,6 +97,7 @@ tr {
     display: table;
     width: 100%;
 }
+
 
 p {
     font-size: 20px;
@@ -110,7 +112,7 @@ table {
     font-size: 10px;
     border-collapse: collapse;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     background-color: var(--secondary-background-color);
     border-radius: 20px;
 }
@@ -148,24 +150,12 @@ button {
     cursor: pointer;
     transition: border-color 0.25s;
 }
+
 button:hover {
     border-color: var(--button-text-color);
 }
+
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
-
-/*
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #F2E9E4;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    button {
-        background-color: #f9f9f9;
-    }
-}*/

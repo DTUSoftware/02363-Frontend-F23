@@ -255,10 +255,9 @@ function CartTotal({
                     : ` ${shippingPrice.toFixed(2)} DKK`}
             </span>
             <br />
-            <span>Du sparer 10%:</span>
             <span className="text-right">
                 {hasRebate
-                    ? ` ${(cartTotal * totalRebate).toFixed(
+                    ? `Du sparer 10%  ${(cartTotal * totalRebate).toFixed(
                           2
                       )} DKK`
                     : "Spar 10% ved køb over 300 DKK"}
