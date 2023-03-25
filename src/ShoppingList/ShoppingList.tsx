@@ -144,6 +144,7 @@ function ShoppingList({
                     toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
                     removeItem={removeItem}
                     upsellItem={upsellItem}
+                    productList={productList}
                 />
             ) : (
                 <p className="empty">Din kurv er tom!</p>
@@ -160,6 +161,7 @@ function ProductTable({
     toggleRecurringOrderSchedule,
     removeItem,
     upsellItem,
+    productList,
 }: {
     items: CartItem[];
     decrementQuantity: (index: number) => void;
@@ -168,14 +170,25 @@ function ProductTable({
     toggleRecurringOrderSchedule: (index: number) => void;
     removeItem: (index: number) => void;
     upsellItem: (index: number) => void;
+    productList: Products;
 }) {
-    function itemTotal(item: CartItem) {
+    const itemTotal = (item: CartItem) => {
         const priceSum = item.quantity * item.product.price;
         if (item.quantity >= item.product.rebateQuantity) {
             return priceSum * (1 - item.product.rebatePercent / 100);
         } else {
             return priceSum;
         }
+    }
+
+    const hasUpsellProducts = () => {
+        let upsellItemsExsist = false
+        items.forEach(item => {
+            if (item.product.upsellProductId !== null) {
+                upsellItemsExsist = true;
+            }
+        });
+        return upsellItemsExsist;
     }
 
     return (
@@ -208,13 +221,15 @@ function ProductTable({
 
         <div className="upsell-table">
             <table>
-                <caption className="upsell-heading">Der er varer i din kurv der kan erstattes</caption>
+                <caption className="upsell-heading">Varer som andre kunder har set på</caption>
                 <tbody>
                     {items.map((item, index) => (
                             <UpsellItems
                                 key={index}
                                 item={item}
-                                upsellItem={() => upsellItem(index)} />
+                                upsellItem={() => upsellItem(index)} 
+                                productList={productList}
+                            />
                     ))}
                 </tbody>
             </table>
@@ -287,31 +302,37 @@ function CartTotal({
 
 function UpsellItems ({
     item,
-    upsellItem
+    upsellItem,
+    productList
 } : {
     item: CartItem;
     upsellItem: () => void;
+    productList: Products
 }) {
-    return (
+    const upsellProduct = item.product.upsellProductId !== null ? productList[item.product.upsellProductId] : null
+
+    if (upsellProduct !== null) {
+        return (
         <tr className="upsell-content">
             <td>
             <div>
             <div className="upsell-picture">
-                <img className="upsell-picture" src={item.product!.imageUrl}></img>
+                <img className="upsell-picture" src={upsellProduct.imageUrl}></img>
             </div>
-            {item.product.upsellProductId !== null && (
             <button
                 className="upsellBtn"
-                aria-label={`Andre har valgt ${item.product.upsellProductId}`}
+                aria-label={`Andre har valgt ${upsellProduct.upsellProductId}`}
                 onClick={() => upsellItem()}
             >
                 Erstat vare
             </button>
-        )}
             </div>
         </td>
     </tr>
     )
+    } else {
+        return (<></>);
+    }
 }
 
 function ProductTableRow({
