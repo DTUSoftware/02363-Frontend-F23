@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
-import { Link } from "react-router-dom";
 import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
 import { ProductItem } from "../interfaces/ProductItem";
+import Link from "../Navigation/Link";
 
 function ShoppingList({
     items,
@@ -15,6 +15,7 @@ function ShoppingList({
     setItems: (items: CartItem[]) => void;
     productList: Products;
 }) {
+
     // Populates cart with dummy items
     useEffect(() => {
         if (items.length === 0) {
@@ -122,6 +123,8 @@ function ShoppingList({
     }
 
     const listEmpty = items === undefined || items.length === 0;
+    //if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
+    //else if(error != null) {return (<h1> {error} </h1>)}
     return (
         <div className="ShoppingList">
             {!listEmpty && (
@@ -141,6 +144,7 @@ function ShoppingList({
                     toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
                     removeItem={removeItem}
                     upsellItem={upsellItem}
+                    productList={productList}
                 />
             ) : (
                 <p className="empty">Din kurv er tom!</p>
@@ -157,6 +161,7 @@ function ProductTable({
     toggleRecurringOrderSchedule,
     removeItem,
     upsellItem,
+    productList,
 }: {
     items: CartItem[];
     decrementQuantity: (index: number) => void;
@@ -165,14 +170,25 @@ function ProductTable({
     toggleRecurringOrderSchedule: (index: number) => void;
     removeItem: (index: number) => void;
     upsellItem: (index: number) => void;
+    productList: Products;
 }) {
-    function itemTotal(item: CartItem) {
+    const itemTotal = (item: CartItem) => {
         const priceSum = item.quantity * item.product.price;
         if (item.quantity >= item.product.rebateQuantity) {
             return priceSum * (1 - item.product.rebatePercent / 100);
         } else {
             return priceSum;
         }
+    }
+
+    const hasUpsellProducts = () => {
+        let upsellItemsExsist = false
+        items.forEach(item => {
+            if (item.product.upsellProductId !== null) {
+                upsellItemsExsist = true;
+            }
+        });
+        return upsellItemsExsist;
     }
 
     return (
@@ -205,13 +221,15 @@ function ProductTable({
 
         <div className="upsell-table">
             <table>
-                <caption className="upsell-heading">Der er varer i din kurv der kan erstattes</caption>
+                <caption className="upsell-heading">Varer som andre kunder har set på</caption>
                 <tbody>
                     {items.map((item, index) => (
                             <UpsellItems
                                 key={index}
                                 item={item}
-                                upsellItem={() => upsellItem(index)} />
+                                upsellItem={() => upsellItem(index)} 
+                                productList={productList}
+                            />
                     ))}
                 </tbody>
             </table>
@@ -221,7 +239,7 @@ function ProductTable({
         <CartTotal items={items} itemTotal={itemTotal} />
         <br />
         <Link className="order-btn" to="/delivery">
-                <button>Gå til levering</button>
+                Gå til levering
         </Link>
         </div>
         </>
@@ -242,64 +260,78 @@ function CartTotal({
         return (sum += itemTotal(item));
     }, 0);
     const hasRebate = cartTotal >= 300;
+    const currency = items[0].product.currency;
+    const subtotal = cartTotal.toFixed(2);
+    const shipping = shippingPrice.toFixed(2);
+    const rebate = (cartTotal * totalRebate).toFixed(2);
+    const totalWithRebate = (cartTotal * (1 - totalRebate) + shippingPrice).toFixed(2);
 
     return (
         <p className="total">
             <span className="text-left">Subtotal</span>
-            <span className="text-right">{`${cartTotal.toFixed(2)} DKK`}</span>
+            <span className="text-right" aria-label={`Subtotal ${subtotal} ${currency}`}>{`${subtotal} ${currency}`}</span>
             <br />
             <span className="text-left">{" "}Fragt</span>
             <span className="text-right">
                 {cartTotal >= freeShipping
                     ? "FRI FRAGT"
-                    : ` ${shippingPrice.toFixed(2)} DKK`}
+                    : ` ${shipping} ${currency}`}
             </span>
             <br />
             <span className="text-right">
                 {hasRebate
-                    ? `Du sparer 10%  ${(cartTotal * totalRebate).toFixed(
-                          2
-                      )} DKK`
-                    : "Spar 10% ved køb over 300 DKK"}
+                    ? `Du sparer 10% ${rebate} ${currency}`
+                    : `Spar 10% ved køb over 300 ${currency}`}
             </span>
             <br />
             <span className="text-left">Pris i alt</span>
-            <span className="text-right">{`${
+            <span className="text-right" aria-label={`Pris i alt ${
                 hasRebate
-                    ? (cartTotal * (1 - totalRebate) + shippingPrice).toFixed(2)
+                ? totalWithRebate
+                : cartTotal.toFixed(2)
+            } ${currency}`}>
+                {`${
+                hasRebate
+                    ? totalWithRebate
                     : cartTotal.toFixed(2)
-            } ${items[0].product.currency}`}</span>
+            } ${currency}`}</span>
         </p>
     );
 }
 
 function UpsellItems ({
     item,
-    upsellItem
+    upsellItem,
+    productList
 } : {
     item: CartItem;
     upsellItem: () => void;
+    productList: Products
 }) {
-    return (
+    const upsellProduct = item.product.upsellProductId !== null ? productList[item.product.upsellProductId] : null
+
+    if (upsellProduct !== null) {
+        return (
         <tr className="upsell-content">
             <td>
             <div>
             <div className="upsell-picture">
-                <img className="upsell-picture" src={item.product!.imageUrl}></img>
+                <img className="upsell-picture" src={upsellProduct.imageUrl}></img>
             </div>
-            {item.product.upsellProductId !== null && (
             <button
                 className="upsellBtn"
-                aria-label={`Andre har valgt ${item.product.upsellProductId}`}
+                aria-label={`Andre har valgt ${upsellProduct.name}`}
                 onClick={() => upsellItem()}
             >
                 Erstat vare
             </button>
-        )}
             </div>
         </td>
     </tr>
     )
+    } else {
+        return (<></>);
+    }
 }
 
 function ProductTableRow({
