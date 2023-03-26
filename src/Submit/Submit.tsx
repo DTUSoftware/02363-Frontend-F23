@@ -5,8 +5,8 @@ import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 
-const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 //const submitUrl = "http://localhost:5114/api/orders";
+const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function Submit({
     cartItems,
@@ -87,7 +87,7 @@ function Submit({
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
             {error === "" ? (
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
                             Inden at du kan indsende din order, SKAL du
@@ -144,7 +144,7 @@ function Submit({
                             Indsend order
                         </button>
                     ) : (
-                        <p>Loading...</p>
+                        <p className="loading">Loading...</p>
                     )}
                 </form>
             ) : (
