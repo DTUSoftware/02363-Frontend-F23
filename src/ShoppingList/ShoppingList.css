@@ -134,7 +134,7 @@
         align-items: center;
         overflow-y: auto;
         overflow-x: auto;
-        width: 338px;
+        width: auto;
         overflow-x: auto;
         white-space: nowrap;
     }
@@ -144,7 +144,7 @@
         justify-content: center;
         margin: 20px;
         overflow-x: auto;
-        width: 338px;
+        width: auto;
     }
 
     .upsell-heading {
@@ -303,7 +303,7 @@
         align-items: center;
         overflow-y: auto;
         overflow-x: auto;
-        width: 778px;
+        width: auto;
         overflow-x: auto;
         background-color: var(--secondary-background-color);
         border-radius: 20px;
@@ -351,7 +351,7 @@
 
 
     .upsell-table {
-        width: 992px;
+        width: auto;
     }
 
     .upsell-content {

@@ -27,7 +27,7 @@
         overflow-y: auto;
         height: 350px;
         overflow-x: auto;
-        width: 338px;
+        width: auto;
     }
 
     caption {
@@ -47,9 +47,9 @@
 
     .shop-table {
         overflow-y: auto;
-        height: 500px;
+        height: 350px;
         overflow-x: auto;
-        width: 778px;
+        width: auto;
     }
 
     caption {
@@ -71,7 +71,7 @@
         overflow-y: auto;
         height: 350px;
         overflow-x: auto;
-        width: 992px;
+        width: auto;
     }
 
     caption {
