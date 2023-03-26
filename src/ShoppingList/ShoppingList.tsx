@@ -212,8 +212,7 @@ function ProductTable({
                             itemTotal={() => itemTotal(item)}
                             toggleGiftWrap={() => toggleGiftWrap(index)}
                             toggleRecurringOrderSchedule={() => toggleRecurringOrderSchedule(index)}
-                            removeItem={() => removeItem(index)}
-                            upsellItem={() => upsellItem(index)} />
+                            removeItem={() => removeItem(index)}/>
                     ))}
                 </tbody>
             </table>
@@ -317,7 +316,7 @@ function UpsellItems ({
             <td>
             <div>
             <div className="upsell-picture">
-                <img className="upsell-picture" src={upsellProduct.imageUrl}></img>
+                <img className="upsell-picture" alt={`Billede af ${upsellProduct.name}`} src={upsellProduct.imageUrl}></img>
             </div>
             <button
                 className="upsellBtn"
@@ -343,7 +342,6 @@ function ProductTableRow({
     toggleGiftWrap,
     toggleRecurringOrderSchedule,
     removeItem,
-    upsellItem,
 }: {
     item: CartItem;
     decrementQuantity: () => void;
@@ -352,25 +350,24 @@ function ProductTableRow({
     toggleGiftWrap: () => void;
     toggleRecurringOrderSchedule: () => void;
     removeItem: () => void;
-    upsellItem: () => void;
 }) {
     return (
         <tr>
             <td className="product">
                 <div className="picture">
-                    <img className="picture" src={item.product!.imageUrl}></img>
+                    <img className="picture" alt={`Billede af ${item.product.name}`} src={item.product.imageUrl}></img>
                 </div>
                 <span className="product-info">
-                    <p className="product-name">{`${item.product!.name}`}</p>
+                    <p className="product-name">{`${item.product.name}`}</p>
                     <span className="discount-container">
                         <p className="discount">
-                            {item.product!.rebateQuantity > 0 &&
-                                `Køb ${item.product!.rebateQuantity}, spar ${item.product!.rebatePercent}%`}
+                            {item.product.rebateQuantity > 0 &&
+                                `Køb ${item.product.rebateQuantity}, spar ${item.product.rebatePercent}%`}
                         </p>
                     </span>
                     <p className="product-price"
-                        aria-label={`Pris ${item.product!.price.toFixed(2)} ${item.product!.currency}`}
-                    >{`${item.product!.price} ${item.product!.currency}`}</p>
+                        aria-label={`Pris ${item.product.price.toFixed(2)} ${item.product.currency}`}
+                    >{`${item.product.price} ${item.product.currency}`}</p>
                     <span className="input">
                         <div className="giftwrapping">
                             <label>
@@ -414,7 +411,7 @@ function ProductTableRow({
                         </button>
                     </span>
                 </td>
-                <td className="price-total">{`${itemTotal().toFixed(2)} ${item.product!.currency}`}</td>
+                <td className="price-total">{`${itemTotal().toFixed(2)} ${item.product.currency}`}</td>
                 <td className="trash">
                     <button
                         aria-label={`fjern ${item.product.name}`}
