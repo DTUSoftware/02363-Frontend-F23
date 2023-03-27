@@ -1,0 +1,12 @@
+.finish-box {
+    padding-top: 4rem;
+    display: inline-block;
+}
+
+.finish-message p {
+    text-align: center;
+}
+
+.finish-message {
+    margin-bottom: 2rem;
+}

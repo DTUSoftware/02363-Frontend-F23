@@ -1,65 +1,76 @@
-import React, { useState } from "react";
-import productsSJSON from "../assets/products.json";
+import { useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
-import { Link } from "react-router-dom";
-import { ProductItem } from '../interfaces/ProductItem';
-import { CartItem } from '../interfaces/CartItem';
+import { CartItem } from "../interfaces/CartItem";
+import { Products } from "../interfaces/Products";
+import { ProductItem } from "../interfaces/ProductItem";
+import Link from "../Navigation/Link";
 
-type Products = { [key: string]: ProductItem };
-
-const products: Products = {};
-productsSJSON.forEach((x) => (products[x.id] = x));
-
-
-const itemList = [
-    {
-        product: products["vitamin-c-500-250"],
-        quantity: 2,
-        giftWrap: false,
-        recurringOrder: false,
-    },
-    {
-        product: products["kids-songbook"],
-        quantity: 1,
-        giftWrap: true,
-        recurringOrder: false,
-    },
-    {
-        product: products["sugar-cane-1kg"],
-        quantity: 2,
-        giftWrap: false,
-        recurringOrder: true,
-    },
-];
-
-
-
-function ShoppingList() {
-    const [items, setItems] = useState(itemList);
+function ShoppingList({
+    items,
+    setItems,
+    productList,
+}: {
+    items: CartItem[];
+    setItems: (items: CartItem[]) => void;
+    productList: Products;
+}) {
+    // Populates cart with dummy items
+    useEffect(() => {
+        if (items.length === 0) {
+            const p1 = productList["vitamin-c-500-200"];
+            const p2 = productList["kids-songbook"];
+            const p3 = productList["sugar-cane-1kg"];
+            if (p1 !== undefined && p2 !== undefined && p3 !== undefined) {
+                const list: CartItem[] = [
+                    {
+                        product: p1,
+                        quantity: 2,
+                        giftWrap: false,
+                        recurringOrder: false,
+                    },
+                    {
+                        product: p2,
+                        quantity: 1,
+                        giftWrap: true,
+                        recurringOrder: false,
+                    },
+                    {
+                        product: p3,
+                        quantity: 2,
+                        giftWrap: false,
+                        recurringOrder: true,
+                    },
+                ];
+                setItems(list);
+            }
+        }
+    }, []);
 
     function incrementQuantity(index: number) {
-        const item = items.at(index)!;
-        handleQuantityChange(item.product, item.quantity + 1);
+        const item = items.at(index);
+        if (item !== undefined) {
+            handleQuantityChange(item.product, item.quantity + 1);
+        }
     }
 
     function decrementQuantity(index: number) {
-        const item = items.at(index)!;
-        if (item.quantity > 1) {
+        const item = items.at(index);
+        if (item !== undefined && item.quantity > 1) {
             handleQuantityChange(item.product, item.quantity - 1);
         }
     }
 
-    function upsellItem(index: number){
-        const item = items.at(index)!;
-        if (item.product.upsellProductId != null){
+    function upsellItem(index: number) {
+        const item = items.at(index);
+        if (item !== undefined && item.product.upsellProductId !== null) {
             const upsell = `${item.product.upsellProductId}`;
-            handleUpsellChange(item.product, upsell)
+            handleUpsellChange(item.product, upsell);
         }
     }
 
     function removeItem(index: number) {
-        setItems(items.filter((p, i) => i != index));
+        setItems(items.filter((p, i) => i !== index));
     }
 
     function toggleGiftWrap(index: number) {
@@ -86,11 +97,11 @@ function ShoppingList() {
         );
     }
 
-    function handleUpsellChange(product: ProductItem, upsell: string){
+    function handleUpsellChange(product: ProductItem, upsell: string) {
         setItems(
-            items.map((item) =>{
-                if (item.product.id === product.id){
-                    return {...item, product: products[upsell]};
+            items.map((item) => {
+                if (item.product.id === product.id) {
+                    return { ...item, product: productList[upsell] };
                 } else {
                     return item;
                 }
@@ -111,14 +122,17 @@ function ShoppingList() {
     }
 
     const listEmpty = items === undefined || items.length === 0;
-
+    //if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
+    //else if(error != null) {return (<h1> {error} </h1>)}
     return (
         <div className="ShoppingList">
-            {!listEmpty && <div>
-            <p className="deliveryheading">Køb for 499 DKK og få FRI fragt!</p>
-            <p className="deliveryheading">Køb for over 300 DKK og få 10% rabat!</p>
-            </div>}
-            <p className="heading">Din indkøbskurv</p>
+            {!listEmpty && (
+                <div>
+                    <h1 className="delivery-heading">
+                        Køb for 499 DKK og få FRI fragt!
+                    </h1>
+                </div>
+            )}
             {!listEmpty ? (
                 <ProductTable
                     items={items}
@@ -128,6 +142,7 @@ function ShoppingList() {
                     toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
                     removeItem={removeItem}
                     upsellItem={upsellItem}
+                    productList={productList}
                 />
             ) : (
                 <p className="empty">Din kurv er tom!</p>
@@ -144,6 +159,7 @@ function ProductTable({
     toggleRecurringOrderSchedule,
     removeItem,
     upsellItem,
+    productList,
 }: {
     items: CartItem[];
     decrementQuantity: (index: number) => void;
@@ -152,61 +168,90 @@ function ProductTable({
     toggleRecurringOrderSchedule: (index: number) => void;
     removeItem: (index: number) => void;
     upsellItem: (index: number) => void;
+    productList: Products;
 }) {
-    function itemTotal(item: CartItem) {
-        const priceSum = item.quantity * item.product!.price;
-        if (item.quantity >= item.product!.rebateQuantity) {
-            return priceSum * (1 - item.product!.rebatePercent / 100);
+    const itemTotal = (item: CartItem) => {
+        const priceSum = item.quantity * item.product.price;
+        if (item.quantity >= item.product.rebateQuantity) {
+            return priceSum * (1 - item.product.rebatePercent / 100);
         } else {
             return priceSum;
         }
-    }
+    };
+
+    const hasUpsellProducts = () => {
+        let upsellItemsExsist = false;
+        items.forEach((item) => {
+            if (item.product.upsellProductId !== null) {
+                upsellItemsExsist = true;
+            }
+        });
+        return upsellItemsExsist;
+    };
 
     return (
-        <div className="shopTable">
-            <table>
-                <thead>
-                    <tr>
-                        <th className="product">Produkt</th>
-                        <th className="price">Pris</th>
-                        <th> </th>
-                        <th className="quantity">Antal</th>
-                        <th> </th>
-                        <th className="rebate">Rabat</th>
-                        <th className="priceTotal">Total</th>
-                        <th className="giftwrapping">Gavepapir</th>
-                        <th className="reoccuringorder">Gentag order</th>
-                        <th ></th>
-                        <th className="upsell">Andre populære valg</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map((item, index) => (
-                        <ProductTableRow
-                            key={index}
-                            item={item}
-                            decrementQuantity={() => decrementQuantity(index)}
-                            incrementQuantity={() => incrementQuantity(index)}
-                            itemTotal={() => itemTotal(item)}
-                            toggleGiftWrap={() => toggleGiftWrap(index)}
-                            toggleRecurringOrderSchedule={() =>
-                                toggleRecurringOrderSchedule(index)
-                            }
-                            removeItem={() => removeItem(index)}
-                            upsellItem={() => upsellItem(index)}
-                        />
-                    ))}
-                </tbody>
-            </table>
-            <CartTotal items={items} itemTotal={itemTotal} />
-            <br />
-            <Link className="order-btn" to="/delivery">
-                Bestil produkter
-            </Link>
-        </div>
+        <>
+            <div className="shop-table">
+                <table>
+                    <caption className="stop-caption">Din indkøbskurv</caption>
+                    <thead>
+                        <tr>
+                            <th className="product-heading">Produkt</th>
+                            <th className="quantity-heading">Antal</th>
+                            <th className="priceTotal-heading">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items.map((item, index) => (
+                            <ProductTableRow
+                                key={index}
+                                item={item}
+                                decrementQuantity={() =>
+                                    decrementQuantity(index)
+                                }
+                                incrementQuantity={() =>
+                                    incrementQuantity(index)
+                                }
+                                itemTotal={() => itemTotal(item)}
+                                toggleGiftWrap={() => toggleGiftWrap(index)}
+                                toggleRecurringOrderSchedule={() =>
+                                    toggleRecurringOrderSchedule(index)
+                                }
+                                removeItem={() => removeItem(index)}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="upsell-table">
+                <table>
+                    <caption className="upsell-heading">
+                        Varer som andre kunder har set på
+                    </caption>
+                    <tbody>
+                        {items.map((item, index) => (
+                            <UpsellItems
+                                key={index}
+                                item={item}
+                                upsellItem={() => upsellItem(index)}
+                                productList={productList}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="cart-total">
+                <CartTotal items={items} itemTotal={itemTotal} />
+                <br />
+                <Link className="order-btn" to="/delivery">
+                    Gå til levering
+                </Link>
+            </div>
+        </>
     );
 }
-
 
 function CartTotal({
     items,
@@ -221,19 +266,92 @@ function CartTotal({
     const cartTotal: number = items.reduce((sum, item) => {
         return (sum += itemTotal(item));
     }, 0);
-    const hasRebate = cartTotal>=300;
-    
+    const hasRebate = cartTotal >= 300;
+    const currency = items[0].product.currency;
+    const subtotal = cartTotal.toFixed(2);
+    const shipping = shippingPrice.toFixed(2);
+    const rebate = (cartTotal * totalRebate).toFixed(2);
+    const totalWithRebate = (
+        cartTotal * (1 - totalRebate) +
+        shippingPrice
+    ).toFixed(2);
+
     return (
         <p className="total">
-            <span className="rebatetext"> {`Subtotal: ${cartTotal} DKK`}</span>
-            <br/>
-            <span className="rebatetext"> {cartTotal>=freeShipping ? "FRI FRAGT" : `Fragt: ${shippingPrice} DKK`}</span>
-            <br/>
-            <span className="rebatetext"> {hasRebate ? `Du sparer 10%:  ${cartTotal*totalRebate} DKK` : "Spar 10% ved køb over 300 DKK"}</span>
-            <br/>
-            <span className="totalprice">{`Pris i alt: ${hasRebate ? cartTotal*(1-totalRebate)+shippingPrice : cartTotal} ${items[0].product!.currency}`}</span>
+            <span className="text-left">Subtotal</span>
+            <span
+                className="text-right"
+                aria-label={`Subtotal ${subtotal} ${currency}`}
+            >{`${subtotal} ${currency}`}</span>
+            <br />
+            <span className="text-left"> Fragt</span>
+            <span className="text-right">
+                {cartTotal >= freeShipping
+                    ? "FRI FRAGT"
+                    : ` ${shipping} ${currency}`}
+            </span>
+            <br />
+            <span className="text-right">
+                {hasRebate
+                    ? `Du sparer 10% ${rebate} ${currency}`
+                    : `Spar 10% ved køb over 300 ${currency}`}
+            </span>
+            <br />
+            <span className="text-left">Pris i alt</span>
+            <span
+                className="text-right"
+                aria-label={`Pris i alt ${
+                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                } ${currency}`}
+            >
+                {`${
+                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                } ${currency}`}
+            </span>
         </p>
     );
+}
+
+function UpsellItems({
+    item,
+    upsellItem,
+    productList,
+}: {
+    item: CartItem;
+    upsellItem: () => void;
+    productList: Products;
+}) {
+    const upsellProduct =
+        item.product.upsellProductId !== null
+            ? productList[item.product.upsellProductId]
+            : null;
+
+    if (upsellProduct !== null) {
+        return (
+            <tr className="upsell-content">
+                <td>
+                    <div>
+                        <div className="upsell-picture">
+                            <img
+                                className="upsell-picture"
+                                alt={`Billede af ${upsellProduct.name}`}
+                                src={upsellProduct.imageUrl}
+                            ></img>
+                        </div>
+                        <button
+                            className="upsellBtn"
+                            aria-label={`Andre har valgt ${upsellProduct.name}`}
+                            onClick={() => upsellItem()}
+                        >
+                            Erstat vare
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        );
+    } else {
+        return <></>;
+    }
 }
 
 function ProductTableRow({
@@ -244,7 +362,6 @@ function ProductTableRow({
     toggleGiftWrap,
     toggleRecurringOrderSchedule,
     removeItem,
-    upsellItem,
 }: {
     item: CartItem;
     decrementQuantity: () => void;
@@ -253,79 +370,87 @@ function ProductTableRow({
     toggleGiftWrap: () => void;
     toggleRecurringOrderSchedule: () => void;
     removeItem: () => void;
-    upsellItem: () => void;
 }) {
     return (
         <tr>
-            <td className="product">{`${item.product!.name}`}</td>
-            <td className="price">{`${item.product!.price} ${
+            <td className="product">
+                <div className="picture">
+                    <img className="picture" src={item.product!.imageUrl}></img>
+                </div>
+                <span className="product-info">
+                    <p className="product-name">{`${item.product!.name}`}</p>
+                    <span className="discount-container">
+                        <p className="discount">
+                            {item.product!.rebateQuantity > 0 &&
+                                `Køb ${item.product!.rebateQuantity}, spar ${
+                                    item.product!.rebatePercent
+                                }%`}
+                        </p>
+                    </span>
+                    <p
+                        className="product-price"
+                        aria-label={`Pris ${item.product!.price.toFixed(2)} ${
+                            item.product!.currency
+                        }`}
+                    >{`${item.product!.price} ${item.product!.currency}`}</p>
+                    <span className="input">
+                        <div className="giftwrapping">
+                            <label>
+                                <p className="gift">Gave</p>
+                                <input
+                                    aria-label={`gavepapir ${item.product.name} ${item.giftWrap}`}
+                                    type="checkbox"
+                                    checked={item.giftWrap}
+                                    onChange={() => toggleGiftWrap()}
+                                />
+                            </label>
+                        </div>
+                        <div className="reoccuringorder">
+                            <label>
+                                <p className="subscription">Abbonnér</p>
+                                <input
+                                    aria-label={`gentag order ${item.product.name} ${item.recurringOrder}`}
+                                    type="checkbox"
+                                    checked={item.recurringOrder}
+                                    onChange={() =>
+                                        toggleRecurringOrderSchedule()
+                                    }
+                                />
+                            </label>
+                        </div>
+                    </span>
+                </span>
+            </td>
+            <td>
+                <span className="quantity-container">
+                    <button
+                        aria-label={`reducer antal ${item.product.name}`}
+                        className="decrement-quantityBtn"
+                        onClick={() => decrementQuantity()}
+                    >
+                        -
+                    </button>
+                    <p className="quantity"> {item.quantity} </p>
+                    <button
+                        aria-label={`forøg antal ${item.product.name}`}
+                        className="increment-quantityBtn"
+                        onClick={() => incrementQuantity()}
+                    >
+                        +
+                    </button>
+                </span>
+            </td>
+            <td className="price-total">{`${itemTotal().toFixed(2)} ${
                 item.product!.currency
             }`}</td>
-            <td className="decrement">
-                <button
-                    aria-label={`reducer antal ${item.product.name}`}
-                    className="quantityBtn"
-                    onClick={() => decrementQuantity()}
-                >
-                    -
-                </button>
-            </td>
-            <td className="quantity"> {item.quantity} </td>
-            <td className="increment">
-                <button
-                    aria-label={`forøg antal ${item.product.name}`}
-                    className="quantityBtn"
-                    onClick={() => incrementQuantity()}
-                >
-                    +
-                </button>
-            </td>
-            <td className="rebate">
-                {item.product!.rebateQuantity > 0
-                    && `Køb ${item.product!.rebateQuantity}, spar ${
-                          item.product!.rebatePercent
-                      }%`}
-            </td>
-            <td className="priceTotal">{`${itemTotal()} ${
-                item.product!.currency
-            }`}</td>
-            <td className="giftwrapping">
-                <label>
-                    <input
-                        aria-label={`gavepapir ${item.product.name} ${item.giftWrap}`}
-                        type="checkbox"
-                        checked={item.giftWrap}
-                        onChange={() => toggleGiftWrap()}
-                    />
-                </label>
-            </td>
-            <td className="reoccuringorder">
-                <label>
-                    <input
-                        aria-label={`gentag order ${item.product.name} ${item.recurringOrder}`}
-                        type="checkbox"
-                        checked={item.recurringOrder}
-                        onChange={() => toggleRecurringOrderSchedule()}
-                    />
-                </label>
-            </td>
             <td className="trash">
                 <button
+                    className="trash-button"
                     aria-label={`fjern ${item.product.name}`}
                     onClick={() => removeItem()}
                 >
                     <FaRegTrashAlt />
                 </button>
-            </td>
-            <td>{item.product!.upsellProductId !== null &&
-                <button 
-                className="upsellBtn"
-                aria-label={`Andre har valgt ${item.product.upsellProductId}`}
-                onClick={()=> upsellItem()}
-                >
-                    {`${item.product!.upsellProductId}`}
-                </button>
-}
             </td>
         </tr>
     );
