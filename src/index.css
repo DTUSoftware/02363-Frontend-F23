@@ -1,30 +1,120 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
+
 :root {
     font-family: Nunito, sans-serif;
     line-height: 1.5;
     font-weight: 400;
-    color-scheme: light dark;
-    color: rgb(0, 0, 0);
-    background-color: #ffffff;
+    color: #4A4E69;
+    background-color: #F2E9E4;
+    --primary-background-color: #F2E9E4;
+    --secondary-background-color: white;
+    --primary-text-color: #4A4E69;
+    --button-color: #22223B;
+    --button-text-color: #F2E9E4;
+    --accent-color: #9A8C98;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
+    --box-border: #E6E6E6;
+    --checkbox-color: #444444;
 }
 
+@media only screen and (max-width: 768px) {
+
+    .shop-table {
+        overflow-y: auto;
+        height: 350px;
+        overflow-x: auto;
+        width: 338px;
+    }
+
+    caption {
+        width: 140px;
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--primary-text-color);
+    }
+
+    thead {
+        display: none;
+    }
+
+  }
+
+@media only screen and (min-width: 768px) {
+
+    .shop-table {
+          overflow-y: auto;
+          height: 500px;
+          overflow-x: auto;
+          width: 778px;
+      }
+  
+      caption {
+          width: 140px;
+          font-weight: 600;
+          font-size: 18px;
+          color: var(--primary-text-color);
+      }
+  
+      thead {
+        display: none;
+    }
+    
+}
+
+@media only screen and (min-width: 992px) { 
+    
+    .shop-table {
+          overflow-y: auto;
+          height: 350px;
+          overflow-x: auto;
+          width: 992px;
+        }
+  
+    caption {
+          width: fit-content;
+          font-weight: 600;
+          font-size: 20px;
+          color: var(--primary-text-color);
+          margin-left: 10px;
+        }
+  
+    thead {
+        display: table;
+    }
+  
+}
+
+tbody {
+    padding: 2px;
+}
+
+tr {
+    border-bottom: #EAEAEA solid 0.5px;
+    display: table;
+    width: 100%;
+}
 
 p {
-    font-size: large;
-    color: black;
-    text-align: center;
+    font-size: 20px;
+    text-align: left;
+    font-weight: 400px;
 }
 
 table {
+    width: 100%;
     table-layout: fixed;
     text-align: center;
+    font-size: 10px;
     border-collapse: collapse;
+    display: flex;
+    flex-direction:column;
+    background-color: var(--secondary-background-color);
+    border-radius: 20px;
 }
 
 a {
@@ -41,8 +131,6 @@ body {
     margin: 0;
     display: flex;
     place-items: center;
-    min-width: 320px;
-    min-height: 100%;
 }
 
 h1 {
@@ -51,30 +139,30 @@ h1 {
 }
 
 button {
-    border-radius: 8px;
+    border-radius: 3px;
     border: 1px solid transparent;
     padding: 0.3em 0.6em;
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    color: black;
-    background-color: #f9f9f9;
+    color: var(--button-text-color);
+    background-color: var(--button-color);
     cursor: pointer;
     transition: border-color 0.25s;
 }
 button:hover {
-    border-color: #646cff;
+    border-color: var(--button-text-color);
 }
 button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
 
-
+/*
 @media (prefers-color-scheme: light) {
     :root {
         color: #213547;
-        background-color: #ffffff;
+        background-color: #F2E9E4;
     }
     a:hover {
         color: #747bff;
@@ -82,4 +170,4 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
-}
+}*/

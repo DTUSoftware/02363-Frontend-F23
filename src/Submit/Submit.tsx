@@ -5,6 +5,7 @@ import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 
+//const submitUrl = "http://localhost:5114/api/orders";
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function Submit({
@@ -26,8 +27,15 @@ function Submit({
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
+        const orderDetails = cartItems.map((x) => {
+            return { 
+                productId: x.product.id,
+                quantity: x.quantity,
+                giftWrap: x.giftWrap,
+                recurringOrder: x.recurringOrder };
+          });
         const order: Order = {
-            cartItems: cartItems,
+            orderDetails: orderDetails,
             billingAddress: billingAddress,
             shippingAddress: shippingAddress,
             checkMarketing: marketing,
@@ -79,7 +87,7 @@ function Submit({
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
             {error === "" ? (
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
                             Inden at du kan indsende din order, SKAL du
@@ -136,7 +144,7 @@ function Submit({
                             Indsend order
                         </button>
                     ) : (
-                        <p>Loading...</p>
+                        <p className="loading">Loading...</p>
                     )}
                 </form>
             ) : (

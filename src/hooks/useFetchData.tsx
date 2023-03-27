@@ -25,7 +25,7 @@ const useFetchData = <T,>(url: string, initialEntries: T) => {
                 })
                 .catch((er) => {
                     setIsLoading(false);
-                    setError(er);
+                    setError(er.message);
                 });
     }
     

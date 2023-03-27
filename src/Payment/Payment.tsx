@@ -1,46 +1,64 @@
 import "./Payment.css";
-import { useEffect, useState } from "react";
-import Link from "../Navigation/Link";
+import { useState } from "react";
 import card_americanexpress from './assets/americanexpress_logo.png';
 import card_dankort from './assets/dankort_logo.png';
 import card_mastercard from './assets/mastercard_logo.png';
 import navigate from "../Navigation/navigate";
-function Payment() {
+import { CustomerPayment } from "../interfaces/CustomerPayment";
 
-    const [cardNumber, setCardNumber] = useState("");
-    const [cvcNumber, setCvcNumber] = useState("");
+const payment: CustomerPayment = {
+    cardNumber: "",
+    cvcNumber: "",
+    expiryMonth: "01",
+    expiryYear: "23",
+}
+
+function Payment() {
+    const [customerPayment, setCustomerPayment] = useState<CustomerPayment>(payment);
     //const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         navigate("/submit");
-
     }
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        setCustomerPayment({
+            ...customerPayment,
+            [event.target.name]: event.target.value,
+        });
+    };
+
+    const onSelect = (
+        event: React.ChangeEvent<HTMLSelectElement>
+    ): void => {
+        setCustomerPayment({
+            ...customerPayment,
+            [event.target.name]: event.target.value,
+        });
+    };
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="payment">
                 <h2 className="fullrow">Kort oplysninger</h2>
-                <h3 className="fullrow">Kortnummer</h3>
+                <label className="fullrow" htmlFor="cardNumber">Kortnummer</label>
                 <div className="cardinformation">
-                    <label htmlFor="cardNumber"></label>
                     <input
                         autoFocus
                         required
                         type="text"
                         name="cardNumber"
+                        id="cardNumber"
                         minLength={15} //American Express
                         maxLength={16} //Others
-                        value={cardNumber}
-                        onChange={(e) =>
-                            setCardNumber(e.target.value)
-                        }
-
+                        onChange={onChange}
                     />
                 </div>
-                <h3 className="paymentblock">Udløbsmåned</h3><h3 className="paymentblock">Udløbsår</h3>
+                <label className="paymentblock" htmlFor="expiryMonth">Udløbsmåned</label> <label className="paymentblock" htmlFor="expiryYear">Udløbsår</label>
 
                 <div className="paymentblock">
-                    <label htmlFor="ExpiryMonth"></label>
-                    <select className="dropdownpayment" >
+                    <select required className="dropdownpayment" id="expiryMonth" name="expiryMonth" onChange={onSelect}>
                         <option> 01 </option>
                         <option> 02 </option>
                         <option> 03 </option>
@@ -57,8 +75,7 @@ function Payment() {
                 </div>
 
                 <div className="paymentblock">
-                    <label htmlFor="ExpiryYear"></label>
-                    <select className="dropdownpayment" >
+                    <select required className="dropdownpayment" id="expiryYear" name="expiryYear" onSelect={onSelect}>
                         <option> 23 </option>
                         <option> 24 </option>
                         <option> 25 </option>
@@ -74,19 +91,16 @@ function Payment() {
                         <option> 35 </option>
                     </select>
                 </div>
-                <h3 className="fullrow">
-                    <label htmlFor="CVC"> CVC</label>
-                </h3>
+                <label className="fullrow" htmlFor="cvcNumber"> CVC</label>
                 <div className="fullrow">
                     <input className="cvcfield"
-
                         required
                         pattern="[0-9]{3}"
                         type="text"
                         maxLength={3}
+                        id="cvcNumber"
                         name="cvcNumber"
-                        value={cvcNumber}
-                        onChange={(e) => setCvcNumber(e.target.value)}
+                        onChange={onChange}
                     />
                 </div>
                 <div className="fullrow">

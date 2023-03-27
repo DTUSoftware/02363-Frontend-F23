@@ -1,55 +1,363 @@
-.heading {
-    text-align: left;
-    background-color: rgb(247, 247, 247);
-    border-radius: 0.5em;
-    text-indent: 0.2em;
-}
-
-.deliveryheading {
-    display: inline;
+.delivery-heading {
+    display: inline-flex;
     text-align: center;
     font-size: 14px;
-    border-color: #9b9efa;
-    border-style: solid;
-    border-radius: 0.2em;
     width: 215px;
-    margin: auto;
-    margin: 15px;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
-.rebatetext {
-    font-size: 14px;
+
+
+@media only screen and (max-width: 768px) {
+
+    .product {
+        display: flex;
+        margin-left: 10px;
+        margin-top: 10px;
+        flex-wrap: nowrap;
+    }
+
+    .picture,
+    .upsell-picture {
+        width: 46px;
+        height: 70px;
+    }
+
+    .product-name {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 10px;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-bottom: 0;
+        margin-top: 7px;
+    }
+
+    .discount-container {
+        display: flex;
+        justify-content: left;
+
+    }
+
+    .discount {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 10px;
+        font-weight: 500;
+        margin-top: 7px;
+        margin-bottom: 0px;
+        background-color: #FFC1C1;
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+
+    .product-price {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 12px;
+        white-space: nowrap;
+        font-weight: 700;
+        margin-top: 7px;
+        display: table;
+        justify-content: center;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        table-layout: fixed;
+    }
+    
+    .quantity-container {
+        display: flex;
+        border: #1c1a1a solid 0.3px;
+        border-radius: 10px;
+        align-items: center;
+        width: fit-content;
+    }
+
+    .decrement-quantityBtn {
+        background-color: var(--secondary-background-color);
+        color: var(--primary-text-color);
+        border-radius: 30px;
+    }
+
+    .increment-quantityBtn {
+        background-color: var(--secondary-background-color);
+        color: var(--primary-text-color);
+        border-radius: 30px;
+    }
+
+    .quantity {
+        font-size: 12px;
+        margin: 0px;
+    }
+
+    .input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .gift,
+    .subscription {
+        font-size: 10px;
+        font-weight: 500;
+        margin-right: 30px;
+        text-align: center;
+    }
+
+    .price-total {
+        font-weight: 700;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+
+    .upsell-table {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        align-items: center;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 338px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .upsell-content {
+        display: inline;
+        justify-content: center;
+        margin: 20px;
+        overflow-x: auto;
+        width: 338px;
+    }
+
+    .upsell-heading {
+        font-size: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .cart-total {
+        background-color: var(--secondary-background-color); 
+        border-radius: 20px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .total {
+        font-weight: 400;
+        font-size: 18px;
+    }
+
+    .text-left {
+        float: left;
+    }
+
+    .text-right {
+        float:right;
+    }
+
+
+
+
 }
 
-.totalborder{
-    background-color: rgb(247, 247, 247);
-    display: block;
-    position: relative;
-    border-radius: 10px;
-    width: 210px;
-    position:relative;
-    margin-left: 910px;
-    margin-top: 30px;
+@media only screen and (min-width: 768px) {
+    .product {
+        display: flex;
+        margin-left: 10px;
+        margin-top: 10px;
+        flex-wrap: nowrap;
+    }
+
+    .picture,
+    .upsell-picture {
+        width: 70px;
+        height: 96px;
+    }
+
+    .product-name {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-bottom: 0;
+        margin-top: 7px;
+    }
+
+    .discount-container {
+        display: flex;
+        justify-content: left;
+
+    }
+
+    .discount {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: 7px;
+        margin-bottom: 0px;
+        background-color: #FFC1C1;
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+
+    .product-price {
+        margin-left: 5px;
+        text-align: left;
+        font-size: 16px;
+        white-space: nowrap;
+        font-weight: 700;
+        margin-top: 7px;
+        display: table;
+        justify-content: center;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        table-layout: fixed;
+    }
+    
+    .quantity-container {
+        display: flex;
+        border: #1c1a1a solid 0.4px;
+        border-radius: 10px;
+        align-items: center;
+        width: fit-content;
+        margin-left: 130px;
+    }
+
+    .decrement-quantityBtn {
+        background-color: var(--secondary-background-color);
+        color: var(--primary-text-color);
+        border-radius: 40px;
+        font-size: 14px;
+        padding-right: 15px;
+
+    }
+
+    .increment-quantityBtn {
+        background-color: var(--secondary-background-color);
+        color: var(--primary-text-color);
+        border-radius: 30px;
+        font-size: 14px;
+        padding-left: 15px;
+    }
+
+    .quantity {
+        font-size: 14px;
+        margin: 0px;
+    }
+
+    .input {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .gift,
+    .subscription {
+        font-size: 12px;
+        font-weight: 500;
+        margin-right: 30px;
+        text-align: center;
+    }
+
+    .price-total {
+        font-weight: 700;
+        font-size: 18px;
+        padding-left: 80px;
+    }
+
+
+    .upsell-table {
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        align-items: center;
+        overflow-y: auto;
+        overflow-x: auto;
+        width: 778px;
+        overflow-x: auto;
+        background-color: var(--secondary-background-color);
+        border-radius: 20px;       
+    }
+
+    .upsell-content {
+        display: inline;
+        justify-content: center;
+        margin: 20px;
+        overflow-x: auto;
+        width: 338px;
+    }
+
+    .upsell-heading {
+        font-size: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .cart-total {
+        background-color: var(--secondary-background-color); 
+        border-radius: 20px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .total {
+        font-weight: 400;
+        font-size: 18px;
+    }
+
+    .text-left {
+        float: left;
+    }
+
+    .text-right {
+        float:right;
+    }
 }
 
-.fragt,
-.subtotal {
-    text-align: right;
-    font-size: 1em;
-    background-color: rgb(247, 247, 247);
-    border-radius: 0.2em;
+@media only screen and (min-width: 992px) {
+    .price-total {
+        padding-right: 50px;
+    }
+
+
+    .upsell-table {
+        width: 992px;
+    }
+
+    .upsell-content {
+        padding-right: 100px;
+        padding-left: 100px;
+    }
+
+    .upsell-heading {
+        font-size: 14px;
+    }
+
+    .upsell-picture {
+        width: 50px;
+        height: 70px;
+    }
+
+    .cart-total {
+        border-radius: 20px;
+        background-color: var(--secondary-background-color);
+    } 
 }
 
-.total{
-    text-align: right;
-    font-size: 1.2em;
-    font-weight: bolder; 
-    background-color: rgb(247, 247, 247);
-    border-radius: 0.2em;
-}
-
-
+/*
 .product {
     text-align: left;
     padding-right: 100px;
@@ -93,7 +401,7 @@
     padding: 1em 2em;
     margin: 5px;
     border-radius: 6px;
-}
+}*/
 
 .link-style{
     background-color: #535bf2;
