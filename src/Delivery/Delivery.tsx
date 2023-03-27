@@ -8,21 +8,41 @@ import navigate from "../Navigation/navigate";
 
 type CityData = { [key: string]: City };
 
-const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, address, check, setCheck} : {billingAddress: Address, setBilling: (address: Address) => void, shippingAddress: Address, setShipping: (address: Address) => void, address: Address, check: boolean, setCheck: (check: boolean) => void }) => {
-    
+const Delivery = ({
+    billingAddress,
+    setBilling,
+    shippingAddress,
+    setShipping,
+    address,
+    check,
+    setCheck,
+}: {
+    billingAddress: Address;
+    setBilling: (address: Address) => void;
+    shippingAddress: Address;
+    setShipping: (address: Address) => void;
+    address: Address;
+    check: boolean;
+    setCheck: (check: boolean) => void;
+}) => {
     // Allows for separate billing and shipping city/zip-code data (for example from different countries)
     const [billingCityData, setBillingCityData] = useState<CityData>({});
     const [shippingCityData, setShippingCityData] = useState<CityData>({});
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const billingZipCodeValid = billingCityData[billingAddress.zipCode] !== undefined;
-        const shippingZipCodeValid = shippingCityData[shippingAddress.zipCode] !== undefined;
-        if (!check && billingZipCodeValid || check && billingZipCodeValid && shippingZipCodeValid) {
+        const billingZipCodeValid =
+            billingCityData[billingAddress.zipCode] !== undefined;
+        const shippingZipCodeValid =
+            shippingCityData[shippingAddress.zipCode] !== undefined;
+        if (
+            (!check && billingZipCodeValid) ||
+            (check && billingZipCodeValid && shippingZipCodeValid)
+        ) {
             if (!check) {
-                setShipping({...billingAddress});
+                setShipping({ ...billingAddress });
             }
-            navigate("/submit");
+            navigate("/payment");
         }
     };
 
@@ -66,9 +86,7 @@ const Delivery = ({billingAddress, setBilling, shippingAddress, setShipping, add
                 )}
 
                 <br />
-                <button className="payment-btn" type="submit">
-                    Gå til betaling
-                </button>
+                <button type="submit">Gå til betaling</button>
             </form>
         </div>
     );
@@ -89,22 +107,22 @@ function AddressDetails({
     cityData: CityData;
     setCityData: (value: CityData) => void;
 }) {
-    
     const [zipCodeError, setZipCodeError] = useState(false);
 
     const isShipping = check !== null && setCheck !== null;
 
-    const {data, isLoading, error}= useFetchData<City[]>("https://api.dataforsyningen.dk/postnumre",[]);
+    const { data, isLoading, error } = useFetchData<City[]>(
+        "https://api.dataforsyningen.dk/postnumre",
+        []
+    );
 
     useEffect(() => {
         const cityData: CityData = {};
-        data.forEach(city => {
-            cityData[city.nr]=city;
+        data.forEach((city) => {
+            cityData[city.nr] = city;
         });
         setCityData(cityData);
-    },[data]);
-
-
+    }, [data]);
 
     const onChangeSelect = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -145,7 +163,7 @@ function AddressDetails({
         });
     };
 
-    if(error != null) return( <h1>{error}</h1> )
+    if (error != null) return <h1>{error}</h1>;
     return (
         <div className="address">
             <div>
@@ -206,7 +224,10 @@ function AddressDetails({
                     onChange={onChange}
                     //onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("Mobilnummeret skal være 8 tal langt.")}
                 />
-                <span className="error" hidden={address.mobileNr.toString().length <= 8}>
+                <span
+                    className="error"
+                    hidden={address.mobileNr.toString().length <= 8}
+                >
                     Mobilnummeret må ikke være mere end 8 tal langt!
                 </span>
             </div>
@@ -237,7 +258,10 @@ function AddressDetails({
                     onChange={onChange}
                     //onInvalid={e => (e.target as HTMLInputElement).setCustomValidity("VAT-nummeret skal være 8 tal langt.")}
                 />
-                <span className="error" hidden={address.vatNr.toString().length <= 8}>
+                <span
+                    className="error"
+                    hidden={address.vatNr.toString().length <= 8}
+                >
                     VAT-nummeret må ikke være mere end 8 tal langt!
                 </span>
             </div>
@@ -274,7 +298,9 @@ function AddressDetails({
                 <label htmlFor={!isShipping ? "shippingZipCode" : "zipCode"}>
                     Postnummer
                 </label>
-                {isLoading? <BeatLoader size={24} color='#dc62ab' loading={isLoading} /> :
+                {isLoading ? (
+                    <BeatLoader size={24} color="#dc62ab" loading={isLoading} />
+                ) : (
                     <input
                         disabled={isLoading}
                         required
@@ -284,7 +310,7 @@ function AddressDetails({
                         name={!isShipping ? "shippingZipCode" : "zipCode"}
                         onChange={onChangeSelect}
                     />
-                }
+                )}
                 <span className="ziperror" hidden={!zipCodeError}>
                     Det valgte postnummer er ikke korrekt!
                 </span>
@@ -294,7 +320,9 @@ function AddressDetails({
                 <label htmlFor={!isShipping ? "shippingCity" : "city"}>
                     By
                 </label>
-                {isLoading? <BeatLoader size={24} color='#dc62ab' loading={isLoading} /> :
+                {isLoading ? (
+                    <BeatLoader size={24} color="#dc62ab" loading={isLoading} />
+                ) : (
                     <input
                         readOnly
                         type="text"
@@ -302,7 +330,7 @@ function AddressDetails({
                         name={!isShipping ? "shippingCity" : "city"}
                         value={address.city}
                     />
-                }
+                )}
             </div>
 
             <div>

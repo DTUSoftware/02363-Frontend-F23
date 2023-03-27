@@ -1,14 +1,15 @@
 .terms-box {
     padding-top: 4rem;
+    display: inline-block;
 }
 
 .submitbox {
-    max-width: 30rem;
+    max-width: 32rem;
     box-sizing: border-box;
     padding: 2rem;
     border-radius: 1rem;
-    background-color: hsl(180, 67%, 96%);
-    border: 4px solid hsl(0, 0%, 90%);
+    background-color: var(--secondary-background-color);
+    border: 4px solid var(--box-border);
     margin-bottom: 2rem;
 }
 
@@ -21,16 +22,30 @@
 
 .checkbox-paragraf {
     display: grid;
-    align-items:center;
+    align-items: center;
     grid-template-columns: min-content auto;
     gap: 10px;
 }
 
-.form label {
+.submit-form label {
     font-size: small;
     text-align: start;
+    font-weight: bolder;
+    padding: 15px 0;
+}
+
+.submit-form input[type="checkbox"] {
+    height: 1.5em;
+    width: 1.5em;
+    font: 1.25rem sans-serif;
+    border-radius: 6px;
+    box-shadow: 0 0 8px var(--checkbox-color);
 }
 
 .submitinfo {
     text-align: start;
+}
+
+.loading {
+    text-align: center;
 }

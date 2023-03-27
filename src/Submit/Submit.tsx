@@ -4,9 +4,10 @@ import { CartItem } from "../interfaces/CartItem";
 import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
+import { FaBold } from "react-icons/fa";
 
-const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 //const submitUrl = "http://localhost:5114/api/orders";
+const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function Submit({
     cartItems,
@@ -28,12 +29,13 @@ function Submit({
         event.preventDefault();
         setIsLoading(true);
         const orderDetails = cartItems.map((x) => {
-            return { 
+            return {
                 productId: x.product.id,
                 quantity: x.quantity,
                 giftWrap: x.giftWrap,
-                recurringOrder: x.recurringOrder };
-          });
+                recurringOrder: x.recurringOrder,
+            };
+        });
         const order: Order = {
             orderDetails: orderDetails,
             billingAddress: billingAddress,
@@ -87,13 +89,14 @@ function Submit({
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
             {error === "" ? (
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
-                            Inden at du kan indsende din order, SKAL du
-                            acceptere handelsbetingelserne for denne webshop. Du
-                            kan finde mere information om siden
-                            handelsbetingelser <a href="">her</a>.
+                            Inden at du kan indsende din order,{" "}
+                            <strong> skal </strong> du acceptere
+                            handelsbetingelserne for denne webshop. Du kan finde
+                            mere information om siden handelsbetingelser{" "}
+                            <a href="">her</a>.
                         </p>
                         <p className="checkbox-paragraf">
                             <input
@@ -136,23 +139,17 @@ function Submit({
                         </p>
                     </div>
                     {!isLoading ? (
-                        <button
-                            className="payment-btn"
-                            disabled={isLoading}
-                            type="submit"
-                        >
+                        <button disabled={isLoading} type="submit">
                             Indsend order
                         </button>
                     ) : (
-                        <p>Loading...</p>
+                        <p className="loading">Loading...</p>
                     )}
                 </form>
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button className="payment-btn" onClick={retryButton}>
-                        Prøv igen
-                    </button>
+                    <button onClick={retryButton}>Prøv igen</button>
                 </div>
             )}
         </div>

@@ -218,7 +218,6 @@ function ProductTable({
                                     toggleRecurringOrderSchedule(index)
                                 }
                                 removeItem={() => removeItem(index)}
-                                upsellItem={() => upsellItem(index)}
                             />
                         ))}
                     </tbody>
@@ -335,6 +334,7 @@ function UpsellItems({
                         <div className="upsell-picture">
                             <img
                                 className="upsell-picture"
+                                alt={`Billede af ${upsellProduct.name}`}
                                 src={upsellProduct.imageUrl}
                             ></img>
                         </div>
@@ -362,7 +362,6 @@ function ProductTableRow({
     toggleGiftWrap,
     toggleRecurringOrderSchedule,
     removeItem,
-    upsellItem,
 }: {
     item: CartItem;
     decrementQuantity: () => void;
@@ -371,7 +370,6 @@ function ProductTableRow({
     toggleGiftWrap: () => void;
     toggleRecurringOrderSchedule: () => void;
     removeItem: () => void;
-    upsellItem: () => void;
 }) {
     return (
         <tr>

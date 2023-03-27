@@ -7,6 +7,7 @@ import Navbar from './Navigation/Navbar'
 import Delivery from './Delivery/Delivery'
 import Submit from './Submit/Submit'
 import ProductList from './ProductList/ProductList'
+import Payment from './Payment/Payment'
 import { ProductItem } from './interfaces/ProductItem';
 
 type Products = { [key: string]: ProductItem };
@@ -48,6 +49,7 @@ function App() {
                 <Route path='/' element= { <ProductList items={items} setItems={setItems} setList={setList}/> } />
                 <Route path='/cart' element= { <ShoppingList items={items} setItems={setItems} productList={productList}/> } />
                 <Route path='/delivery' element={<Delivery billingAddress={billingAddress} setBilling={setBilling} shippingAddress={shippingAddress} setShipping={setShipping} address={address} check={check} setCheck={setCheck}/>}/>
+                <Route path='/payment'element={<Payment/>}/>
                 <Route path='/submit' element={<Submit cartItems={items} billingAddress={billingAddress} shippingAddress={shippingAddress} resetAfterSubmit={resetAfterSubmit}/>}/>
                 <Route path='/finish' element={<Finish/>} />                
             </div>

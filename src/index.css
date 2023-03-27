@@ -1,28 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
 
 :root {
     font-family: Nunito, sans-serif;
     line-height: 1.5;
     font-weight: 400;
-    color: #4A4E69;
-    background-color: #F2E9E4;
-    --primary-background-color: #F2E9E4;
+    color: #4a4e69;
+    background-color: #f2e9e4;
+    --primary-background-color: #f2e9e4;
     --secondary-background-color: white;
-    --primary-text-color: #4A4E69;
-    --button-color: #22223B;
-    --button-text-color: #F2E9E4;
-    --accent-color: #9A8C98;
+    --primary-text-color: #4a4e69;
+    --button-color: #22223b;
+    --button-text-color: #f2e9e4;
+    --accent-color: #9a8c98;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
-
+    --box-border: #e6e6e6;
+    --checkbox-color: #444444;
 }
 
 @media only screen and (max-width: 768px) {
-
     .shop-table {
         overflow-y: auto;
         height: 350px;
@@ -40,11 +39,9 @@
     thead {
         display: none;
     }
-
 }
 
 @media only screen and (min-width: 768px) {
-
     .shop-table {
         overflow-y: auto;
         height: 350px;
@@ -62,11 +59,9 @@
     thead {
         display: none;
     }
-
 }
 
 @media only screen and (min-width: 992px) {
-
     .shop-table {
         overflow-y: auto;
         height: 350px;
@@ -85,7 +80,6 @@
     thead {
         display: table;
     }
-
 }
 
 tbody {
@@ -93,11 +87,10 @@ tbody {
 }
 
 tr {
-    border-bottom: #EAEAEA solid 0.5px;
+    border-bottom: #eaeaea solid 0.5px;
     display: table;
     width: 100%;
 }
-
 
 p {
     font-size: 20px;
