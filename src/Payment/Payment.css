@@ -1,8 +1,10 @@
+.payment-block {
+    display: inline-block;
+}
 
 .payment {
-    background-color: hsl(white);
     border-radius: 20px;
-    display: grid;  
+    display: grid;
     font-weight: bold;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
@@ -10,16 +12,26 @@
     margin-right: 5px;
     justify-content: center;
     align-content: center;
-
-}
-.fullrow,.cardinformation{
-    grid-column:span 2;
-    margin:0px;
-}
-.paymentblock{
-    margin:0px;
-}
-.dropdownpayment{
 }
 
+.payment h2 {
+    margin-top: 3rem;
+}
 
+.fullrow,
+.cardinformation {
+    grid-column: span 2;
+    margin: 0px;
+}
+.paymentblock {
+    margin: 0px;
+}
+
+.loading {
+    text-align: center;
+}
+
+.confirm_payment,
+.error-text {
+    margin-top: 3rem;
+}
