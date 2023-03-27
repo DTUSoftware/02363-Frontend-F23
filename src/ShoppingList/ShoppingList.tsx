@@ -15,7 +15,6 @@ function ShoppingList({
     setItems: (items: CartItem[]) => void;
     productList: Products;
 }) {
-
     // Populates cart with dummy items
     useEffect(() => {
         if (items.length === 0) {
@@ -132,7 +131,6 @@ function ShoppingList({
                     <h1 className="delivery-heading">
                         Køb for 499 DKK og få FRI fragt!
                     </h1>
-
                 </div>
             )}
             {!listEmpty ? (
@@ -179,69 +177,79 @@ function ProductTable({
         } else {
             return priceSum;
         }
-    }
+    };
 
     const hasUpsellProducts = () => {
-        let upsellItemsExsist = false
-        items.forEach(item => {
+        let upsellItemsExsist = false;
+        items.forEach((item) => {
             if (item.product.upsellProductId !== null) {
                 upsellItemsExsist = true;
             }
         });
         return upsellItemsExsist;
-    }
+    };
 
     return (
-        <><div className="shop-table">
-            <table>
-                <caption>Din indkøbskurv</caption>
-                <thead>
-                    <tr>
-                        <th className="product-heading">Produkt</th>
-                        <th className="quantity-heading">Antal</th>
-                        <th className="priceTotal-heading">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map((item, index) => (
-                        <ProductTableRow
-                            key={index}
-                            item={item}
-                            decrementQuantity={() => decrementQuantity(index)}
-                            incrementQuantity={() => incrementQuantity(index)}
-                            itemTotal={() => itemTotal(item)}
-                            toggleGiftWrap={() => toggleGiftWrap(index)}
-                            toggleRecurringOrderSchedule={() => toggleRecurringOrderSchedule(index)}
-                            removeItem={() => removeItem(index)}
-                            upsellItem={() => upsellItem(index)} />
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <>
+            <div className="shop-table">
+                <table>
+                    <caption className="stop-caption">Din indkøbskurv</caption>
+                    <thead>
+                        <tr>
+                            <th className="product-heading">Produkt</th>
+                            <th className="quantity-heading">Antal</th>
+                            <th className="priceTotal-heading">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items.map((item, index) => (
+                            <ProductTableRow
+                                key={index}
+                                item={item}
+                                decrementQuantity={() =>
+                                    decrementQuantity(index)
+                                }
+                                incrementQuantity={() =>
+                                    incrementQuantity(index)
+                                }
+                                itemTotal={() => itemTotal(item)}
+                                toggleGiftWrap={() => toggleGiftWrap(index)}
+                                toggleRecurringOrderSchedule={() =>
+                                    toggleRecurringOrderSchedule(index)
+                                }
+                                removeItem={() => removeItem(index)}
+                                upsellItem={() => upsellItem(index)}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-        <div className="upsell-table">
-            <table>
-                <caption className="upsell-heading">Varer som andre kunder har set på</caption>
-                <tbody>
-                    {items.map((item, index) => (
+            <div className="upsell-table">
+                <table>
+                    <caption className="upsell-heading">
+                        Varer som andre kunder har set på
+                    </caption>
+                    <tbody>
+                        {items.map((item, index) => (
                             <UpsellItems
                                 key={index}
                                 item={item}
-                                upsellItem={() => upsellItem(index)} 
+                                upsellItem={() => upsellItem(index)}
                                 productList={productList}
                             />
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
-        <div className="cart-total">
-        <CartTotal items={items} itemTotal={itemTotal} />
-        <br />
-        <Link className="order-btn" to="/delivery">
-                Gå til levering
-        </Link>
-        </div>
+            <div className="cart-total">
+                <CartTotal items={items} itemTotal={itemTotal} />
+                <br />
+                <Link className="order-btn" to="/delivery">
+                    Gå til levering
+                </Link>
+            </div>
         </>
     );
 }
@@ -264,14 +272,20 @@ function CartTotal({
     const subtotal = cartTotal.toFixed(2);
     const shipping = shippingPrice.toFixed(2);
     const rebate = (cartTotal * totalRebate).toFixed(2);
-    const totalWithRebate = (cartTotal * (1 - totalRebate) + shippingPrice).toFixed(2);
+    const totalWithRebate = (
+        cartTotal * (1 - totalRebate) +
+        shippingPrice
+    ).toFixed(2);
 
     return (
         <p className="total">
             <span className="text-left">Subtotal</span>
-            <span className="text-right" aria-label={`Subtotal ${subtotal} ${currency}`}>{`${subtotal} ${currency}`}</span>
+            <span
+                className="text-right"
+                aria-label={`Subtotal ${subtotal} ${currency}`}
+            >{`${subtotal} ${currency}`}</span>
             <br />
-            <span className="text-left">{" "}Fragt</span>
+            <span className="text-left"> Fragt</span>
             <span className="text-right">
                 {cartTotal >= freeShipping
                     ? "FRI FRAGT"
@@ -285,52 +299,58 @@ function CartTotal({
             </span>
             <br />
             <span className="text-left">Pris i alt</span>
-            <span className="text-right" aria-label={`Pris i alt ${
-                hasRebate
-                ? totalWithRebate
-                : cartTotal.toFixed(2)
-            } ${currency}`}>
+            <span
+                className="text-right"
+                aria-label={`Pris i alt ${
+                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                } ${currency}`}
+            >
                 {`${
-                hasRebate
-                    ? totalWithRebate
-                    : cartTotal.toFixed(2)
-            } ${currency}`}</span>
+                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                } ${currency}`}
+            </span>
         </p>
     );
 }
 
-function UpsellItems ({
+function UpsellItems({
     item,
     upsellItem,
-    productList
-} : {
+    productList,
+}: {
     item: CartItem;
     upsellItem: () => void;
-    productList: Products
+    productList: Products;
 }) {
-    const upsellProduct = item.product.upsellProductId !== null ? productList[item.product.upsellProductId] : null
+    const upsellProduct =
+        item.product.upsellProductId !== null
+            ? productList[item.product.upsellProductId]
+            : null;
 
     if (upsellProduct !== null) {
         return (
-        <tr className="upsell-content">
-            <td>
-            <div>
-            <div className="upsell-picture">
-                <img className="upsell-picture" src={upsellProduct.imageUrl}></img>
-            </div>
-            <button
-                className="upsellBtn"
-                aria-label={`Andre har valgt ${upsellProduct.name}`}
-                onClick={() => upsellItem()}
-            >
-                Erstat vare
-            </button>
-            </div>
-        </td>
-    </tr>
-    )
+            <tr className="upsell-content">
+                <td>
+                    <div>
+                        <div className="upsell-picture">
+                            <img
+                                className="upsell-picture"
+                                src={upsellProduct.imageUrl}
+                            ></img>
+                        </div>
+                        <button
+                            className="upsellBtn"
+                            aria-label={`Andre har valgt ${upsellProduct.name}`}
+                            onClick={() => upsellItem()}
+                        >
+                            Erstat vare
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        );
     } else {
-        return (<></>);
+        return <></>;
     }
 }
 
@@ -364,11 +384,16 @@ function ProductTableRow({
                     <span className="discount-container">
                         <p className="discount">
                             {item.product!.rebateQuantity > 0 &&
-                                `Køb ${item.product!.rebateQuantity}, spar ${item.product!.rebatePercent}%`}
+                                `Køb ${item.product!.rebateQuantity}, spar ${
+                                    item.product!.rebatePercent
+                                }%`}
                         </p>
                     </span>
-                    <p className="product-price"
-                        aria-label={`Pris ${item.product!.price.toFixed(2)} ${item.product!.currency}`}
+                    <p
+                        className="product-price"
+                        aria-label={`Pris ${item.product!.price.toFixed(2)} ${
+                            item.product!.currency
+                        }`}
                     >{`${item.product!.price} ${item.product!.currency}`}</p>
                     <span className="input">
                         <div className="giftwrapping">
@@ -378,7 +403,8 @@ function ProductTableRow({
                                     aria-label={`gavepapir ${item.product.name} ${item.giftWrap}`}
                                     type="checkbox"
                                     checked={item.giftWrap}
-                                    onChange={() => toggleGiftWrap()} />
+                                    onChange={() => toggleGiftWrap()}
+                                />
                             </label>
                         </div>
                         <div className="reoccuringorder">
@@ -388,41 +414,47 @@ function ProductTableRow({
                                     aria-label={`gentag order ${item.product.name} ${item.recurringOrder}`}
                                     type="checkbox"
                                     checked={item.recurringOrder}
-                                    onChange={() => toggleRecurringOrderSchedule()} />
+                                    onChange={() =>
+                                        toggleRecurringOrderSchedule()
+                                    }
+                                />
                             </label>
                         </div>
                     </span>
                 </span>
             </td>
-                <td>
-                    <span className="quantity-container">
-                        <button
-                            aria-label={`reducer antal ${item.product.name}`}
-                            className="decrement-quantityBtn"
-                            onClick={() => decrementQuantity()}
-                        >
-                            -
-                        </button>
-                        <p className="quantity"> {item.quantity} </p>
-                        <button
-                            aria-label={`forøg antal ${item.product.name}`}
-                            className="increment-quantityBtn"
-                            onClick={() => incrementQuantity()}
-                        >
-                            +
-                        </button>
-                    </span>
-                </td>
-                <td className="price-total">{`${itemTotal().toFixed(2)} ${item.product!.currency}`}</td>
-                <td className="trash">
+            <td>
+                <span className="quantity-container">
                     <button
-                        aria-label={`fjern ${item.product.name}`}
-                        onClick={() => removeItem()}
+                        aria-label={`reducer antal ${item.product.name}`}
+                        className="decrement-quantityBtn"
+                        onClick={() => decrementQuantity()}
                     >
-                        <FaRegTrashAlt />
+                        -
                     </button>
-                </td>
-            </tr>
+                    <p className="quantity"> {item.quantity} </p>
+                    <button
+                        aria-label={`forøg antal ${item.product.name}`}
+                        className="increment-quantityBtn"
+                        onClick={() => incrementQuantity()}
+                    >
+                        +
+                    </button>
+                </span>
+            </td>
+            <td className="price-total">{`${itemTotal().toFixed(2)} ${
+                item.product!.currency
+            }`}</td>
+            <td className="trash">
+                <button
+                    className="trash-button"
+                    aria-label={`fjern ${item.product.name}`}
+                    onClick={() => removeItem()}
+                >
+                    <FaRegTrashAlt />
+                </button>
+            </td>
+        </tr>
     );
 }
 
