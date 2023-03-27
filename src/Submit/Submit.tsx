@@ -139,11 +139,7 @@ function Submit({
                         </p>
                     </div>
                     {!isLoading ? (
-                        <button
-                            className="confirm_payment"
-                            disabled={isLoading}
-                            type="submit"
-                        >
+                        <button disabled={isLoading} type="submit">
                             Indsend order
                         </button>
                     ) : (
@@ -153,9 +149,7 @@ function Submit({
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button className="confirm_payment" onClick={retryButton}>
-                        Prøv igen
-                    </button>
+                    <button onClick={retryButton}>Prøv igen</button>
                 </div>
             )}
         </div>

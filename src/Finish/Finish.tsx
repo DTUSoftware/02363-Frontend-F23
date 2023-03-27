@@ -1,7 +1,6 @@
 import navigate from "../Navigation/navigate";
 import "./Finish.css";
 
-
 function Finish() {
     const continueShopping = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -15,9 +14,7 @@ function Finish() {
                 <p>Din er order er nu bestilt.</p>
                 <p>Tjek din email for kvittering.</p>
             </div>
-            <button className="payment-btn" onClick={continueShopping}>
-                Shop videre?
-            </button>
+            <button onClick={continueShopping}>Shop videre?</button>
         </div>
     );
 }

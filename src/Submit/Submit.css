@@ -10,6 +10,7 @@
     border-radius: 1rem;
     background-color: var(--secondary-background-color);
     border: 4px solid var(--box-border);
+    margin-bottom: 2rem;
 }
 
 .submitcomment {
