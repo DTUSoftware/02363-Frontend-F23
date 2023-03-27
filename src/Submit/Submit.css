@@ -22,7 +22,7 @@
 
 .checkbox-paragraf {
     display: grid;
-    align-items:center;
+    align-items: center;
     grid-template-columns: min-content auto;
     gap: 10px;
 }
