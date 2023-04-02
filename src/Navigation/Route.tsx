@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 // Build using inspiration from https://dev.to/franciscomendes10866/create-your-own-react-router-53ng
 const Route = ({ path, element } : { path : string, element: JSX.Element  }) => {
@@ -7,8 +7,8 @@ const Route = ({ path, element } : { path : string, element: JSX.Element  }) => 
     const onLocationChange = () => {
       setCurrentPath(window.location.pathname);
     };    
-    window.addEventListener("navigate", onLocationChange);
-    return () => window.removeEventListener("navigate", onLocationChange);
+    window.addEventListener("popstate", onLocationChange);
+    return () => window.removeEventListener("popstate", onLocationChange);
   }, []);
 
   return (

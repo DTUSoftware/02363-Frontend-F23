@@ -41,6 +41,7 @@ function App() {
         setShipping(address);
         setCheck(false);
     }
+    console.log(window.location.pathname);
 
     return (
         <div className="App">
