@@ -1,11 +1,10 @@
-import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
 import "./Finish.css";
 
 function Finish() {
     const continueShopping = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        navigate(routes.home.routePath);
+        window.location.replace(routes.home.routePath);
     };
 
     return (
