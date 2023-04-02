@@ -9,10 +9,12 @@ import Submit from './Submit/Submit'
 import ProductList from './ProductList/ProductList'
 import Payment from './Payment/Payment'
 import { ProductItem } from './interfaces/ProductItem';
-
-type Products = { [key: string]: ProductItem };
 import Finish from "./Finish/Finish";
 import Route from "./Navigation/Route";
+import Routes from "./Navigation/Routes";
+import { routes } from "./Navigation/RoutePaths";
+
+type Products = { [key: string]: ProductItem };
 
 const address: Address = {
     firstName: "",
@@ -45,13 +47,15 @@ function App() {
     return (
         <div className="App">
             <Navbar/>
-            <div className="content">          
-                <Route path='/' element= { <ProductList items={items} setItems={setItems} setList={setList}/> } />
-                <Route path='/cart' element= { <ShoppingList items={items} setItems={setItems} productList={productList}/> } />
-                <Route path='/delivery' element={<Delivery billingAddress={billingAddress} setBilling={setBilling} shippingAddress={shippingAddress} setShipping={setShipping} address={address} check={check} setCheck={setCheck}/>}/>
-                <Route path='/payment'element={<Payment/>}/>
-                <Route path='/submit' element={<Submit cartItems={items} billingAddress={billingAddress} shippingAddress={shippingAddress} resetAfterSubmit={resetAfterSubmit}/>}/>
-                <Route path='/finish' element={<Finish/>} />                
+            <div className="content"> 
+                <Routes paths={routes}>        
+                    <Route path={routes.home.routePath} element= { <ProductList items={items} setItems={setItems} setList={setList}/> } />
+                    <Route path={routes.cart.routePath} element= { <ShoppingList items={items} setItems={setItems} productList={productList}/> } />
+                    <Route path={routes.delivery.routePath} element={<Delivery billingAddress={billingAddress} setBilling={setBilling} shippingAddress={shippingAddress} setShipping={setShipping} address={address} check={check} setCheck={setCheck}/>}/>
+                    <Route path={routes.payment.routePath} element={<Payment/>}/>
+                    <Route path={routes.submit.routePath} element={<Submit cartItems={items} billingAddress={billingAddress} shippingAddress={shippingAddress} resetAfterSubmit={resetAfterSubmit}/>}/>
+                    <Route path={routes.finish.routePath} element={<Finish/>} />  
+                </Routes>               
             </div>
         </div>
     )

@@ -5,6 +5,7 @@ import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { FaBold } from "react-icons/fa";
+import { routes } from "../Navigation/RoutePaths";
 
 //const submitUrl = "http://localhost:5114/api/orders";
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
@@ -62,7 +63,7 @@ function Submit({
                 setIsLoading(false);
                 setError("");
                 resetAfterSubmit();
-                navigate("/finish");
+                navigate(routes.finish.routePath);
             })
             .catch((er) => {
                 setIsLoading(false);

@@ -1,0 +1,12 @@
+.notfound-box {
+    padding-top: 4rem;
+    display: inline-block;
+}
+
+.notfound-message p {
+    text-align: center;
+}
+
+.notfound-message {
+    margin-bottom: 2rem;
+}

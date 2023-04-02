@@ -4,12 +4,13 @@ import "./ShoppingList.css";
 import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
 import { ProductItem } from "../interfaces/ProductItem";
-import Link from "../Navigation/Link";
+import { routes } from "../Navigation/RoutePaths";
+import navigate from "../Navigation/navigate";
 
 function ShoppingList({
     items,
     setItems,
-    productList,
+    productList
 }: {
     items: CartItem[];
     setItems: (items: CartItem[]) => void;
@@ -189,6 +190,11 @@ function ProductTable({
         return upsellItemsExsist;
     };
 
+    const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        navigate(routes.delivery.routePath);
+    };
+
     return (
         <>
             <div className="shop-table">
@@ -245,9 +251,9 @@ function ProductTable({
             <div className="cart-total">
                 <CartTotal items={items} itemTotal={itemTotal} />
                 <br />
-                <Link className="order-btn" to="/delivery">
+                <button className="order-btn" onClick={onClick}>
                     Gå til levering
-                </Link>
+                </button>
             </div>
         </>
     );
