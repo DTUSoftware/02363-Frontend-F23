@@ -5,6 +5,7 @@ import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
 import { ProductItem } from "../interfaces/ProductItem";
 import Link from "../Navigation/Link";
+import { routes } from "../Navigation/RoutePaths";
 
 function ShoppingList({
     items,
@@ -245,7 +246,7 @@ function ProductTable({
             <div className="cart-total">
                 <CartTotal items={items} itemTotal={itemTotal} />
                 <br />
-                <Link className="order-btn" to="/delivery">
+                <Link className="order-btn" to={routes.delivery.routePath}>
                     Gå til levering
                 </Link>
             </div>

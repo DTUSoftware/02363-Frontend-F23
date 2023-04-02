@@ -5,6 +5,7 @@ import card_dankort from "./assets/dankort_logo.png";
 import card_mastercard from "./assets/mastercard_logo.png";
 import navigate from "../Navigation/navigate";
 import { CustomerPayment } from "../interfaces/CustomerPayment";
+import { routes } from "../Navigation/RoutePaths";
 
 const payment: CustomerPayment = {
     cardNumber: "",
@@ -42,7 +43,7 @@ function Payment() {
             .then(() => {
                 setIsLoading(false);
                 setError("");
-                navigate("/submit");
+                navigate(routes.submit.routePath);
             })
             .catch((er) => {
                 setIsLoading(false);

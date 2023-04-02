@@ -5,6 +5,7 @@ import { City } from "../interfaces/City";
 import useFetchData from "../hooks/useFetchData";
 import { BeatLoader } from "react-spinners";
 import navigate from "../Navigation/navigate";
+import { routes } from "../Navigation/RoutePaths";
 
 type CityData = { [key: string]: City };
 
@@ -42,7 +43,7 @@ const Delivery = ({
             if (!check) {
                 setShipping({ ...billingAddress });
             }
-            navigate("/payment");
+            navigate(routes.payment.routePath);
         }
     };
 
