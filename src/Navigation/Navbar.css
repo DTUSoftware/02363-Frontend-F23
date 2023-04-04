@@ -13,6 +13,8 @@
     border-radius: 1rem;   
     border: solid #F2E9E4 1px;
     background-color: white; 
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 label.logo{
@@ -25,7 +27,6 @@ label.logo{
 
 .nav-content{
     float:right;
-    margin-right: 20px;
 }
 
 .nav-content li{
