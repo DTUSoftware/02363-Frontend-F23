@@ -25,7 +25,7 @@ const Routes = ({ paths, children  } : { paths : RoutePaths, children : React.Re
 
     useEffect(() => {
         if (isPathValid) { 
-            //navigate(paths.home.routePath);
+            navigate(paths.home.routePath);
         }
     }, []);
 

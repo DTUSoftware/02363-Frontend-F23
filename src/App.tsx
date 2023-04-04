@@ -32,7 +32,7 @@ const address: Address = {
 
 function App() {
     const [items, setItems] = useState<CartItem[]>([]);
-    const [productList, setList] = useState<Products>({})
+    const [productList, setList] = useState<Products>({});
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
     const [check, setCheck] = useState(false);
