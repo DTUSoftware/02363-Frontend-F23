@@ -1,6 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
-import ShoppingList from "../ShoppingList/ShoppingList";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import Payment from "../Payment/Payment";
 import { CustomerPayment } from "../interfaces/CustomerPayment";
@@ -23,7 +22,7 @@ const options: RequestInit = {
     body: JSON.stringify(payment),
 };
 
-describe(ShoppingList.name, () => {
+describe(Payment.name, () => {
     afterEach(() => {
         vi.restoreAllMocks();
     });
