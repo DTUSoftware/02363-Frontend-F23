@@ -45,7 +45,7 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
         
     }
     
-    if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
+    if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />Produkter loader...</h1>) }
     else if(error != null) {return (<h1> {error} </h1>)}
     else return ( 
         <div className="ProductList">
@@ -53,13 +53,13 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
                 data.map(
                     (product)=> (
                         
-                        <div className="card" key={product.id}>
+                        <div className="card" aria-label={`Produkt ${product.name}`} key={product.id}>
                             <img src={product.imageUrl} alt={product.name}></img><br/>
                             <label className="name">{product.name}</label>                        
-                            <p className="price">{product.price},00 {product.currency}</p>
+                            <p className="price">{`${product.price.toFixed(2)} ${product.currency}`}</p>
 
                             {((product.rebatePercent > 0) && (product.rebateQuantity > 0 )) 
-                               ?( <p>Køb for {product.rebateQuantity} Stk (Spar<span className="rabat"> <i>{product.rebatePercent}%</i></span> )</p> )
+                               ?( <p>Køb for {product.rebateQuantity} Stk (Spar<span className="rabat"> <i>{product.rebatePercent}%</i></span>)</p> )
                                :( <p> <br /></p>)                                    
                             }
 
