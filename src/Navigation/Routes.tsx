@@ -1,18 +1,18 @@
-import React from "react";
+import {createContext, ReactNode} from "react";
 import { useEffect, useState } from "react";
 import NotFound from "../NotFound/NotFound";
 import navigate from "./navigate";
 import { RoutePaths } from "./RoutePaths";
 
 // Built with inspiration from: https://ogzhanolguncu.com/blog/build-a-custom-react-router-from-scratch
-export const PathContext = React.createContext(window.location.pathname);
+export const PathContext = createContext(window.location.pathname);
 
 const Routes = ({
     paths,
     children,
 }: {
     paths: RoutePaths;
-    children: React.ReactNode;
+    children: ReactNode;
 }) => {
     const [routePaths] = useState(
         Object.keys(paths).map((key) => paths[key].routePath)
@@ -32,7 +32,7 @@ const Routes = ({
     }, []);
 
     useEffect(() => {
-        if (isPathValid) {
+        if (currentPath !== paths.home.routePath && isPathValid) {
             navigate(paths.home.routePath);
         }
     }, []);
