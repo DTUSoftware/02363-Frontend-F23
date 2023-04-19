@@ -4,10 +4,8 @@ import { CartItem } from "../interfaces/CartItem";
 import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
-import { FaBold } from "react-icons/fa";
 import { routes } from "../Navigation/RoutePaths";
 
-//const submitUrl = "http://localhost:5114/api/orders";
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function Submit({
@@ -68,7 +66,7 @@ function Submit({
             .catch((er) => {
                 setIsLoading(false);
                 setError(
-                    "Vi beklager ulejligheden, noget gik galt. Prøv venligst igen om et par minutter."
+                    "Vi beklager ulejligheden, noget gik galt indsendelsen af din ordre!"
                 );
             });
     };
@@ -149,7 +147,7 @@ function Submit({
                 </form>
             ) : (
                 <div>
-                    <p>{error}</p>
+                    <p className="errormessage">{error}</p>
                     <button onClick={retryButton}>Prøv igen</button>
                 </div>
             )}

@@ -146,7 +146,7 @@ function ShoppingList({
                     productList={productList}
                 />
             ) : (
-                <p className="empty">Din kurv er tom!</p>
+                <p className="emptyshoplist">Din kurv er tom!</p>
             )}
         </div>
     );
