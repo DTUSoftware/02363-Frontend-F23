@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import ShoppingList from "../ShoppingList/ShoppingList";
 import userEvent from "@testing-library/user-event";
 import mockData from "../assets/products.json";
@@ -24,10 +24,6 @@ describe(ShoppingList.name, () => {
     beforeEach(async () => {
         render(<TestComponent />);
         expect(screen.queryByText("Din kurv er tom!")).not.toBeInTheDocument();
-    });
-
-    afterEach(() => {
-        vi.restoreAllMocks();
     });
 
     it("Should render title", () => {
