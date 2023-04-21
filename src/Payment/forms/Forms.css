@@ -1,0 +1,126 @@
+.image-wrapper{
+    width: 100%;
+    display: inline-block;
+}
+
+.mobilepay-Img
+{  
+    width: 15%;
+    overflow: clip;
+    aspect-ratio: auto; 
+}
+
+.giftcard-Img
+{  
+    float: right;
+    width: 25%;
+    overflow: clip;
+    aspect-ratio: auto;        
+}
+
+h3{
+    color:#5A78FF ;
+}
+
+.payment-form{
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(1, minmax(200px, 1fr)); 
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: var(--secondary-background-color);
+    border: 4px solid var(--box-border); 
+}
+
+
+.title-label {
+    display: block;
+    text-align: left;
+    font-size: 20px;
+    padding: 10px 0;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.payment-form input[type="tel"]{ 
+    width: 100%;
+    height: 40px; 
+    outline: none;
+    display: block;
+    border-radius: 6px;
+    box-sizing: border-box;   
+    font: 1.25rem / 1.5 sans-serif;     
+    border: 1px solid var(--box-border); 
+    box-shadow: 0 0 8px #444;   
+}
+
+#giftCardnumber,
+#securityCode{
+    padding:15px;
+}
+
+
+.full-row{
+    width:100%;
+    text-align: center;
+}
+
+
+#securityCode{
+    float: left;
+    margin: auto;
+    width: auto;
+}
+
+
+.payment-form input:hover {
+    border: 1px solid #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25) inset,
+                0 0 5px rgba(255, 255, 255, 0.4);
+}
+
+.payment-form input:focus {
+    transition: 0.2s ease-in-out;
+    border: 1px solid rgb(35, 136, 243);
+}
+
+.payment-form input[type="checkbox"] {
+    height: 1.5em;
+    width: 1.5em;
+    display: inline;
+    vertical-align: middle;
+    padding: 10px;
+}
+
+.checkbox-label{ 
+    display: inline;
+    padding: 10px;
+}
+
+.openButton{ 
+    float: right;   
+    margin: auto;
+    border-radius: 6px; 
+    padding: 0.60em  1em;
+    color:var(--button-text-color);   
+}
+    
+.openButton:hover {
+    opacity: 0.9;
+    transition: .5s; 
+    color: var(--primary-text-color);
+    background-color: #7ef384;
+    font-weight: bold;    
+}
+
+@media screen and (max-width: 480px) {
+    #securityCode{
+        float: left;
+        margin: auto;
+        width: 100%;
+    }
+}
+
+
+

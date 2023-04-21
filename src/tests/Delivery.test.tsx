@@ -54,7 +54,7 @@ describe(Delivery.name, () => {
                 }
             });
         render(<TestComponent />);
-        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl));
+        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(zipCodeUrl, undefined));
         await waitFor(() =>
             expect(
                 screen.getByRole("textbox", { name: /postnummer/i })

@@ -43,6 +43,7 @@
     .upsell-picture {
         width: 46px;
         height: 70px;
+        aspect-ratio: 3/4;
     }
 
     .product-name {

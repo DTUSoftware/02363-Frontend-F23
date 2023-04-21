@@ -31,7 +31,7 @@ describe(ProductList.name, () => {
                 }
             });
         render(<TestComponent />);
-        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(dataUrl));
+        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(dataUrl, undefined));
         await waitFor(() => expect(screen.queryByText("Produkter loader...")).not.toBeInTheDocument());
     });
 
