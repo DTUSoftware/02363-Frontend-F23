@@ -11,22 +11,24 @@
     height: 80px;    
     margin-bottom: 10px;
     border-radius: 1rem;   
-    border: solid #F2E9E4 1px;
-    background-color: white; 
-    padding-left: 20px;
-    padding-right: 20px;
+    border: solid 1px var(--border-box);
+    background-color: var(--secondary-background-color); 
 }
 
 label.logo{
-    color: #4A4E69;
-    font-size: 35px;
-    line-height: 80px; 
-    padding: 0 2px;
+    float: left;
+    height: 80px; 
+    padding: 20px 8%;
+    padding-left: 20px;
+    padding-right: 0px;
+    font-size:x-large;
     font-weight: bold;
+    color: var(--primary-text-color);
 }
 
 .nav-content{
     float:right;
+    margin-right: 3px;
 }
 
 .nav-content li{
@@ -36,12 +38,159 @@ label.logo{
 }
 
 .nav-content li button{    
-    font-size: 18px;   
+    font-size: medium;   
     text-transform: uppercase;
 }
 
-button.nav-button:hover{    
+button.nav-button:hover{ 
+    opacity: 0.7;
     transition: .5s;
-    color:#4A4E69;
-    background-color: #7ebcb9;
+    color:var(--button-text-color);
 }
+
+@media screen and (max-width: 768px) {
+    
+    label.logo{
+        width: 140px;
+        font-size: large;
+        text-align: center;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 0px
+    }
+
+    .nav-content{
+        padding-top: 25px;
+    }
+
+    .nav-content li button{  
+        float: left;
+        padding-top: 5px;  
+        font-size: small;   
+    }
+}
+
+/* On screens that are 664px wide or less */
+@media screen and (max-width: 664px) {
+    
+    label.logo{
+        width: 140px;
+        font-size: large;
+        text-align: center;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 0px
+    }
+
+    .nav-content{
+        padding-top: 25px;
+    }
+
+    .nav-content li button{  
+        float: left;
+        padding-top: 5px;  
+        font-size: small;   
+    }
+}
+
+@media screen and (max-width: 410px) {
+    
+    .navbar li{
+        display: inline-block; 
+    }
+    
+    label.logo{
+        width: 140px;
+        font-size: large;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 0px;
+    }
+
+    .nav-content{
+        padding-top: 25px;
+        margin: auto;
+        display: inline-block;
+    }
+
+    
+}
+
+@media screen and (max-width: 388px) {
+    .navbar{
+        height: 100px;
+    }
+
+    .navbar li{
+        display: inline-block;
+    }
+    
+    label.logo{
+        width: 140px;
+        font-size: large;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 0px;
+        display: inline-block;
+    }
+
+    .nav-content{
+        float: left;
+        display: grid;
+        margin: auto;
+        padding-top: 25px;
+    }
+
+    .nav-content li{  
+        
+        padding-top: 5px;  
+        font-size: small;
+        display: inline-block;   
+    }
+
+}
+
+@media screen and (max-width: 309px) {
+    .navbar{
+        height: 150px;
+    }
+
+    .navbar li{
+        display: inline-block;
+    }
+    
+    label.logo{
+        height: 60px;
+        width: 140px;
+        font-size: large;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 0px;
+        display: inline-block;
+    }
+
+    .nav-content{
+        float: left;
+        display: grid;
+        margin: auto;
+        padding-left: 25px;
+        padding-top: 0px;
+    }
+
+    .nav-content li{  
+        padding-top: 5px;  
+        font-size: small;
+        display: inline-block;   
+    }
+
+}
+
+
+
+
+
