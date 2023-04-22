@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 
 
-const useFetch =<T,>(url: string, options:RequestInit)=>{
+const useFetch =<T,>(url: string)=>{
     const [data, setData] = useState<T>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [status, setStatus] = useState(0);
     
 
-    function sendRequest(){ 
+    function sendRequest(options: RequestInit){ 
         console.log("method: "+ options.method)       
         setIsLoading(true);
         setError("");

@@ -10,14 +10,15 @@ const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main
 
 function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(values:CartItem[]) => void, setList: (products:Products) => void})  {
 
+    const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl)
+
     const options: RequestInit = {
         method: "Get",
         headers: {'Content-Type': 'text/plain' },
-    };
-    const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl, options)
+    };    
 
     useEffect(() => {
-        sendRequest()
+        sendRequest(options)
     },[dataUrl]);
 
     useEffect(()=>{

@@ -25,12 +25,12 @@ h3{
 .payment-form{
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(1, minmax(200px, 1fr)); 
-    box-sizing: border-box;
     padding: 2rem;
     border-radius: 1rem;
+    box-sizing: border-box;
+    border: 4px solid var(--box-border);
     background-color: var(--secondary-background-color);
-    border: 4px solid var(--box-border); 
+     grid-template-columns: repeat(1, minmax(200px, 1fr));   
 }
 
 
@@ -113,6 +113,31 @@ h3{
     background-color: #7ef384;
     font-weight: bold;    
 }
+
+.confirm-payment-btn{
+    width: 100%;
+}
+
+
+/*-----------------start creditcardform css--------------------*/
+.payment-block {  
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+.cardinformation {
+    grid-column: span 2;
+    margin: 0px;
+}
+
+.full-row-btn,
+#full-row-label{
+    grid-column: span 2;
+    margin-top: 2rem;
+}
+/*-----------------end creditcardform css--------------------*/
 
 @media screen and (max-width: 480px) {
     #securityCode{

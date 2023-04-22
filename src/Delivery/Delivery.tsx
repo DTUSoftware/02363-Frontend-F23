@@ -112,14 +112,16 @@ function AddressDetails({
 
     const isShipping = check !== null && setCheck !== null;
 
+    const dataUrl= "https://api.dataforsyningen.dk/postnumre";
+    const {sendRequest ,data, isLoading, error } = useFetchData<City[]>(dataUrl);
+    
     const options: RequestInit = {
         method: "Get",
         headers: {'Content-Type': 'text/plain' },
     };
-    const dataUrl= "https://api.dataforsyningen.dk/postnumre";
-    const {sendRequest ,data, isLoading, error } = useFetchData<City[]>(dataUrl,options );
+
     useEffect(() => {
-        sendRequest()
+        sendRequest(options)
     },[dataUrl]);
 
     useEffect(() => {

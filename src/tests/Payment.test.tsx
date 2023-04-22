@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import Payment from "../Payment/Payment";
-import { CustomerPayment } from "../interfaces/CustomerPayment";
+import { CustomerPayment } from "../interfaces/CreditCard";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 

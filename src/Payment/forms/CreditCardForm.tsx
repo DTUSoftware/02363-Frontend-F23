@@ -1,13 +1,16 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import card_americanexpress from "../../../assets/americanexpress_logo.png";
 import card_dankort from "../../../assets/dankort_logo.png";
 import card_mastercard from "../../../assets/mastercard_logo.png";
-import navigate from "../../../Navigation/navigate";
-import { CustomerPayment } from "../../../interfaces/CustomerPayment";
-import { routes } from "../../../Navigation/RoutePaths";
+import navigate from "../../Navigation/navigate";
+import { CreditCard } from "../../interfaces/CreditCard";
+import { routes } from "../../Navigation/RoutePaths";
+import"./style.css";
+import usePostData from "../../hooks/useFetch";
+import Beatloader from "../../SpinnerAnimation/BeatLoader";
 
-const payment: CustomerPayment = {
+const payment: CreditCard = {
     cardNumber: "",
     cvcNumber: "",
     expiryMonth: "01",
@@ -17,41 +20,23 @@ const payment: CustomerPayment = {
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function CreditCardForm() {
-    const [customerPayment, setCustomerPayment] =
-        useState<CustomerPayment>(payment);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState("");
+    const [customerPayment, setCustomerPayment] = useState<CreditCard>(payment);
+    const {sendRequest, status, isLoading, error} = usePostData<string>(submitUrl);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsLoading(true);
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        const options: RequestInit = {
-            method: "POST",
-            headers,
-            mode: "cors",
-            body: JSON.stringify(customerPayment),
-        };
-        await fetch(submitUrl, options)
-            .then((response) => {
-                if (response.ok) {
-                    return;
-                }
-                throw Error();
-            })
-            .then(() => {
-                setIsLoading(false);
-                setError("");
-                navigate(routes.submit.routePath);
-            })
-            .catch((er) => {
-                setIsLoading(false);
-                setError(
-                    "Vi beklager ulejligheden, noget gik galt. Prøv venligst igen om et par minutter."
-                );
-            });
+    useEffect(()=>{
+        console.log('status:' + status)
+        if(status === 200){
+            navigate(routes.submit.routePath);
+        }
+    },[status])
+
+    const options: RequestInit = {
+        method: "POST",
+        headers:{"Content-Type": "application/json"},
+        mode: "cors",
+        body: JSON.stringify(customerPayment),
     };
+    
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setCustomerPayment({
@@ -67,17 +52,12 @@ function CreditCardForm() {
         });
     };
 
-    const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setError("");
-    };
-
     return (
-        <div className="payment-block">
+        <div className="payment">
             {error === "" ? (
-                <form onSubmit={handleSubmit}>
-                    <div className="payment">
-                        <h2 className="fullrow">Kort oplysninger</h2>
+                <form className="payment-form" >
+                    <div className="payment-block">
+                        <label className="title-label" id= "full-row-label">Kort oplysninger</label>
                         <label className="paymentblock" htmlFor="expiryMonth">
                             Udløbsmåned
                         </label>{" "}
@@ -140,7 +120,7 @@ function CreditCardForm() {
                         <div className="paymentblock">
                             <input
                                 required
-                                type="text"
+                                type="tel"
                                 name="cardNumber"
                                 id="cardNumber"
                                 minLength={15} //American Express
@@ -153,32 +133,39 @@ function CreditCardForm() {
                                 className="cvcfield"
                                 required
                                 pattern="[0-9]{3}"
-                                type="text"
+                                type="tel"
                                 maxLength={3}
                                 id="cvcNumber"
                                 name="cvcNumber"
                                 onChange={onChange}
                             />
                         </div>
-                        <div className="fullrow">
+                        <div className="full-row-btn">
                             {!isLoading ? (
                                 <button
-                                    className="confirm_payment"
+                                    className="confirm-payment-btn"
+                                    id="confirm-payment"
                                     disabled={isLoading}
                                     type="submit"
+                                    onClick={()=>sendRequest(options)}
                                 >
                                     Bekræft Betaling
                                 </button>
                             ) : (
-                                <p className="loading">Loading...</p>
-                            )}
+                                <button className="confirm-payment-btn" 
+                                    type="submit" 
+                                    disabled={true}>
+                                    <Beatloader/>                 
+                                </button>
+                                )
+                            }
                         </div>
                     </div>
                 </form>
             ) : (
-                <div>
+                <div className="full-row-btn">
                     <p className="error-text">{error}</p>
-                    <button className="confirm_payment" onClick={retryButton}>
+                    <button className="confirm-payment-btn" onClick={()=>sendRequest(options)}>
                         Prøv igen
                     </button>
                 </div>

@@ -2,23 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import giftCardIcon from "../../assets/giftcardicon.png";
 import navigate from "../../Navigation/navigate";
 import { routes } from "../../Navigation/RoutePaths";
-import "./Forms.css" ;
+import "./style.css" ;
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
-import usePosthData from "../../hooks/useFetch"
+import usePosthData from "../../hooks/useFetch";
+import {GiftCard} from "../../interfaces/GiftCard";
 
 
-export interface GiftCardForm {
-    giftCardnumber: string;
-    securityCode: string;
-}
 
-var form:GiftCardForm={giftCardnumber:"", securityCode:""}
+var form:GiftCard={giftCardnumber:"", securityCode:""}
 
-const url="https://eoysx40p399y9yl.m.pipedream.net/"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.net/"
 
 const GiftCardForm =()=>{   
 
-    const[giftCardForm, setForm] = useState(form)
+    const[giftCardForm, setForm] = useState<GiftCard>(form)
     
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setForm({
@@ -27,14 +24,14 @@ const GiftCardForm =()=>{
         });
     };
     
-    
+    const {sendRequest, status, isLoading, error} = usePosthData<string>(submitUrl);
+
     const options: RequestInit = {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(giftCardForm),
-    };
+    };    
 
-    const {sendRequest, status, isLoading, error} = usePosthData<string>(url, options);
     useEffect(()=>{
         console.log('status:' + status)
         if(status === 200){
@@ -46,7 +43,6 @@ const GiftCardForm =()=>{
     return ( 
         
         <div> 
-
             <div className="image-wrapper">
                 <img src={giftCardIcon}  alt="" className="giftcard-Img" /> 
             </div>           
@@ -81,23 +77,28 @@ const GiftCardForm =()=>{
 
                     <div className="full-row">
                         {isLoading === false 
-                            ?   <button className="confirm_payment" 
+                            ?   <button className="confirm-payment-btn" 
                                     type="submit" 
-                                    onClick={()=> sendRequest()}
+                                    onClick={()=> sendRequest(options)}
                                     disabled={false} >
                                     Bekræft Betaling
                                 </button>
-                            :   <button className="confirm_payment" 
+                            :   <button className="confirm-payment-btn" 
                                     type="submit" 
                                     disabled={true}>
                                     <Beatloader/>                 
                                 </button>
-                        }
-                            
+                        }                            
                     </div>
                             
                   </form>
-                : <h2> {error} </h2>
+                : ( <div className="full-row">
+                        <p className="error-text">{error}</p>
+                        <button className="confirm-payment-btn" onClick={()=> sendRequest(options)}>
+                            Prøv igen
+                        </button>
+                    </div>
+                   )
             }
 
         </div>

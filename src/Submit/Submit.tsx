@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
 import { CartItem } from "../interfaces/CartItem";
 import "./Submit.css";
@@ -6,6 +6,7 @@ import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { FaBold } from "react-icons/fa";
 import { routes } from "../Navigation/RoutePaths";
+import usePostData from "../hooks/useFetch"
 
 //const submitUrl = "http://localhost:5114/api/orders";
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
@@ -23,55 +24,38 @@ function Submit({
 }) {
     const [marketing, setMarketing] = useState(false);
     const [comment, setComment] = useState("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState("");
+    const {sendRequest, status, isLoading, error} = usePostData<string>(submitUrl);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsLoading(true);
-        const orderDetails = cartItems.map((x) => {
-            return {
-                productId: x.product.id,
-                quantity: x.quantity,
-                giftWrap: x.giftWrap,
-                recurringOrder: x.recurringOrder,
-            };
-        });
-        const order: Order = {
-            orderDetails: orderDetails,
-            billingAddress: billingAddress,
-            shippingAddress: shippingAddress,
-            checkMarketing: marketing,
-            submitComment: comment,
+    const orderDetails = cartItems.map((x) => {
+        return {
+            productId: x.product.id,
+            quantity: x.quantity,
+            giftWrap: x.giftWrap,
+            recurringOrder: x.recurringOrder,
         };
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        const options: RequestInit = {
-            method: "POST",
-            headers,
-            mode: "cors",
-            body: JSON.stringify(order),
-        };
-        await fetch(submitUrl, options)
-            .then((response) => {
-                if (response.ok) {
-                    return;
-                }
-                throw Error();
-            })
-            .then(() => {
-                setIsLoading(false);
-                setError("");
-                resetAfterSubmit();
-                navigate(routes.finish.routePath);
-            })
-            .catch((er) => {
-                setIsLoading(false);
-                setError(
-                    "Vi beklager ulejligheden, noget gik galt. Prøv venligst igen om et par minutter."
-                );
-            });
-    };
+    });
+    const order: Order = {
+        orderDetails: orderDetails,
+        billingAddress: billingAddress,
+        shippingAddress: shippingAddress,
+        checkMarketing: marketing,
+        submitComment: comment,
+    };   
+    
+    const options: RequestInit = {
+        method: "POST",
+        headers:{"Content-Type":"application/json"},
+        mode: "cors",
+        body: JSON.stringify(order),
+    };    
+
+    useEffect(()=>{
+        console.log('status:' + status)
+        if(status === 200){
+            resetAfterSubmit();
+            navigate(routes.finish.routePath);
+        }
+    },[status])
 
     const onChangeMarketing = () => {
         setMarketing(!marketing);
@@ -83,14 +67,13 @@ function Submit({
 
     const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        setError("");
     };
 
     return (
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
             {error === "" ? (
-                <form className="submit-form" onSubmit={handleSubmit}>
+                <form className="submit-form">
                     <div className="submitbox">
                         <p className="submitinfo">
                             Inden at du kan indsende din order,{" "}
@@ -140,7 +123,7 @@ function Submit({
                         </p>
                     </div>
                     {!isLoading ? (
-                        <button disabled={isLoading} type="submit">
+                        <button disabled={isLoading} type="submit" onClick={()=>sendRequest(options)}>
                             Indsend order
                         </button>
                     ) : (
@@ -150,7 +133,7 @@ function Submit({
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button onClick={retryButton}>Prøv igen</button>
+                    <button onClick={()=>sendRequest(options)}>Prøv igen</button>
                 </div>
             )}
         </div>

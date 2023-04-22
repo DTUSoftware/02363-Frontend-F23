@@ -1,3 +1,4 @@
+import { PaymentType } from "./PaymentType";
 import "./PaymentOptions.css"
 const PaymentOptions = ({paymentType,setPaymentType}:{paymentType:string, setPaymentType:(type: string) => void}) => 
 {
@@ -7,21 +8,21 @@ const PaymentOptions = ({paymentType,setPaymentType}:{paymentType:string, setPay
      return(
         <div className="options">
 
-            <div className="option">
+            <div className="option">                
+                <input type="radio" id="creditCard" value={PaymentType.creditCard} checked={paymentType === PaymentType.creditCard } onChange={onChangePayment}/>
                 <label htmlFor="creditCard">Credit Card</label>
-                <input type="radio" id="creditCard" value="creditCard" checked={paymentType === "creditCard"} onChange={onChangePayment}/>
             </div>
 
-            <div className="option">
+            <div className="option">                
+                <input type="radio" id="mobilePay" value= {PaymentType.mobilePay} checked={paymentType === PaymentType.mobilePay} onChange={onChangePayment}/>                
                 <label htmlFor="mobilePay">MobilePay</label>
-                <input type="radio" id="mobilePay" value="mobilePay" checked={paymentType === "mobilePay"} onChange={onChangePayment}/>                
             </div>
 
-            <div className="option">
+            <div className="option">                
+                <input type="radio" id="giftCard" value={PaymentType.giftcard} checked={paymentType === PaymentType.giftcard} onChange={onChangePayment}/>                
                 <label htmlFor="giftCard">Gift Card</label>
-                <input type="radio" id="giftCard" value="giftCard" checked={paymentType === "giftCard"} onChange={onChangePayment}/>                
             </div>
-
+            
         </div>
      );
 

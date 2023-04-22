@@ -15,9 +15,8 @@
     display: inline-block;   
 }
 
-.options label{
-    float: right;
-    display: block;
+.options label{    
+    display: inline-block;
     padding: 0px 6px;
     text-align: start;
     font-size: medium;
@@ -31,7 +30,7 @@
 }
 
 @media (min-width: 300px) {
-    .options { grid-template-columns: repeat(2, 1fr); }
+    .options { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (min-width: 900px) {
