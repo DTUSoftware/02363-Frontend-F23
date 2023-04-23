@@ -1,24 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import giftCardIcon from "../../assets/giftcardicon.png";
 import navigate from "../../Navigation/navigate";
 import { routes } from "../../Navigation/RoutePaths";
-import "./Forms.css" ;
+import "./style.css" ;
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
-import usePosthData from "../../hooks/useFetch"
+import usePosthData from "../../hooks/useFetch";
+import {GiftCard} from "../../interfaces/GiftCard";
 
 
-export interface GiftCardForm {
-    giftCardnumber: string;
-    securityCode: string;
-}
 
-var form:GiftCardForm={giftCardnumber:"", securityCode:""}
+var form:GiftCard={giftCardnumber:"", securityCode:""}
 
-const url="https://eoysx40p399y9yl.m.pipedream.net/"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
 
 const GiftCardForm =()=>{   
 
-    const[giftCardForm, setForm] = useState(form)
+    const[giftCardForm, setForm] = useState<GiftCard>(form)
     
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setForm({
@@ -27,13 +24,19 @@ const GiftCardForm =()=>{
         });
     };
     
-    const options: RequestInit = {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(giftCardForm),
-    };
+    const {sendRequest,setError, status, isLoading, error} = usePosthData<string>(submitUrl);
 
-    const {sendRequest, status, isLoading, error} = usePosthData<string>(url, options);
+    const handleSubmit =async (event:React.FormEvent<HTMLFormElement>)=> {
+        event.preventDefault();
+        const options: RequestInit = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(giftCardForm),
+        };
+        sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med gavekort!");
+    }
+        
+
     useEffect(()=>{
         if(status === 200){
             navigate(routes.submit.routePath);
@@ -44,13 +47,12 @@ const GiftCardForm =()=>{
     return ( 
         
         <div> 
-
             <div className="image-wrapper">
                 <img src={giftCardIcon}  alt="" className="giftcard-Img" /> 
             </div>           
 
             {error === "" 
-                ? <form className="payment-form">
+                ? <form className="payment-form" onSubmit={handleSubmit}>
 
                     <label className="title-label" htmlFor="giftCardOption"><b> Indtast gavekortinformationer </b></label>
                     <input
@@ -79,23 +81,27 @@ const GiftCardForm =()=>{
 
                     <div className="full-row">
                         {isLoading === false 
-                            ?   <button className="confirm_payment" 
+                            ?   <button className="confirm-payment-btn" 
                                     type="submit" 
-                                    onClick={()=> sendRequest()}
                                     disabled={false} >
                                     Bekræft Betaling
                                 </button>
-                            :   <button className="confirm_payment" 
+                            :   <button className="confirm-payment-btn" 
                                     type="submit" 
                                     disabled={true}>
                                     <Beatloader/>                 
                                 </button>
-                        }
-                            
+                        }                            
                     </div>
                             
                   </form>
-                : <h2> {error} </h2>
+                : ( <div className="error-text">
+                        <p>{error}</p>
+                        <button className="confirm-payment-btn" onClick={()=> setError("")}>
+                            Prøv igen
+                        </button>
+                    </div>
+                   )
             }
 
         </div>

@@ -13,14 +13,10 @@
     height: 100%;
     width: 100%;
     border: solid  1px var(--primary-background-color);
-    transition:  width border .35s;
 }
 
-.card:hover{    
-    width: 120%;
-    rotate:0deg;
+.card:hover{  
     border: solid  4px var(--primary-background-color);
-    background-color: var(--secondary-background-color);
 }
 
 

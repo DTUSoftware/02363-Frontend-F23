@@ -1,19 +1,18 @@
 import { useCallback, useEffect, useState } from "react";
 
 
-const useFetch =<T,>(url: string, options?: RequestInit)=>{
+const useFetch =<T,>(url: string)=>{
     const [data, setData] = useState<T>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [status, setStatus] = useState(0);
     
 
-    function sendRequest(){
+    function sendRequest(options?: RequestInit, errorMessage?: string){   
         setIsLoading(true);
         setError("");
         fetch(url,options)
                 .then((response) => {
-                    console.log("response"+ response.status)
                     setStatus(response.status)
                     if (response.ok) {
                         return response.json();                    
@@ -29,11 +28,15 @@ const useFetch =<T,>(url: string, options?: RequestInit)=>{
                 })
                 .catch((er) => {
                     setIsLoading(false);
-                    setError(er.message);
+                    if (errorMessage !== undefined) {
+                        setError(errorMessage);
+                    } else {
+                        setError(er.message);
+                    }
                 });
     }
 
-    return {sendRequest, status, data, isLoading, error};
+    return {sendRequest, setError, status, data, isLoading, error};     
 }
 
 export default useFetch;

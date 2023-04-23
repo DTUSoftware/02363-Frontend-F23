@@ -2,22 +2,20 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import Payment from "../Payment/Payment";
-import { CustomerPayment } from "../interfaces/CustomerPayment";
+import { CreditCard } from "../interfaces/CreditCard";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
-const payment: CustomerPayment = {
+const payment: CreditCard = {
     cardNumber: "0123456789101112",
     cvcNumber: "123",
     expiryMonth: "01",
     expiryYear: "23",
 };
 
-const headers = new Headers();
-headers.append("Content-Type", "application/json");
 const options: RequestInit = {
     method: "POST",
-    headers,
+    headers:{"Content-Type":"application/json"},
     mode: "cors",
     body: JSON.stringify(payment),
 };

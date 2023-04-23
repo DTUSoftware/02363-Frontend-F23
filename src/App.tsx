@@ -13,8 +13,7 @@ import Finish from "./Finish/Finish";
 import Route from "./Navigation/Route";
 import Routes from "./Navigation/Routes";
 import { routes } from "./Navigation/RoutePaths";
-
-type Products = { [key: string]: ProductItem };
+import { Products } from "./interfaces/Products";
 
 const address: Address = {
     firstName: "",

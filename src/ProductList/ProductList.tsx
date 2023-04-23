@@ -10,10 +10,10 @@ const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main
 
 function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(values:CartItem[]) => void, setList: (products:Products) => void})  {
 
-    const {sendRequest,data, isLoading, error} = useFetchData<ProductItem[]>(dataUrl);
+    const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl)
 
     useEffect(() => {
-        sendRequest()
+        sendRequest();
     },[dataUrl]);
 
     useEffect(()=>{

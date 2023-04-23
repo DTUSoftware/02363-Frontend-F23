@@ -1,21 +1,21 @@
 import { useState } from "react";
 import PaymentOptions from "./options/PaymentOptions";
-import CreditCardForm from "./forms/CreditCard/CreditCardForm";
+import CreditCardForm from "./forms/CreditCardForm";
 import MobilePayForm from "./forms/MobilepayForm";
 import GiftCardForm from "./forms/GiftCardForm";
-import "./Payment.css";
+import { PaymentType } from "./options/PaymentType";
 
 const Payment = () => {
 
-    const[paymentType, setPaymentType]= useState('creditCard');
+    const[paymentType, setPaymentType]= useState<string>(PaymentType.creditCard);
 
     return ( 
         <div className="payment">
             <PaymentOptions paymentType={paymentType} setPaymentType={setPaymentType}/>
 
-            {paymentType == "creditCard" && <CreditCardForm/>}
-            {paymentType == "mobilePay" && <MobilePayForm/>}
-            {paymentType == "giftCard" && <GiftCardForm/>}
+            {paymentType === PaymentType.creditCard && <CreditCardForm/>}
+            {paymentType === PaymentType.mobilePay && <MobilePayForm/>}
+            {paymentType === PaymentType.giftcard && <GiftCardForm/>}
         </div>
      );
 }

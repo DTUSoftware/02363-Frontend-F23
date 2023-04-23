@@ -18,19 +18,31 @@
     aspect-ratio: auto;        
 }
 
+.bankcards-Img{
+    width:max-content;
+    float:left
+}
+
 h3{
     color:#5A78FF ;
 }
 
+.payment{
+    display: grid;
+    aspect-ratio: auto;
+}
+
+
+.error-text,
 .payment-form{
     display: grid;
     gap: 2rem;
-    grid-template-columns: repeat(1, minmax(200px, 1fr)); 
-    box-sizing: border-box;
     padding: 2rem;
     border-radius: 1rem;
+    box-sizing: border-box;
+    border: 4px solid var(--box-border);
     background-color: var(--secondary-background-color);
-    border: 4px solid var(--box-border); 
+     grid-template-columns: repeat(1, minmax(200px, 1fr));   
 }
 
 
@@ -105,7 +117,12 @@ h3{
     padding: 0.60em  1em;
     color:var(--button-text-color);   
 }
-    
+
+.confirm-payment-btn{
+    width: 100%;
+}
+
+.confirm-payment-btn:hover,
 .openButton:hover {
     opacity: 0.9;
     transition: .5s; 
@@ -113,6 +130,38 @@ h3{
     background-color: #7ef384;
     font-weight: bold;    
 }
+
+.error-text p{
+    color: red;
+    text-align: left;
+}
+/*-----------------start creditcardform css--------------------*/
+.payment-block {  
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+.cardinformation {
+    grid-column: span 2;
+    margin: 0px;
+}
+
+.full-row-btn,
+#full-row-label{
+    grid-column: span 2;
+    margin-top: 2rem;
+}
+
+@media screen and (max-width: 410px) {
+
+    .payment-block {
+        display: inline-block;
+    }
+}
+
+/*-----------------end creditcardform css--------------------*/
 
 @media screen and (max-width: 480px) {
     #securityCode{

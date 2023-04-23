@@ -1,30 +1,37 @@
-import { useEffect, useState } from "react";
-import  "./Forms.css"
+import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import mobilepayImg from "../../assets/mobilepayicon.svg"
 import navigate from "../../Navigation/navigate";
 import { routes } from "../../Navigation/RoutePaths";
-import RoundLoader from "../../SpinnerAnimation/RounedLoader";
-import usePosthData from "../../hooks/useFetch"
+import usePostData from "../../hooks/useFetch"
 import BeatLoader from "../../SpinnerAnimation/BeatLoader";
+import { MobilePay } from "../../interfaces/MobilePay";
+import  "./style.css"
 
-const url="https://eoysx40p399y9yl.m.pipedream.net/"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
+
+var form:MobilePay={mobilePayNumber:"", check:false}
 
 const MobilePayForm = () => {
 
-    const[mobilePayNumber, setMobilePayNumber]= useState("");
-    const[check, setCheck]= useState(false);
+    const[mobilePayForm, setForm]= useState<MobilePay>(form);
+    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl);
 
-    const options: RequestInit = {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(mobilePayNumber),
-    };
+    
 
-    const {sendRequest, status, isLoading, error} = usePosthData<string>(url, options);
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
+        event.preventDefault();
+        const options: RequestInit = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(mobilePayForm),
+        };
+        sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med MobilePay!");
+
+    }
+   
     useEffect(()=>{
-        console.log('status:' + status)
         if(status === 200){
             navigate(routes.submit.routePath);
         }
@@ -40,23 +47,23 @@ const MobilePayForm = () => {
             <br></br>
             
             {error === ""
-                ? <form className="payment-form">                          
+                ? <form className="payment-form" onSubmit={handleSubmit}>                          
 
                     <label className="title-label" htmlFor="mobilePayOption">
                     <b><i>Indtast dit mobilnummer</i></b> 
                     </label> 
 
                     <div className="full-row">
-                        <PhoneInput country={'dk'}  value={mobilePayNumber}  onChange={phone => setMobilePayNumber(phone)} />
+                        <PhoneInput country={'dk'}  value={mobilePayForm.mobilePayNumber}  onChange={phone=>  setForm({...mobilePayForm, mobilePayNumber: phone})} />
                     </div> 
 
                     <div className="full-row">
                         <input
                             type="checkbox"
                             name="checkbox"
-                            id="checkbox"
-                            checked={check}
-                            onChange={() => setCheck(!check)}
+                            id="checkbox"  
+                            checked={(mobilePayForm.check)}
+                            onChange={()=> setForm({...mobilePayForm, check: !(mobilePayForm.check)})}
                         />
                         <label htmlFor="checkbox" className="checkbox-label">
                             <i>Husk mig til næste gang</i>
@@ -65,13 +72,12 @@ const MobilePayForm = () => {
 
                     <div className="full-row">
                         {isLoading === false 
-                            ?   <button className="confirm_payment" 
-                                    type="submit" 
-                                    onClick={()=> sendRequest()}
+                            ?   <button className="confirm-payment-btn" 
+                                    type="submit"
                                     disabled={false} >
                                     Bekræft Betaling
                                 </button>
-                            :   <button className="confirm_payment" 
+                            :   <button className="confirm-payment-btn" 
                                     type="submit" 
                                     disabled={true}>
                                     <BeatLoader/>
@@ -80,7 +86,14 @@ const MobilePayForm = () => {
                     </div>  
 
                   </form> 
-                : <h2> {error} </h2>
+                : ( 
+                    <div className="error-text">
+                        <p>{error}</p>
+                        <button className="confirm-payment-btn" onClick={()=>setError("")}>
+                            Prøv igen
+                        </button>
+                    </div>
+                )
             }
         </div>   
     );

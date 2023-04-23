@@ -112,10 +112,11 @@ function AddressDetails({
 
     const isShipping = check !== null && setCheck !== null;
 
-    const dataUrl= "https://api.dataforsyningen.dk/postnumre";
+    const dataUrl = "https://api.dataforsyningen.dk/postnumre";
     const {sendRequest ,data, isLoading, error } = useFetchData<City[]>(dataUrl);
+    
     useEffect(() => {
-        sendRequest()
+        sendRequest();
     },[dataUrl]);
 
     useEffect(() => {

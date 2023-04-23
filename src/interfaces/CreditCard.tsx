@@ -1,5 +1,5 @@
 
-export interface CustomerPayment {
+export interface CreditCard {
     cardNumber: string;
     cvcNumber: string;
     expiryMonth: string;

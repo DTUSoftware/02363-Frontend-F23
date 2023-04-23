@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
 import { CartItem } from "../interfaces/CartItem";
 import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
+import usePostData from "../hooks/useFetch"
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
@@ -21,12 +22,25 @@ function Submit({
 }) {
     const [marketing, setMarketing] = useState(false);
     const [comment, setComment] = useState("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState("");
+    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl); 
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    useEffect(()=>{
+        if(status === 200){
+            resetAfterSubmit();
+            navigate(routes.finish.routePath);
+        }
+    },[status])
+
+    const onChangeMarketing = () => {
+        setMarketing(!marketing);
+    };
+
+    const changeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setComment(event.target.value);
+    };
+
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        setIsLoading(true);
         const orderDetails = cartItems.map((x) => {
             return {
                 productId: x.product.id,
@@ -41,48 +55,17 @@ function Submit({
             shippingAddress: shippingAddress,
             checkMarketing: marketing,
             submitComment: comment,
-        };
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
+        };   
+        
         const options: RequestInit = {
             method: "POST",
-            headers,
+            headers:{"Content-Type":"application/json"},
             mode: "cors",
             body: JSON.stringify(order),
-        };
-        await fetch(submitUrl, options)
-            .then((response) => {
-                if (response.ok) {
-                    return;
-                }
-                throw Error();
-            })
-            .then(() => {
-                setIsLoading(false);
-                setError("");
-                resetAfterSubmit();
-                navigate(routes.finish.routePath);
-            })
-            .catch((er) => {
-                setIsLoading(false);
-                setError(
-                    "Vi beklager ulejligheden, noget gik galt indsendelsen af din ordre!"
-                );
-            });
-    };
+        }; 
 
-    const onChangeMarketing = () => {
-        setMarketing(!marketing);
-    };
-
-    const changeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setComment(event.target.value);
-    };
-
-    const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setError("");
-    };
+       sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"); 
+    }
 
     return (
         <div className="terms-box">
@@ -147,8 +130,8 @@ function Submit({
                 </form>
             ) : (
                 <div>
-                    <p className="errormessage">{error}</p>
-                    <button onClick={retryButton}>Prøv igen</button>
+                    <p>{error}</p>
+                    <button onClick={()=>setError("")}>Prøv igen</button>
                 </div>
             )}
         </div>
