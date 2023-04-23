@@ -5,6 +5,7 @@ import { CreditCard } from "../../interfaces/CreditCard";
 import { routes } from "../../Navigation/RoutePaths";
 import usePostData from "../../hooks/useFetch";
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
+import  "./style.css"
 
 const payment: CreditCard = {
     cardNumber: "",

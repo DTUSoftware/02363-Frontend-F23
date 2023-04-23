@@ -72,6 +72,14 @@ select {
     color:var(--button-text-color);   
 }
 
+.goToPayment-btn:hover {
+    opacity: 0.7;
+    transition: .5s; 
+    color: var(--primary-text-color);
+    background-color: #7ef384;
+    font-weight: bold;   
+}
+
 .error {
     color: red;
     float: left;

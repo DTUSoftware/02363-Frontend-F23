@@ -5,8 +5,7 @@ import { routes } from "../../Navigation/RoutePaths";
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
 import usePosthData from "../../hooks/useFetch";
 import {GiftCard} from "../../interfaces/GiftCard";
-
-
+import  "./style.css"
 
 var form:GiftCard={giftCardnumber:"", securityCode:""}
 
