@@ -12,12 +12,12 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
 
     const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl)
 
-    const options: RequestInit = {
-        method: "Get",
-        headers: {'Content-Type': 'text/plain' },
-    };    
-
     useEffect(() => {
+        const options: RequestInit = {
+            method: "Get",
+            headers: {'Content-Type': 'text/plain' },
+        }; 
+
         sendRequest(options)
     },[dataUrl]);
 

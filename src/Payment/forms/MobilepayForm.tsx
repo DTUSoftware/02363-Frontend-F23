@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import mobilepayImg from "../../assets/mobilepayicon.svg"
@@ -9,23 +9,31 @@ import BeatLoader from "../../SpinnerAnimation/BeatLoader";
 import { MobilePay } from "../../interfaces/MobilePay";
 import  "./style.css"
 
-const submitUrl="https://eoysx40p399y9yl.m.pipedream.net/"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
 
 var form:MobilePay={mobilePayNumber:"", check:false}
 
 const MobilePayForm = () => {
 
     const[mobilePayForm, setForm]= useState<MobilePay>(form);
-    const {sendRequest, status, isLoading, error} = usePostData<string>(submitUrl);
+    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl);
 
-    const options: RequestInit = {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(mobilePayForm),
-    };
-   
-    useEffect(()=>{
+    
+
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
+        event.preventDefault();
+        const options: RequestInit = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(mobilePayForm),
+        };
+
         console.log('options: '+ options.body)
+        sendRequest(options);
+
+    }
+   
+    useEffect(()=>{        
         console.log('status:' + status)
         if(status === 200){
             navigate(routes.submit.routePath);
@@ -42,7 +50,7 @@ const MobilePayForm = () => {
             <br></br>
             
             {error === ""
-                ? <form className="payment-form">                          
+                ? <form className="payment-form" onSubmit={handleSubmit}>                          
 
                     <label className="title-label" htmlFor="mobilePayOption">
                     <b><i>Indtast dit mobilnummer</i></b> 
@@ -68,8 +76,7 @@ const MobilePayForm = () => {
                     <div className="full-row">
                         {isLoading === false 
                             ?   <button className="confirm-payment-btn" 
-                                    type="submit" 
-                                    onClick={()=>sendRequest(options)}
+                                    type="submit"
                                     disabled={false} >
                                     Bekræft Betaling
                                 </button>
@@ -83,9 +90,9 @@ const MobilePayForm = () => {
 
                   </form> 
                 : ( 
-                    <div className="full-row">
-                        <p className="error-text">{error}</p>
-                        <button className="confirm-payment-btn" onClick={()=>sendRequest(options)}>
+                    <div className="error-text">
+                        <p>{error}</p>
+                        <button className="confirm-payment-btn" onClick={()=>setError("")}>
                             Prøv igen
                         </button>
                     </div>

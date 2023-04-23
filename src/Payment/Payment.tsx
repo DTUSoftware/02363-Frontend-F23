@@ -3,7 +3,6 @@ import PaymentOptions from "./options/PaymentOptions";
 import CreditCardForm from "./forms/CreditCardForm";
 import MobilePayForm from "./forms/MobilepayForm";
 import GiftCardForm from "./forms/GiftCardForm";
-import "./Payment.css";
 import { PaymentType } from "./options/PaymentType";
 
 const Payment = () => {

@@ -115,12 +115,12 @@ function AddressDetails({
     const dataUrl= "https://api.dataforsyningen.dk/postnumre";
     const {sendRequest ,data, isLoading, error } = useFetchData<City[]>(dataUrl);
     
-    const options: RequestInit = {
-        method: "Get",
-        headers: {'Content-Type': 'text/plain' },
-    };
-
     useEffect(() => {
+        const options: RequestInit = {
+            method: "Get",
+            headers: {'Content-Type': 'text/plain' },
+        };
+
         sendRequest(options)
     },[dataUrl]);
 

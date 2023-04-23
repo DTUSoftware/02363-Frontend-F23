@@ -35,7 +35,7 @@ const useFetch =<T,>(url: string)=>{
                 });
     }
 
-    return {sendRequest, status, data, isLoading, error};     
+    return {sendRequest, setError, status, data, isLoading, error};     
 }
 
 export default useFetch;

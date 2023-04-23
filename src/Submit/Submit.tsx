@@ -24,30 +24,7 @@ function Submit({
 }) {
     const [marketing, setMarketing] = useState(false);
     const [comment, setComment] = useState("");
-    const {sendRequest, status, isLoading, error} = usePostData<string>(submitUrl);
-
-    const orderDetails = cartItems.map((x) => {
-        return {
-            productId: x.product.id,
-            quantity: x.quantity,
-            giftWrap: x.giftWrap,
-            recurringOrder: x.recurringOrder,
-        };
-    });
-    const order: Order = {
-        orderDetails: orderDetails,
-        billingAddress: billingAddress,
-        shippingAddress: shippingAddress,
-        checkMarketing: marketing,
-        submitComment: comment,
-    };   
-    
-    const options: RequestInit = {
-        method: "POST",
-        headers:{"Content-Type":"application/json"},
-        mode: "cors",
-        body: JSON.stringify(order),
-    };    
+    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl); 
 
     useEffect(()=>{
         console.log('status:' + status)
@@ -65,15 +42,40 @@ function Submit({
         setComment(event.target.value);
     };
 
-    const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-    };
+        const orderDetails = cartItems.map((x) => {
+            return {
+                productId: x.product.id,
+                quantity: x.quantity,
+                giftWrap: x.giftWrap,
+                recurringOrder: x.recurringOrder,
+            };
+        });
+        const order: Order = {
+            orderDetails: orderDetails,
+            billingAddress: billingAddress,
+            shippingAddress: shippingAddress,
+            checkMarketing: marketing,
+            submitComment: comment,
+        };   
+        
+        const options: RequestInit = {
+            method: "POST",
+            headers:{"Content-Type":"application/json"},
+            mode: "cors",
+            body: JSON.stringify(order),
+        }; 
+
+       sendRequest(options); 
+
+    }
 
     return (
         <div className="terms-box">
             <h2 className="address-row">Indsendelse af order</h2>
             {error === "" ? (
-                <form className="submit-form">
+                <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
                             Inden at du kan indsende din order,{" "}
@@ -123,7 +125,7 @@ function Submit({
                         </p>
                     </div>
                     {!isLoading ? (
-                        <button disabled={isLoading} type="submit" onClick={()=>sendRequest(options)}>
+                        <button disabled={isLoading} type="submit">
                             Indsend order
                         </button>
                     ) : (
@@ -133,7 +135,7 @@ function Submit({
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button onClick={()=>sendRequest(options)}>Prøv igen</button>
+                    <button onClick={()=>setError("")}>Prøv igen</button>
                 </div>
             )}
         </div>

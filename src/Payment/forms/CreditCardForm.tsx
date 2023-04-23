@@ -1,14 +1,12 @@
 
 import { useEffect, useState } from "react";
-import card_americanexpress from "../../../assets/americanexpress_logo.png";
-import card_dankort from "../../../assets/dankort_logo.png";
-import card_mastercard from "../../../assets/mastercard_logo.png";
+import bankcardsImg from "../../assets/bankcardIcons.png";
 import navigate from "../../Navigation/navigate";
 import { CreditCard } from "../../interfaces/CreditCard";
 import { routes } from "../../Navigation/RoutePaths";
-import"./style.css";
 import usePostData from "../../hooks/useFetch";
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
+import"./style.css";
 
 const payment: CreditCard = {
     cardNumber: "",
@@ -21,21 +19,26 @@ const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function CreditCardForm() {
     const [customerPayment, setCustomerPayment] = useState<CreditCard>(payment);
-    const {sendRequest, status, isLoading, error} = usePostData<string>(submitUrl);
+    const {sendRequest, setError, status, isLoading, error} = usePostData<string>(submitUrl);
 
     useEffect(()=>{
         console.log('status:' + status)
         if(status === 200){
             navigate(routes.submit.routePath);
         }
-    },[status])
+    },[status])    
 
-    const options: RequestInit = {
-        method: "POST",
-        headers:{"Content-Type": "application/json"},
-        mode: "cors",
-        body: JSON.stringify(customerPayment),
-    };
+    const handleSubmit =async (event:React.FormEvent<HTMLFormElement>)=> {
+        event.preventDefault();
+        const options: RequestInit = {
+            method: "POST",
+            headers:{"Content-Type": "application/json"},
+            mode: "cors",
+            body: JSON.stringify(customerPayment),
+        };
+
+        sendRequest(options);
+    }
     
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -54,17 +57,21 @@ function CreditCardForm() {
 
     return (
         <div className="payment">
+            <div className="img-wrapper">
+                <img src={bankcardsImg}  alt="" className="bankcards-Img" /> 
+            </div> 
+
             {error === "" ? (
-                <form className="payment-form" >
+                <form className="payment-form" onSubmit={handleSubmit}>
                     <div className="payment-block">
-                        <label className="title-label" id= "full-row-label">Kort oplysninger</label>
-                        <label className="paymentblock" htmlFor="expiryMonth">
-                            Udløbsmåned
-                        </label>{" "}
-                        <label className="paymentblock" htmlFor="expiryYear">
-                            Udløbsår
-                        </label>
+
+                        <label className="title-label" id= "full-row-label">Kort oplysninger</label>                        
+                        
                         <div className="paymentblock">
+                            <label htmlFor="expiryYear">
+                                Udløbsår
+                            </label>
+
                             <select
                                 autoFocus
                                 required
@@ -88,6 +95,10 @@ function CreditCardForm() {
                             </select>
                         </div>
                         <div className="paymentblock">
+                            <label htmlFor="expiryMonth">
+                                Udløbsmåned
+                            </label>
+
                             <select
                                 required
                                 className="dropdownpayment"
@@ -110,14 +121,12 @@ function CreditCardForm() {
                                 <option> 35 </option>
                             </select>
                         </div>
-                        <label className="paymentblock" htmlFor="cardNumber">
-                            Kortnummer
-                        </label>
-                        <label className="paymentblock" htmlFor="cvcNumber">
-                            {" "}
-                            CVC
-                        </label>
+                       
                         <div className="paymentblock">
+                            <label htmlFor="cardNumber">
+                                Kortnummer
+                            </label>
+
                             <input
                                 required
                                 type="tel"
@@ -128,7 +137,11 @@ function CreditCardForm() {
                                 onChange={onChange}
                             />
                         </div>
+
                         <div className="paymentblock">
+                            <label  htmlFor="cvcNumber">                               
+                                CVC
+                            </label>
                             <input
                                 className="cvcfield"
                                 required
@@ -147,7 +160,6 @@ function CreditCardForm() {
                                     id="confirm-payment"
                                     disabled={isLoading}
                                     type="submit"
-                                    onClick={()=>sendRequest(options)}
                                 >
                                     Bekræft Betaling
                                 </button>
@@ -163,9 +175,9 @@ function CreditCardForm() {
                     </div>
                 </form>
             ) : (
-                <div className="full-row-btn">
-                    <p className="error-text">{error}</p>
-                    <button className="confirm-payment-btn" onClick={()=>sendRequest(options)}>
+                <div className="error-text">
+                    <p>{error}</p>
+                    <button className="confirm-payment-btn" onClick={()=>setError("")}>
                         Prøv igen
                     </button>
                 </div>

@@ -11,7 +11,7 @@ import {GiftCard} from "../../interfaces/GiftCard";
 
 var form:GiftCard={giftCardnumber:"", securityCode:""}
 
-const submitUrl="https://eoysx40p399y9yl.m.pipedream.net/"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
 
 const GiftCardForm =()=>{   
 
@@ -24,13 +24,19 @@ const GiftCardForm =()=>{
         });
     };
     
-    const {sendRequest, status, isLoading, error} = usePosthData<string>(submitUrl);
+    const {sendRequest,setError, status, isLoading, error} = usePosthData<string>(submitUrl);
 
-    const options: RequestInit = {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(giftCardForm),
-    };    
+    const handleSubmit =async (event:React.FormEvent<HTMLFormElement>)=> {
+        event.preventDefault();
+        const options: RequestInit = {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(giftCardForm),
+        };
+
+        sendRequest(options);
+    }
+        
 
     useEffect(()=>{
         console.log('status:' + status)
@@ -48,7 +54,7 @@ const GiftCardForm =()=>{
             </div>           
 
             {error === "" 
-                ? <form className="payment-form">
+                ? <form className="payment-form" onSubmit={handleSubmit}>
 
                     <label className="title-label" htmlFor="giftCardOption"><b> Indtast gavekortinformationer </b></label>
                     <input
@@ -79,7 +85,6 @@ const GiftCardForm =()=>{
                         {isLoading === false 
                             ?   <button className="confirm-payment-btn" 
                                     type="submit" 
-                                    onClick={()=> sendRequest(options)}
                                     disabled={false} >
                                     Bekræft Betaling
                                 </button>
@@ -92,9 +97,9 @@ const GiftCardForm =()=>{
                     </div>
                             
                   </form>
-                : ( <div className="full-row">
-                        <p className="error-text">{error}</p>
-                        <button className="confirm-payment-btn" onClick={()=> sendRequest(options)}>
+                : ( <div className="error-text">
+                        <p>{error}</p>
+                        <button className="confirm-payment-btn" onClick={()=> setError("")}>
                             Prøv igen
                         </button>
                     </div>
