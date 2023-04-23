@@ -229,14 +229,15 @@ function ProductTable({
                     </tbody>
                 </table>
             </div>
-
             {hasUpsellProducts() && 
+            <div>
+            <h1 className="delivery-heading">
+                            Varer som andre kunder har set på
+                        </h1>
                 <div className="upsell-table">
                     <table>
-                        <caption className="upsell-heading">
-                            Varer som andre kunder har set på
-                        </caption>
                         <tbody>
+                            <tr>
                             {items.map((item, index) => (
                                 <UpsellItems
                                     key={index}
@@ -245,11 +246,12 @@ function ProductTable({
                                     productList={productList}
                                 />
                             ))}
+                            </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
             }
-
             <div className="cart-total">
                 <CartTotal items={items} itemTotal={itemTotal} />
                 <br />
@@ -283,6 +285,10 @@ function CartTotal({
         cartTotal * (1 - totalRebate) +
         shippingPrice
     ).toFixed(2);
+    const total = (
+        cartTotal +
+        shippingPrice
+    ).toFixed(2);
 
     return (
         <p className="total">
@@ -309,11 +315,11 @@ function CartTotal({
             <span
                 className="text-right"
                 aria-label={`Pris i alt ${
-                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                    hasRebate ? totalWithRebate : total
                 } ${currency}`}
             >
                 {`${
-                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                    hasRebate ? totalWithRebate : total
                 } ${currency}`}
             </span>
         </p>
@@ -336,26 +342,23 @@ function UpsellItems({
 
     if (upsellProduct !== null) {
         return (
-            <tr className="upsell-content">
-                <td>
-                    <div>
-                        <div>
-                            <img
-                                className="upsell-picture"
-                                alt={`Billede af ${upsellProduct.name}`}
-                                src={upsellProduct.imageUrl}
-                            ></img>
-                        </div>
-                        <button
-                            className="upsellBtn"
-                            aria-label={`Andre har valgt ${upsellProduct.name}`}
-                            onClick={() => upsellItem()}
-                        >
-                            Erstat vare
-                        </button>
-                    </div>
-                </td>
-            </tr>
+            <td>
+                <div className="upsell-content">
+                    <img
+                        className="upsell-picture"
+                        alt={`Billede af ${upsellProduct.name}`}
+                        src={upsellProduct.imageUrl}
+                    />
+                    <p className="upsell-product-name">{upsellProduct.name}</p>
+                    <button
+                        className="upsellBtn"
+                        aria-label={`Andre har valgt ${upsellProduct.name}`}
+                        onClick={() => upsellItem()}
+                    >
+                        Erstat vare
+                    </button>
+                </div>
+            </td>
         );
     } else {
         return <></>;

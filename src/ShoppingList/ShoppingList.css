@@ -6,7 +6,6 @@
     display: inline-flex;
     text-align: center;
     font-size: 14px;
-    width: 215px;
     margin-bottom: 10px;
     font-weight: bold;
 }
@@ -31,11 +30,16 @@
 }
 
 .emptyshoplist {
+    text-align: center;
     padding-top: 4rem;
     font-weight: bold;
 }
 
 @media only screen and (max-width: 768px) {
+    .ShoppingList {
+        width: 350px;
+    }
+    
     .product {
         display: flex;
         margin-left: 10px;
@@ -58,6 +62,14 @@
         white-space: nowrap;
         margin-bottom: 0;
         margin-top: 7px;
+    }
+
+    .upsell-product-name {
+        text-align: center;
+        font-size: 10px;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-bottom: 0;
     }
 
     .discount-container {
@@ -156,9 +168,9 @@
     }
 
     .upsell-content {
-        display: inline;
+        display: block;
         justify-content: center;
-        margin: 20px;
+        margin: 10px;
         overflow-x: auto;
         width: auto;
     }
@@ -190,6 +202,10 @@
 }
 
 @media only screen and (min-width: 768px) {
+    .ShoppingList {
+        width: 768px;
+    }
+
     .product {
         display: flex;
         margin-left: 10px;
@@ -212,6 +228,14 @@
         white-space: nowrap;
         margin-bottom: 0;
         margin-top: 7px;
+    }
+
+    .upsell-product-name {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        margin-bottom: 0;
     }
 
     .discount-container {
@@ -321,11 +345,10 @@
     }
 
     .upsell-content {
-        display: inline;
+        display: block;
         justify-content: center;
-        margin: 20px;
+        margin: 10px;
         overflow-x: auto;
-        width: 338px;
         padding-right: 25px;
         padding-left: 25px;
     }
@@ -357,6 +380,10 @@
 }
 
 @media only screen and (min-width: 992px) {
+    .ShoppingList {
+        width: 992px;
+    }
+
     .price-total {
         padding-right: 50px;
     }
@@ -366,8 +393,7 @@
     }
 
     .upsell-content {
-        padding-right: 100px;
-        padding-left: 100px;
+        display: block;
     }
 
     .upsell-heading {
