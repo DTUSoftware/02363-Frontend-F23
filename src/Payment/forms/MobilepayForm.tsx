@@ -7,7 +7,6 @@ import { routes } from "../../Navigation/RoutePaths";
 import usePostData from "../../hooks/useFetch"
 import BeatLoader from "../../SpinnerAnimation/BeatLoader";
 import { MobilePay } from "../../interfaces/MobilePay";
-import  "./style.css"
 
 const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
 

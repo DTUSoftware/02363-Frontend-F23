@@ -1,3 +1,7 @@
+.ShoppingList img {
+    padding: 2px;
+}
+
 .delivery-heading {
     display: inline-flex;
     text-align: center;
@@ -138,15 +142,17 @@
 
     .upsell-table {
         display: block;
-        margin-top: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
         align-items: center;
         overflow-y: auto;
         overflow-x: auto;
         width: auto;
         overflow-x: auto;
         white-space: nowrap;
-        padding: 10px;
+    }
+
+    .shop-table {
+        margin-bottom: 1rem;
     }
 
     .upsell-content {
@@ -300,8 +306,7 @@
 
     .upsell-table {
         display: block;
-        margin-top: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
         align-items: center;
         overflow-y: auto;
         overflow-x: auto;
@@ -309,7 +314,10 @@
         overflow-x: auto;
         background-color: var(--secondary-background-color);
         border-radius: 20px;
-        padding: 10px;
+    }
+
+    .shop-table {
+        margin-bottom: 1rem;
     }
 
     .upsell-content {
@@ -318,6 +326,8 @@
         margin: 20px;
         overflow-x: auto;
         width: 338px;
+        padding-right: 25px;
+        padding-left: 25px;
     }
 
     .upsell-heading {
@@ -373,14 +383,4 @@
         border-radius: 20px;
         background-color: var(--secondary-background-color);
     }
-}
-
-.link-style {
-    background-color: #535bf2;
-    color: #f4f2f2;
-}
-
-.order-btn:hover {
-    background-color: #7ef384;
-    color: #1c1a1a;
 }

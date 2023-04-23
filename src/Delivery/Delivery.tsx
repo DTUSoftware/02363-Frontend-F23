@@ -288,7 +288,6 @@ function AddressDetails({
                     Adresselinje 2
                 </label>
                 <input
-                    required
                     type="text"
                     id={!isShipping ? "shippingAddress2" : "address2"}
                     name="address2"

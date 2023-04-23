@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import bankcardsImg from "../../assets/bankcardIcons.png";
 import navigate from "../../Navigation/navigate";
@@ -6,7 +5,6 @@ import { CreditCard } from "../../interfaces/CreditCard";
 import { routes } from "../../Navigation/RoutePaths";
 import usePostData from "../../hooks/useFetch";
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
-import"./style.css";
 
 const payment: CreditCard = {
     cardNumber: "",
@@ -67,8 +65,8 @@ function CreditCardForm() {
                         <label className="title-label" id= "full-row-label">Kort oplysninger</label>                        
                         
                         <div className="paymentblock">
-                            <label htmlFor="expiryYear">
-                                Udløbsår
+                            <label htmlFor="expiryMonth">
+                                Udløbsmåned
                             </label>
 
                             <select
@@ -94,8 +92,8 @@ function CreditCardForm() {
                             </select>
                         </div>
                         <div className="paymentblock">
-                            <label htmlFor="expiryMonth">
-                                Udløbsmåned
+                        <label htmlFor="expiryYear">
+                                Udløbsår
                             </label>
 
                             <select

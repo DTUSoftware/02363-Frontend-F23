@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import giftCardIcon from "../../assets/giftcardicon.png";
 import navigate from "../../Navigation/navigate";
 import { routes } from "../../Navigation/RoutePaths";
-import "./style.css" ;
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
 import usePosthData from "../../hooks/useFetch";
 import {GiftCard} from "../../interfaces/GiftCard";
@@ -59,7 +58,7 @@ const GiftCardForm =()=>{
                         required
                         pattern="[0-9]{19}"
                         type="tel"
-                        placeholder="Gavekortnummer"
+                        placeholder="Gavekort nummer"
                         id="giftCardnumber"
                         name="giftCardnumber"                    
                         onChange={onChange}                    

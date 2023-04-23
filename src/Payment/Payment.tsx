@@ -4,6 +4,7 @@ import CreditCardForm from "./forms/CreditCardForm";
 import MobilePayForm from "./forms/MobilepayForm";
 import GiftCardForm from "./forms/GiftCardForm";
 import { PaymentType } from "./options/PaymentType";
+import  "./Payment.css"
 
 const Payment = () => {
 

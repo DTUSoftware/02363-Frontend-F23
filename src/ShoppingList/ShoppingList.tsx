@@ -16,6 +16,7 @@ function ShoppingList({
     setItems: (items: CartItem[]) => void;
     productList: Products;
 }) {
+
     // Populates cart with dummy items
     useEffect(() => {
         if (items.length === 0) {
@@ -123,8 +124,7 @@ function ShoppingList({
     }
 
     const listEmpty = items === undefined || items.length === 0;
-    //if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
-    //else if(error != null) {return (<h1> {error} </h1>)}
+
     return (
         <div className="ShoppingList">
             {!listEmpty && (
@@ -230,23 +230,25 @@ function ProductTable({
                 </table>
             </div>
 
-            <div className="upsell-table">
-                <table>
-                    <caption className="upsell-heading">
-                        Varer som andre kunder har set på
-                    </caption>
-                    <tbody>
-                        {items.map((item, index) => (
-                            <UpsellItems
-                                key={index}
-                                item={item}
-                                upsellItem={() => upsellItem(index)}
-                                productList={productList}
-                            />
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            {hasUpsellProducts() && 
+                <div className="upsell-table">
+                    <table>
+                        <caption className="upsell-heading">
+                            Varer som andre kunder har set på
+                        </caption>
+                        <tbody>
+                            {items.map((item, index) => (
+                                <UpsellItems
+                                    key={index}
+                                    item={item}
+                                    upsellItem={() => upsellItem(index)}
+                                    productList={productList}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            }
 
             <div className="cart-total">
                 <CartTotal items={items} itemTotal={itemTotal} />
@@ -337,7 +339,7 @@ function UpsellItems({
             <tr className="upsell-content">
                 <td>
                     <div>
-                        <div className="upsell-picture">
+                        <div>
                             <img
                                 className="upsell-picture"
                                 alt={`Billede af ${upsellProduct.name}`}
