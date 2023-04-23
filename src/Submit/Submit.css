@@ -3,6 +3,8 @@
 }
 
 .submitbox {
+    display: grid;
+    gap: 20px;
     max-width: 32rem;
     box-sizing: border-box;
     padding: 2rem;
@@ -54,4 +56,15 @@
     text-align: center;
     padding-top: 2rem;
     padding-bottom: 2rem;
+}
+
+
+@media only screen and (max-width: 768px) {
+
+    .submit-form label {
+        font-size: small;
+        text-align: start;
+        font-weight: bolder;
+        padding: 8px 0;
+    }   
 }

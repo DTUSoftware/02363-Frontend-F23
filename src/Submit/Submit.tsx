@@ -21,6 +21,7 @@ function Submit({
     resetAfterSubmit: () => void;
 }) {
     const [marketing, setMarketing] = useState(false);
+    const [terms, setTerms] = useState(false);
     const [comment, setComment] = useState("");
     const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl); 
 
@@ -30,6 +31,10 @@ function Submit({
             navigate(routes.finish.routePath);
         }
     },[status])
+
+    const onChangeTerms = () => {
+        setTerms(!terms);
+    };
 
     const onChangeMarketing = () => {
         setMarketing(!marketing);
@@ -80,31 +85,35 @@ function Submit({
                             mere information om siden handelsbetingelser{" "}
                             <a href="">her</a>.
                         </p>
-                        <p className="checkbox-paragraf">
-                            <input
-                                required
-                                type="checkbox"
-                                id="checkbox-terms"
-                                name="checkbox-terms"
-                            />
-                            <label htmlFor="checkbox-terms" id="checkbox-label">
-                                Jeg accepterer vilkårene og betingelserne og
-                                privatlivsaftalen.
-                            </label>
-                        </p>
-                        <p className="checkbox-paragraf">
-                            <input
-                                type="checkbox"
-                                id="checkmarketing"
-                                name="checkmarketing"
-                                checked={marketing}
-                                onChange={onChangeMarketing}
-                            />
-                            <label htmlFor="checkmarketing" id="checkbox-label">
-                                Jeg accepterer at modtage marketingmails fra
-                                denne webshop.
-                            </label>
-                        </p>
+                        <div>
+                            <p className="checkbox-paragraf">
+                                <input
+                                    required
+                                    type="checkbox"
+                                    id="checkbox-terms"
+                                    name="checkbox-terms"
+                                    checked={terms}
+                                    onChange={onChangeTerms}
+                                />
+                                <label htmlFor="checkbox-terms" id="checkbox-label">
+                                    Jeg accepterer vilkårene og betingelserne og
+                                    privatlivsaftalen.
+                                </label>
+                            </p>
+                            <p className="checkbox-paragraf">
+                                <input
+                                    type="checkbox"
+                                    id="checkmarketing"
+                                    name="checkmarketing"
+                                    checked={marketing}
+                                    onChange={onChangeMarketing}
+                                />
+                                <label htmlFor="checkmarketing" id="checkbox-label">
+                                    Jeg accepterer at modtage marketingmails fra
+                                    denne webshop.
+                                </label>
+                            </p>
+                        </div>
                         <p>
                             <label htmlFor="submitcomment" id="submit-label">
                                 Tilføj en yderligere kommentar
