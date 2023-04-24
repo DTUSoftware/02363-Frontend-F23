@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
 import { CartItem } from "../interfaces/CartItem";
 import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
-import { FaBold } from "react-icons/fa";
+import { routes } from "../Navigation/RoutePaths";
+import usePostData from "../hooks/useFetch"
 
-//const submitUrl = "http://localhost:5114/api/orders";
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function Submit({
@@ -21,13 +21,31 @@ function Submit({
     resetAfterSubmit: () => void;
 }) {
     const [marketing, setMarketing] = useState(false);
+    const [terms, setTerms] = useState(false);
     const [comment, setComment] = useState("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState("");
+    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl); 
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    useEffect(()=>{
+        if(status === 200){
+            resetAfterSubmit();
+            navigate(routes.finish.routePath);
+        }
+    },[status])
+
+    const onChangeTerms = () => {
+        setTerms(!terms);
+    };
+
+    const onChangeMarketing = () => {
+        setMarketing(!marketing);
+    };
+
+    const changeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setComment(event.target.value);
+    };
+
+    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
         event.preventDefault();
-        setIsLoading(true);
         const orderDetails = cartItems.map((x) => {
             return {
                 productId: x.product.id,
@@ -42,48 +60,17 @@ function Submit({
             shippingAddress: shippingAddress,
             checkMarketing: marketing,
             submitComment: comment,
-        };
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
+        };   
+        
         const options: RequestInit = {
             method: "POST",
-            headers,
+            headers:{"Content-Type":"application/json"},
             mode: "cors",
             body: JSON.stringify(order),
-        };
-        await fetch(submitUrl, options)
-            .then((response) => {
-                if (response.ok) {
-                    return;
-                }
-                throw Error();
-            })
-            .then(() => {
-                setIsLoading(false);
-                setError("");
-                resetAfterSubmit();
-                navigate("/finish");
-            })
-            .catch((er) => {
-                setIsLoading(false);
-                setError(
-                    "Vi beklager ulejligheden, noget gik galt. Prøv venligst igen om et par minutter."
-                );
-            });
-    };
+        }; 
 
-    const onChangeMarketing = () => {
-        setMarketing(!marketing);
-    };
-
-    const changeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setComment(event.target.value);
-    };
-
-    const retryButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        setError("");
-    };
+       sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"); 
+    }
 
     return (
         <div className="terms-box">
@@ -98,31 +85,35 @@ function Submit({
                             mere information om siden handelsbetingelser{" "}
                             <a href="">her</a>.
                         </p>
-                        <p className="checkbox-paragraf">
-                            <input
-                                required
-                                type="checkbox"
-                                id="checkbox-terms"
-                                name="checkbox-terms"
-                            />
-                            <label htmlFor="checkbox-terms" id="checkbox-label">
-                                Jeg accepterer vilkårene og betingelserne og
-                                privatlivsaftalen.
-                            </label>
-                        </p>
-                        <p className="checkbox-paragraf">
-                            <input
-                                type="checkbox"
-                                id="checkmarketing"
-                                name="checkmarketing"
-                                checked={marketing}
-                                onChange={onChangeMarketing}
-                            />
-                            <label htmlFor="checkmarketing" id="checkbox-label">
-                                Jeg accepterer at modtage marketingmails fra
-                                denne webshop.
-                            </label>
-                        </p>
+                        <div>
+                            <p className="checkbox-paragraf">
+                                <input
+                                    required
+                                    type="checkbox"
+                                    id="checkbox-terms"
+                                    name="checkbox-terms"
+                                    checked={terms}
+                                    onChange={onChangeTerms}
+                                />
+                                <label htmlFor="checkbox-terms" id="checkbox-label">
+                                    Jeg accepterer vilkårene og betingelserne og
+                                    privatlivsaftalen.
+                                </label>
+                            </p>
+                            <p className="checkbox-paragraf">
+                                <input
+                                    type="checkbox"
+                                    id="checkmarketing"
+                                    name="checkmarketing"
+                                    checked={marketing}
+                                    onChange={onChangeMarketing}
+                                />
+                                <label htmlFor="checkmarketing" id="checkbox-label">
+                                    Jeg accepterer at modtage marketingmails fra
+                                    denne webshop.
+                                </label>
+                            </p>
+                        </div>
                         <p>
                             <label htmlFor="submitcomment" id="submit-label">
                                 Tilføj en yderligere kommentar
@@ -149,7 +140,7 @@ function Submit({
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button onClick={retryButton}>Prøv igen</button>
+                    <button onClick={()=>setError("")}>Prøv igen</button>
                 </div>
             )}
         </div>

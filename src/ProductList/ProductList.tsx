@@ -1,21 +1,25 @@
-import { BeatLoader } from "react-spinners";
-import useFetchData from "../hooks/useFetchData";
+import useFetchData from "../hooks/useFetch";
 import { CartItem } from "../interfaces/CartItem";
 import { ProductItem } from "../interfaces/ProductItem";
 import { useEffect } from "react";
 import {Products} from '../interfaces/Products';
 import "./ProductList.css";
+import RoundLoader from "../SpinnerAnimation/RounedLoader";
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
 function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(values:CartItem[]) => void, setList: (products:Products) => void})  {
 
-    const {data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl,[])
+    const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl)
+
+    useEffect(() => {
+        sendRequest();
+    },[dataUrl]);
 
     useEffect(()=>{
         const products: Products = {};  
 
-        data.forEach((product) => {
+        data?.forEach((product) => {
             products[product.id] = product;
         })
 
@@ -45,21 +49,21 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
         
     }
     
-    if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
-    else if(error != null) {return (<h1> {error} </h1>)}
+    if(isLoading){ return(<RoundLoader/>) }
+    else if(error !== "") {return (<h1> {error} </h1>)}
     else return ( 
         <div className="ProductList">
             { data &&
                 data.map(
                     (product)=> (
                         
-                        <div className="card" key={product.id}>
+                        <div className="card" aria-label={`Produkt ${product.name}`} key={product.id}>
                             <img src={product.imageUrl} alt={product.name}></img><br/>
                             <label className="name">{product.name}</label>                        
-                            <p className="price">{product.price},00 {product.currency}</p>
+                            <p className="price">{`${product.price.toFixed(2)} ${product.currency}`}</p>
 
                             {((product.rebatePercent > 0) && (product.rebateQuantity > 0 )) 
-                               ?( <p>Køb for {product.rebateQuantity} Stk (Spar<span className="rabat"> <i>{product.rebatePercent}%</i></span> )</p> )
+                               ?( <p>Køb for {product.rebateQuantity} Stk (Spar<span className="rabat"> <i>{product.rebatePercent}%</i></span>)</p> )
                                :( <p> <br /></p>)                                    
                             }
 

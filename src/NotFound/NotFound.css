@@ -1,12 +1,11 @@
-.finish-box {
+.notfound-box {
     padding-top: 4rem;
 }
 
-.finish-message p {
+.notfound-message p {
     text-align: center;
 }
 
-.finish-message {
-    margin-top: 2rem;
+.notfound-message {
     margin-bottom: 2rem;
 }

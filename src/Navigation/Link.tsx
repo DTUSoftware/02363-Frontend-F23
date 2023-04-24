@@ -5,7 +5,7 @@ const Link = ({ to, children, className } : { to : string, children : any, class
   const preventReload = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     window.history.pushState({}, "", to);
-    const navigationEvent = new PopStateEvent("navigate");
+    const navigationEvent = new PopStateEvent("popstate");
     window.dispatchEvent(navigationEvent);
   };
   if (className !== undefined) {

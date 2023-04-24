@@ -4,17 +4,19 @@ import "./ShoppingList.css";
 import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
 import { ProductItem } from "../interfaces/ProductItem";
-import Link from "../Navigation/Link";
+import { routes } from "../Navigation/RoutePaths";
+import navigate from "../Navigation/navigate";
 
 function ShoppingList({
     items,
     setItems,
-    productList,
+    productList
 }: {
     items: CartItem[];
     setItems: (items: CartItem[]) => void;
     productList: Products;
 }) {
+
     // Populates cart with dummy items
     useEffect(() => {
         if (items.length === 0) {
@@ -122,8 +124,7 @@ function ShoppingList({
     }
 
     const listEmpty = items === undefined || items.length === 0;
-    //if(isLoading){ return( <h1> <BeatLoader size={34} color='#dc62ab' />  Produkter loader...</h1>) }
-    //else if(error != null) {return (<h1> {error} </h1>)}
+
     return (
         <div className="ShoppingList">
             {!listEmpty && (
@@ -145,7 +146,7 @@ function ShoppingList({
                     productList={productList}
                 />
             ) : (
-                <p className="empty">Din kurv er tom!</p>
+                <p className="emptyshoplist">Din kurv er tom!</p>
             )}
         </div>
     );
@@ -189,6 +190,11 @@ function ProductTable({
         return upsellItemsExsist;
     };
 
+    const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        navigate(routes.delivery.routePath);
+    };
+
     return (
         <>
             <div className="shop-table">
@@ -223,31 +229,35 @@ function ProductTable({
                     </tbody>
                 </table>
             </div>
-
-            <div className="upsell-table">
-                <table>
-                    <caption className="upsell-heading">
-                        Varer som andre kunder har set på
-                    </caption>
-                    <tbody>
-                        {items.map((item, index) => (
-                            <UpsellItems
-                                key={index}
-                                item={item}
-                                upsellItem={() => upsellItem(index)}
-                                productList={productList}
-                            />
-                        ))}
-                    </tbody>
-                </table>
+            {hasUpsellProducts() && 
+            <div>
+            <h1 className="delivery-heading">
+                            Varer som andre kunder har set på
+                        </h1>
+                <div className="upsell-table">
+                    <table>
+                        <tbody>
+                            <tr>
+                            {items.map((item, index) => (
+                                <UpsellItems
+                                    key={index}
+                                    item={item}
+                                    upsellItem={() => upsellItem(index)}
+                                    productList={productList}
+                                />
+                            ))}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
+            }
             <div className="cart-total">
                 <CartTotal items={items} itemTotal={itemTotal} />
                 <br />
-                <Link className="order-btn" to="/delivery">
+                <button className="order-btn" onClick={onClick}>
                     Gå til levering
-                </Link>
+                </button>
             </div>
         </>
     );
@@ -273,6 +283,10 @@ function CartTotal({
     const rebate = (cartTotal * totalRebate).toFixed(2);
     const totalWithRebate = (
         cartTotal * (1 - totalRebate) +
+        shippingPrice
+    ).toFixed(2);
+    const total = (
+        cartTotal +
         shippingPrice
     ).toFixed(2);
 
@@ -301,11 +315,11 @@ function CartTotal({
             <span
                 className="text-right"
                 aria-label={`Pris i alt ${
-                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                    hasRebate ? totalWithRebate : total
                 } ${currency}`}
             >
                 {`${
-                    hasRebate ? totalWithRebate : cartTotal.toFixed(2)
+                    hasRebate ? totalWithRebate : total
                 } ${currency}`}
             </span>
         </p>
@@ -328,26 +342,23 @@ function UpsellItems({
 
     if (upsellProduct !== null) {
         return (
-            <tr className="upsell-content">
-                <td>
-                    <div>
-                        <div className="upsell-picture">
-                            <img
-                                className="upsell-picture"
-                                alt={`Billede af ${upsellProduct.name}`}
-                                src={upsellProduct.imageUrl}
-                            ></img>
-                        </div>
-                        <button
-                            className="upsellBtn"
-                            aria-label={`Andre har valgt ${upsellProduct.name}`}
-                            onClick={() => upsellItem()}
-                        >
-                            Erstat vare
-                        </button>
-                    </div>
-                </td>
-            </tr>
+            <td>
+                <div className="upsell-content">
+                    <img
+                        className="upsell-picture"
+                        alt={`Billede af ${upsellProduct.name}`}
+                        src={upsellProduct.imageUrl}
+                    />
+                    <p className="upsell-product-name">{upsellProduct.name}</p>
+                    <button
+                        className="upsellBtn"
+                        aria-label={`Andre har valgt ${upsellProduct.name}`}
+                        onClick={() => upsellItem()}
+                    >
+                        Erstat vare
+                    </button>
+                </div>
+            </td>
         );
     } else {
         return <></>;

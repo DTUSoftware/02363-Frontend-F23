@@ -2,9 +2,10 @@ import { Address } from "../interfaces/Address";
 import { useEffect, useState } from "react";
 import "./Delivery.css";
 import { City } from "../interfaces/City";
-import useFetchData from "../hooks/useFetchData";
-import { BeatLoader } from "react-spinners";
+import useFetchData from "../hooks/useFetch";
+import BeatLoader  from "../SpinnerAnimation/BeatLoader"
 import navigate from "../Navigation/navigate";
+import { routes } from "../Navigation/RoutePaths";
 
 type CityData = { [key: string]: City };
 
@@ -42,7 +43,7 @@ const Delivery = ({
             if (!check) {
                 setShipping({ ...billingAddress });
             }
-            navigate("/payment");
+            navigate(routes.payment.routePath);
         }
     };
 
@@ -54,7 +55,7 @@ const Delivery = ({
 
     return (
         <div className="delivery">
-            <form className="form" onSubmit={handleSubmit}>
+            <form className="address-form" onSubmit={handleSubmit}>
                 <div className="billingAddress">
                     <h2 className="address-row">Faktureringsadresse</h2>
 
@@ -86,7 +87,7 @@ const Delivery = ({
                 )}
 
                 <br />
-                <button type="submit">Gå til betaling</button>
+                <button className="goToPayment-btn" type="submit">Gå til betaling</button>
             </form>
         </div>
     );
@@ -111,14 +112,16 @@ function AddressDetails({
 
     const isShipping = check !== null && setCheck !== null;
 
-    const { data, isLoading, error } = useFetchData<City[]>(
-        "https://api.dataforsyningen.dk/postnumre",
-        []
-    );
+    const dataUrl = "https://api.dataforsyningen.dk/postnumre";
+    const {sendRequest ,data, isLoading, error } = useFetchData<City[]>(dataUrl);
+    
+    useEffect(() => {
+        sendRequest();
+    },[dataUrl]);
 
     useEffect(() => {
         const cityData: CityData = {};
-        data.forEach((city) => {
+        data?.forEach((city) => {
             cityData[city.nr] = city;
         });
         setCityData(cityData);
@@ -163,7 +166,7 @@ function AddressDetails({
         });
     };
 
-    if (error != null) return <h1>{error}</h1>;
+    if (error !== "") return <h1>{error}</h1>;
     return (
         <div className="address">
             <div>
@@ -285,7 +288,6 @@ function AddressDetails({
                     Adresselinje 2
                 </label>
                 <input
-                    required
                     type="text"
                     id={!isShipping ? "shippingAddress2" : "address2"}
                     name="address2"
@@ -299,7 +301,7 @@ function AddressDetails({
                     Postnummer
                 </label>
                 {isLoading ? (
-                    <BeatLoader size={24} color="#dc62ab" loading={isLoading} />
+                    <BeatLoader/>
                 ) : (
                     <input
                         disabled={isLoading}
@@ -321,7 +323,7 @@ function AddressDetails({
                     By
                 </label>
                 {isLoading ? (
-                    <BeatLoader size={24} color="#dc62ab" loading={isLoading} />
+                    <BeatLoader/>
                 ) : (
                     <input
                         readOnly

@@ -1,0 +1,38 @@
+.options {
+    gap: 2rem;
+    margin: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+}
+
+.giftcard-Icon
+{    
+    align-items:end;
+    width: 25%;
+    overflow: clip;
+    aspect-ratio: auto;
+    display: inline-block;   
+}
+
+.options label{    
+    display: inline-block;
+    padding: 0px 6px;
+    text-align: start;
+    font-size: medium;
+    font-weight: bold;
+    color: var(--primary-text-color);
+    border-bottom: 3px solid transparent;
+}
+
+.options label:hover {
+    border-bottom: 3px solid var(--button-color);
+}
+
+@media (min-width: 300px) {
+    .options { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 900px) {
+    .options { grid-template-columns: repeat(3, 1fr); }
+}

@@ -6,14 +6,14 @@
 }
 
 .address {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(2, minmax(200px, 1fr)); 
     box-sizing: border-box;
     padding: 2rem;
     border-radius: 1rem;
-    background-color: hsl(180, 67%, 96%);
-    border: 4px solid hsl(0, 0%, 90%);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    background-color: var(--secondary-background-color);
+    border: 4px solid var(--box-border);      
 }
 
 h2,
@@ -21,7 +21,7 @@ h2,
     grid-column: span 2;
 }
 
-.form input,
+.address-form input,
 select {
     width: 100%;
     height: 40px;
@@ -30,18 +30,23 @@ select {
     display: block;
     box-sizing: border-box;
     border-radius: 6px;
-    border: 1px solid #fff;
+    border: 1px solid var(--box-border);
     box-shadow: 0 0 8px #444;
 }
 
-.form input:hover,
-select:hover {
-    border: 1px solid #fff;
+.address-form input:hover,
+.address-form select:hover {
+    border: 1px solid #fff;    
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.25) inset,
-        0 0 5px rgba(255, 255, 255, 0.4);
+                0 0 5px rgba(255, 255, 255, 0.4);
 }
 
-.form input[type="checkbox"] {
+.address-form input:focus {
+    transition: 0.2s ease-in-out;
+    border: 1px solid rgb(35, 136, 243);
+}
+
+.address-form input[type="checkbox"] {
     height: 1.5em;
     width: 1.5em;
     display: inline;
@@ -52,7 +57,7 @@ select:hover {
     display: inline;
 }
 
-.form label {
+.address-form label {
     display: block;
     text-align: left;
     font-size: 20px;
@@ -60,20 +65,33 @@ select:hover {
     font-weight: bolder;
 }
 
-.payment-btn {
-    background-color: #585ae9;
-    color: #f4f2f2;
-    padding: 1em 2em;
+.goToPayment-btn {
     margin: 5px;
-    border-radius: 6px;
+    padding: 1em 2em;    
+    border-radius: 6px; 
+    color:var(--button-text-color);   
 }
 
-.payment-btn:hover {
+.goToPayment-btn:hover {
+    opacity: 0.7;
+    transition: .5s; 
+    color: var(--primary-text-color);
     background-color: #7ef384;
-    color: #1c1a1a;
+    font-weight: bold;   
 }
 
 .error {
     color: red;
     float: left;
+}
+
+/* On screens that are 664px wide or less, make the columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 664px) {
+    .address {
+        grid-template-columns: repeat(1, minmax(200px, 1fr)); 
+    }
+
+    .address-row {
+        grid-column: span 1;
+    }
 }

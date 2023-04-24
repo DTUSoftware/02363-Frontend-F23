@@ -2,6 +2,7 @@ import { FaShoppingCart} from "react-icons/fa";
 import "./Navbar.css";
 import Link from "./Link";
 import  "./Navbar.css"
+import { routes } from "./RoutePaths";
 
 const Navbar = () => {
     return (        
@@ -9,10 +10,10 @@ const Navbar = () => {
             <label className="logo">Shopping App</label>
             <ul className="nav-content">
                 <li>
-                    <Link to="/" className="nav-button">Produkter</Link>
+                    <Link to={routes.home.routePath} className="nav-button">Produkter</Link>
                 </li>
                 <li>
-                    <Link to="/cart" className="nav-button"> <><FaShoppingCart/> Kurv </> </Link>
+                    <Link to={routes.cart.routePath} className="nav-button"> <><FaShoppingCart/> Kurv </> </Link>
                 </li>
             </ul>
         </nav>

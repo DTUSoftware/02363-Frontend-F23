@@ -31,11 +31,9 @@ const order: Order = {
     checkMarketing: false,
     submitComment: comment,
 };
-const headers = new Headers();
-headers.append("Content-Type", "application/json");
 const options: RequestInit = {
     method: "POST",
-    headers,
+    headers:{"Content-Type":"application/json"},
     mode: "cors",
     body: JSON.stringify(order),
 };
