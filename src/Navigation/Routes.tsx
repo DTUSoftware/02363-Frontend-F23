@@ -32,7 +32,7 @@ const Routes = ({
     }, []);
 
     useEffect(() => {
-        if (currentPath !== paths.home.routePath && isPathValid) {
+        if (currentPath !== paths.home.routePath && currentPath !== paths.login.routePath && isPathValid) {
             navigate(paths.home.routePath);
         }
     }, []);

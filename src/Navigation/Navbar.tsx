@@ -15,6 +15,9 @@ const Navbar = () => {
                 <li>
                     <Link to={routes.cart.routePath} className="nav-button"> <><FaShoppingCart/> Kurv </> </Link>
                 </li>
+                <li>
+                    <Link to={routes.login.routePath} className="nav-button">Login</Link>
+                </li>
             </ul>
         </nav>
     );
