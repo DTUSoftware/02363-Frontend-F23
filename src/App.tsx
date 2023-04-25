@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CartItem } from './interfaces/CartItem';
 import { Address } from './interfaces/Address';
 import ShoppingList from './ShoppingList/ShoppingList'
@@ -8,13 +8,12 @@ import Delivery from './Delivery/Delivery'
 import Submit from './Submit/Submit'
 import ProductList from './ProductList/ProductList'
 import Payment from './Payment/Payment'
-import { ProductItem } from './interfaces/ProductItem';
 import Finish from "./Finish/Finish";
 import Route from "./Navigation/Route";
 import Routes from "./Navigation/Routes";
 import { routes } from "./Navigation/RoutePaths";
 import { Products } from "./interfaces/Products";
-import Login from "./Login/Login";
+import Login, {userLogin} from "./Login/Login";
 import DescopeSdk from '@descope/web-js-sdk';
 
 const descopeSdk = DescopeSdk({ projectId: "P2OsrcDOTW2jFz7Wq9Sxks54JSx3" });
@@ -36,12 +35,18 @@ const address: Address = {
 
 function App() {
     const [user, setUser] = useState("");
-
     const [items, setItems] = useState<CartItem[]>([]);
     const [productList, setList] = useState<Products>({});
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
     const [check, setCheck] = useState(false);
+
+    useEffect(() => {
+        console.log("Here");
+        if (descopeToken !== null) {
+            userLogin(descopeSdk, descopeToken, setUser);
+        }
+    },[descopeToken])
 
     const resetAfterSubmit = () => {
         setItems([]);

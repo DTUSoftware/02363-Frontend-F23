@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SdkResponse } from '@descope/node-sdk';
 import Beatloader from "../SpinnerAnimation/BeatLoader";
 import { DescopeSdkType } from "../interfaces/DescopeSdkType"
 import "./Login.css"
+import { routes } from "../Navigation/RoutePaths";
 
 type Options = {customClaims: Record<string, any>};
 type EmailType = (loginId: string, uri: string, loginOptions: Options) => Promise<SdkResponse<{ok: boolean}>>
@@ -20,7 +21,6 @@ function Login({descopeSdk, user, setUser, descopeToken}: {descopeSdk: DescopeSd
             console.log(email);
             console.log(url);
             console.log(signInOptions);
-            //const responce = await descopeSdk.magicLink.signUpOrIn.email(email, url);
             const responce = await (descopeSdk.magicLink.signUpOrIn.email as EmailType)(email, url, signInOptions);
         if (responce.ok) {
             setAwaiting(true);
@@ -33,32 +33,8 @@ function Login({descopeSdk, user, setUser, descopeToken}: {descopeSdk: DescopeSd
         }
     }
 
-    async function verifyToken(descopeSdk: DescopeSdkType, descopeToken: string) {
-        const responce = await (descopeSdk.magicLink.verify(descopeToken)) as TokenResponce;
-        if (responce.ok) {
-            return responce.data.user.email;
-        }
-    }
-
-    async function userLogin(descopeToken: string) {
-        const email = await verifyToken(descopeSdk, descopeToken);
-        if (email !== undefined) {
-            setUser(email);
-        }
-    }
-
     async function userLogout() {
-        if (descopeToken) {
-            const responce = await descopeSdk.logout(descopeToken);
-            if (responce.ok) {
-                setError("");
-                setUser("");
-            } else {
-                setError("Noget gik galt under dit forsøg på at logge ud!");
-            }
-        } else {
-            setUser("");
-        }
+        window.location.replace(routes.login.routePath);
     }
 
     const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
@@ -67,12 +43,6 @@ function Login({descopeSdk, user, setUser, descopeToken}: {descopeSdk: DescopeSd
         const email = target.value;
         authenticate(descopeSdk, email);
     }
-
-    useEffect(() => {
-        if (descopeToken !== null) {
-            userLogin(descopeToken);
-        }
-    },[descopeToken])
 
     return (
         <div>
@@ -95,6 +65,20 @@ function Login({descopeSdk, user, setUser, descopeToken}: {descopeSdk: DescopeSd
             {error && <p>{error}</p>}
         </div>
     )
+}
+
+async function verifyToken(descopeSdk: DescopeSdkType, descopeToken: string) {
+    const responce = await (descopeSdk.magicLink.verify(descopeToken)) as TokenResponce;
+    if (responce.ok) {
+        return responce.data.user.email;
+    }
+}
+
+export async function userLogin(descopeSdk: DescopeSdkType, descopeToken: string, setUser: (user: string) => void) {
+    const email = await verifyToken(descopeSdk, descopeToken);
+    if (email !== undefined) {
+        setUser(email);
+    }
 }
 
 export default Login
