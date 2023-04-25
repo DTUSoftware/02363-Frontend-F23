@@ -125,8 +125,8 @@ describe(Payment.name, () => {
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        expect(screen.findByText("Loading..."));
-        expect(screen.findByText("Vi beklager ulejligheden, noget gik galt."));
+        expect(await screen.findByLabelText("Loading")).toBeInTheDocument();
+        expect(await screen.findByText("Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med kort!")).toBeInTheDocument();
     });
 });
 

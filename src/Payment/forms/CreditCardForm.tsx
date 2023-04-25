@@ -163,7 +163,7 @@ function CreditCardForm() {
                                 </button>
                             ) : (
                                 <button className="confirm-payment-btn" 
-                                    type="submit" 
+                                    type="submit"
                                     disabled={true}>
                                     <Beatloader/>                 
                                 </button>

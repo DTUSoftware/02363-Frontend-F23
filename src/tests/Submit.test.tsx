@@ -154,8 +154,8 @@ describe(Submit.name, () => {
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        expect(screen.findByText("Loading..."));
-        expect(screen.findByText("Vi beklager ulejligheden, noget gik galt."));
+        expect(await screen.findByText("Loading...")).toBeInTheDocument();
+        expect(await screen.findByText("Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!")).toBeInTheDocument();
     });
 });
 
