@@ -66,7 +66,7 @@ describe(Submit.name, () => {
 
     it("Should render title", () => {
         render(<TestComponent />);
-        expect(screen.getByText("Indsendelse af order")).toBeInTheDocument();
+        expect(screen.getByText("Indsendelse af ordrer")).toBeInTheDocument();
     });
 
     it("Let user accept terms & conditions", async () => {
@@ -89,7 +89,7 @@ describe(Submit.name, () => {
         expect(checkBox).toBeChecked;
     });
 
-    it("Let user enter an optional order comment", async () => {
+    it("Let user enter an optional ordrer comment", async () => {
         const enterComment = "Test, i am a comment";
         render(<TestComponent />);
         const textBox = screen.getByRole("textbox", {
@@ -116,7 +116,7 @@ describe(Submit.name, () => {
             name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
         });
         await userEvent.click(checkBox);
-        const submitButton = screen.getByText("Indsend order");
+        const submitButton = screen.getByText("Indsend ordrer");
         const textBox = screen.getByRole("textbox", {
             name: "Tilføj en yderligere kommentar",
         });
@@ -145,7 +145,7 @@ describe(Submit.name, () => {
             name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
         });
         await userEvent.click(checkBox);
-        const submitButton = screen.getByText("Indsend order");
+        const submitButton = screen.getByText("Indsend ordrer");
         const textBox = screen.getByRole("textbox", {
             name: "Tilføj en yderligere kommentar",
         });
@@ -154,7 +154,7 @@ describe(Submit.name, () => {
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        expect(await screen.findByText("Loading...")).toBeInTheDocument();
+        expect(await screen.findByLabelText("Loading")).toBeInTheDocument();
         expect(
             await screen.findByText(
                 "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"

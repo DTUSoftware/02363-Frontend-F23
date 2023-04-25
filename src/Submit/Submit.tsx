@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
 import { CartItem } from "../interfaces/CartItem";
-import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
 import usePostData from "../hooks/useFetch";
+import Beatloader from "../SpinnerAnimation/BeatLoader";
+import "./Submit.css";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
@@ -78,12 +79,12 @@ function Submit({
 
     return (
         <div className="terms-box">
-            <h2 className="address-row">Indsendelse af order</h2>
+            <h2 className="address-row">Indsendelse af ordrer</h2>
             {error === "" ? (
                 <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
-                            Inden at du kan indsende din order,{" "}
+                            Inden at du kan indsende din ordrer,{" "}
                             <strong> skal </strong> du acceptere
                             handelsbetingelserne for denne webshop. Du kan finde
                             mere information om siden handelsbetingelser{" "}
@@ -102,6 +103,7 @@ function Submit({
                                 <label
                                     htmlFor="checkbox-terms"
                                     id="checkbox-label"
+                                    className="checkbox-label"
                                 >
                                     Jeg accepterer vilkårene og betingelserne og
                                     privatlivsaftalen.
@@ -118,13 +120,14 @@ function Submit({
                                 <label
                                     htmlFor="checkmarketing"
                                     id="checkbox-label"
+                                    className="checkbox-label"
                                 >
                                     Jeg accepterer at modtage marketingmails fra
                                     denne webshop.
                                 </label>
                             </p>
                         </div>
-                        <p>
+                        <div className="comment-box">
                             <label htmlFor="submitcomment" id="submit-label">
                                 Tilføj en yderligere kommentar
                             </label>
@@ -137,15 +140,27 @@ function Submit({
                                 value={comment}
                                 onChange={changeTextArea}
                             />
-                        </p>
+                        </div>
                     </div>
-                    {!isLoading ? (
-                        <button disabled={isLoading} type="submit">
-                            Indsend order
-                        </button>
-                    ) : (
-                        <p className="loading">Loading...</p>
-                    )}
+                    <div className="full-row-btn">
+                        {!isLoading ? (
+                            <button
+                                className="send-order-btn"
+                                id="confirm-payment"
+                                disabled={isLoading}
+                                type="submit"
+                            >
+                                Indsend ordrer
+                            </button>
+                        ) : (
+                            <button className="send-order-btn" 
+                                type="submit"
+                                disabled={true}>
+                                <Beatloader/>                 
+                            </button>
+                            )
+                        }
+                    </div>
                 </form>
             ) : (
                 <div>
