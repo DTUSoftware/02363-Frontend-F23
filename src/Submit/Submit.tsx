@@ -106,7 +106,7 @@ function Submit({
                                     className="checkbox-label"
                                 >
                                     Jeg accepterer vilkårene og betingelserne og
-                                    privatlivsaftalen.
+                                    privatlivsaftalen*
                                 </label>
                             </p>
                             <p className="checkbox-paragraf">
@@ -123,7 +123,7 @@ function Submit({
                                     className="checkbox-label"
                                 >
                                     Jeg accepterer at modtage marketingmails fra
-                                    denne webshop.
+                                    denne webshop
                                 </label>
                             </p>
                         </div>

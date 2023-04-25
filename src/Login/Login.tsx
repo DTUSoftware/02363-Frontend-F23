@@ -25,7 +25,6 @@ function Login({
     user: string;
     descopeToken: string | null;
 }) {
-    console.log(descopeToken);
     const [awaiting, setAwaiting] = useState(false);
     const [error, setError] = useState("");
 
@@ -33,9 +32,6 @@ function Login({
         const url = window.location.href;
         const signInOptions: Options = { customClaims: { email } };
         try {
-            console.log(email);
-            console.log(url);
-            console.log(signInOptions);
             const responce = await (
                 descopeSdk.magicLink.signUpOrIn.email as EmailType
             )(email, url, signInOptions);
@@ -67,9 +63,9 @@ function Login({
         <div className="login-box">
             <h2 className="login-header">
                 {!descopeToken && !awaiting ? (
-                    <>Login og få den fulde brugeroplevelse</>
+                    <>Log ind og få den fulde brugeroplevelse</>
                 ) : (
-                    <>Din account</>
+                    <>Din bruger</>
                 )}
             </h2>
             {!descopeToken && !awaiting && (
@@ -79,20 +75,22 @@ function Login({
                     name="login-form"
                     aria-label="Login form"
                 >
-                    <label htmlFor="email-field">
-                        Skriv din email for at logge ind
-                    </label>
-                    <input name="email-field" id="email-field" type="email" />
-                    <button type="submit">Login</button>
+                    <div className="email-box">
+                        <label htmlFor="email-field">
+                            Indtast din email for at logge ind
+                        </label>
+                        <input className="email-field" name="email-field" id="email-field" type="email" />
+                    </div>
+                    <button type="submit">Log ind</button>
                 </form>
             )}
             {!descopeToken && awaiting && (
-                <p>Klik på det link som du har fået tilsendt i din mail!</p>
+                <p className="awaiting-text">Klik på det link som du har fået tilsendt i din mail!</p>
             )}
             {descopeToken && !user && <Beatloader />}
             {descopeToken && user && (
                 <div>
-                    <p>
+                    <p className="loggedin-text">
                         Du er logget ind som <b>{user}</b>
                     </p>
                     <button onClick={userLogout}>Log ud</button>

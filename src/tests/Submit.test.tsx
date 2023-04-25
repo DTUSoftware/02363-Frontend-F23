@@ -72,7 +72,7 @@ describe(Submit.name, () => {
     it("Let user accept terms & conditions", async () => {
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
+            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         expect(checkBox).not.toBeChecked;
         await userEvent.click(checkBox);
@@ -82,7 +82,7 @@ describe(Submit.name, () => {
     it("Let user accept to receive marketing emails", async () => {
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer at modtage marketingmails fra denne webshop.",
+            name: "Jeg accepterer at modtage marketingmails fra denne webshop",
         });
         expect(checkBox).not.toBeChecked;
         await userEvent.click(checkBox);
@@ -113,7 +113,7 @@ describe(Submit.name, () => {
             });
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
+            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         await userEvent.click(checkBox);
         const submitButton = screen.getByText("Indsend ordrer");
@@ -142,7 +142,7 @@ describe(Submit.name, () => {
             });
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
+            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         await userEvent.click(checkBox);
         const submitButton = screen.getByText("Indsend ordrer");

@@ -22,7 +22,7 @@ const Navbar = ({user, descopeSdk}:{user: string, descopeSdk: DescopeSdkType}) =
                     <Link to={routes.cart.routePath} className="nav-button"> <><FaShoppingCart/> Kurv </> </Link>
                 </li>
                 <li>
-                    <Link to={routes.login.routePath} className="nav-button">{!user ? (<>Login</>) : (<> Account <FaUserAlt/> </>)} </Link>
+                    <Link to={routes.login.routePath} className="nav-button">{!user ? (<>Log ind</>) : (<> Bruger <FaUserAlt/> </>)} </Link>
                 </li>
             </ul>
         </nav>

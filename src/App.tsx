@@ -42,7 +42,6 @@ function App() {
     const [check, setCheck] = useState(false);
 
     useEffect(() => {
-        console.log("Here");
         if (descopeToken !== null) {
             userLogin(descopeSdk, descopeToken, setUser);
         }
