@@ -15,7 +15,7 @@ const payment: CreditCard = {
 
 const options: RequestInit = {
     method: "POST",
-    headers:{"Content-Type":"application/json"},
+    headers: { "Content-Type": "application/json" },
     mode: "cors",
     body: JSON.stringify(payment),
 };
@@ -33,7 +33,9 @@ describe(Payment.name, () => {
     it("Choose expiration month", async () => {
         const monthValue = "04";
         render(<Payment />);
-        const expirationMonth = screen.getByRole("combobox", { name: /Udløbsmåned/i });
+        const expirationMonth = screen.getByRole("combobox", {
+            name: /Udløbsmåned/i,
+        });
         const month = screen.getByRole("option", { name: monthValue });
         await userEvent.selectOptions(expirationMonth, month);
         expect(month).toHaveValue(monthValue);
@@ -42,7 +44,9 @@ describe(Payment.name, () => {
     it("Choose expiration year", async () => {
         const yearValue = "29";
         render(<Payment />);
-        const expirationYear = screen.getByRole("combobox", { name: /Udløbsår/i });
+        const expirationYear = screen.getByRole("combobox", {
+            name: /Udløbsår/i,
+        });
         const year = screen.getByRole("option", { name: yearValue });
         await userEvent.selectOptions(expirationYear, year);
         expect(year).toHaveValue(yearValue);
@@ -107,7 +111,7 @@ describe(Payment.name, () => {
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
                 if (url === submitUrl) {
-                    await delay(20);
+                    await delay(100); // Delay to expect on loading
                     return {
                         ok: false,
                     } as Response;
@@ -126,7 +130,11 @@ describe(Payment.name, () => {
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
         expect(await screen.findByLabelText("Loading")).toBeInTheDocument();
-        expect(await screen.findByText("Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med kort!")).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med kort!"
+            )
+        ).toBeInTheDocument();
     });
 });
 

@@ -5,7 +5,7 @@ import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
-import usePostData from "../hooks/useFetch"
+import usePostData from "../hooks/useFetch";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
@@ -23,14 +23,15 @@ function Submit({
     const [marketing, setMarketing] = useState(false);
     const [terms, setTerms] = useState(false);
     const [comment, setComment] = useState("");
-    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl); 
+    const { sendRequest, setError, status, isLoading, error } =
+        usePostData<string>(submitUrl);
 
-    useEffect(()=>{
-        if(status === 200){
+    useEffect(() => {
+        if (status === 200) {
             resetAfterSubmit();
             navigate(routes.finish.routePath);
         }
-    },[status])
+    }, [status]);
 
     const onChangeTerms = () => {
         setTerms(!terms);
@@ -44,7 +45,7 @@ function Submit({
         setComment(event.target.value);
     };
 
-    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const orderDetails = cartItems.map((x) => {
             return {
@@ -60,17 +61,20 @@ function Submit({
             shippingAddress: shippingAddress,
             checkMarketing: marketing,
             submitComment: comment,
-        };   
-        
+        };
+
         const options: RequestInit = {
             method: "POST",
-            headers:{"Content-Type":"application/json"},
+            headers: { "Content-Type": "application/json" },
             mode: "cors",
             body: JSON.stringify(order),
-        }; 
+        };
 
-       sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"); 
-    }
+        sendRequest(
+            options,
+            "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"
+        );
+    };
 
     return (
         <div className="terms-box">
@@ -95,7 +99,10 @@ function Submit({
                                     checked={terms}
                                     onChange={onChangeTerms}
                                 />
-                                <label htmlFor="checkbox-terms" id="checkbox-label">
+                                <label
+                                    htmlFor="checkbox-terms"
+                                    id="checkbox-label"
+                                >
                                     Jeg accepterer vilkårene og betingelserne og
                                     privatlivsaftalen.
                                 </label>
@@ -108,7 +115,10 @@ function Submit({
                                     checked={marketing}
                                     onChange={onChangeMarketing}
                                 />
-                                <label htmlFor="checkmarketing" id="checkbox-label">
+                                <label
+                                    htmlFor="checkmarketing"
+                                    id="checkbox-label"
+                                >
                                     Jeg accepterer at modtage marketingmails fra
                                     denne webshop.
                                 </label>
@@ -140,7 +150,7 @@ function Submit({
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button onClick={()=>setError("")}>Prøv igen</button>
+                    <button onClick={() => setError("")}>Prøv igen</button>
                 </div>
             )}
         </div>

@@ -31,7 +31,7 @@ describe(ShoppingList.name, () => {
     });
 
     it("User can see list of items", () => {
-        expect(screen.getAllByRole("row", {name: /pris/i})).toHaveLength(3);
+        expect(screen.getAllByRole("row", { name: /pris/i })).toHaveLength(3);
         expect(
             screen.getByText("C-vitamin, 500mg, 200 stk")
         ).toBeInTheDocument();
@@ -40,45 +40,57 @@ describe(ShoppingList.name, () => {
     });
 
     it("User can see price per item", () => {
-        expect(screen.getAllByRole("row", {name: /pris/i})).toHaveLength(3);
+        expect(screen.getAllByRole("row", { name: /pris/i })).toHaveLength(3);
         expect(screen.getByLabelText("Pris 150.00 DKK")).toBeInTheDocument();
         expect(screen.getByLabelText("Pris 120.00 DKK")).toBeInTheDocument();
         expect(screen.getByLabelText("Pris 40.00 DKK")).toBeInTheDocument();
     });
 
     it("User can see total amount", () => {
-        expect(screen.getByLabelText("Subtotal 425.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 425.00 DKK")
+        ).toBeInTheDocument();
     });
 
     it("Let user increment quantity of item", async () => {
         const user = userEvent.setup();
-        expect(screen.getByLabelText("Subtotal 425.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 425.00 DKK")
+        ).toBeInTheDocument();
         const incrementButton = screen.getByLabelText(
             "forøg antal De små synger"
         );
         await user.click(incrementButton);
-        expect(screen.getByLabelText("Subtotal 545.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 545.00 DKK")
+        ).toBeInTheDocument();
     });
 
     it("Let user decrement quantity of item", async () => {
         const user = userEvent.setup();
-        expect(screen.getByLabelText("Subtotal 425.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 425.00 DKK")
+        ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
             "reducer antal C-vitamin, 500mg, 200 stk"
         );
         await user.click(decrementButton);
-        expect(screen.getByLabelText("Subtotal 350.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 350.00 DKK")
+        ).toBeInTheDocument();
     });
 
     it("Let user remove item", async () => {
         const user = userEvent.setup();
-        expect(screen.getAllByRole("row", {name: /pris/i})).toHaveLength(3);
+        expect(screen.getAllByRole("row", { name: /pris/i })).toHaveLength(3);
         const removeButton = screen.getByLabelText(
             "fjern C-vitamin, 500mg, 200 stk"
         );
         await user.click(removeButton);
-        expect(screen.getAllByRole("row", {name: /pris/i})).toHaveLength(2);
-        expect(screen.getByLabelText("Subtotal 200.00 DKK")).toBeInTheDocument();
+        expect(screen.getAllByRole("row", { name: /pris/i })).toHaveLength(2);
+        expect(
+            screen.getByLabelText("Subtotal 200.00 DKK")
+        ).toBeInTheDocument();
     });
 
     it("Render empty cart message", async () => {
@@ -116,13 +128,17 @@ describe(ShoppingList.name, () => {
 
     it("Deduce from total price: rebate for larger quantities, per item", async () => {
         const user = userEvent.setup();
-        expect(screen.getByLabelText("Subtotal 425.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 425.00 DKK")
+        ).toBeInTheDocument();
         const decrementButton = screen.getByLabelText(
             "forøg antal Rørsukker, 1000g"
         );
         //We add 2 more the basket. When buying 4 'Rørsukker, 1000g' one gets a rebate of 25%
         await user.dblClick(decrementButton);
-        expect(screen.getByLabelText("Subtotal 465.00 DKK")).toBeInTheDocument();
+        expect(
+            screen.getByLabelText("Subtotal 465.00 DKK")
+        ).toBeInTheDocument();
     });
 
     it("Deduce from total price: 10% discount for orders over 300 DKK", async () => {

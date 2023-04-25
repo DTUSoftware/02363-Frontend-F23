@@ -33,7 +33,7 @@ const order: Order = {
 };
 const options: RequestInit = {
     method: "POST",
-    headers:{"Content-Type":"application/json"},
+    headers: { "Content-Type": "application/json" },
     mode: "cors",
     body: JSON.stringify(order),
 };
@@ -132,7 +132,7 @@ describe(Submit.name, () => {
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
                 if (url === submitUrl) {
-                    await delay(20);
+                    await delay(100); // Delay to expect on loading
                     return {
                         ok: false,
                     } as Response;
@@ -155,7 +155,11 @@ describe(Submit.name, () => {
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
         expect(await screen.findByText("Loading...")).toBeInTheDocument();
-        expect(await screen.findByText("Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!")).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"
+            )
+        ).toBeInTheDocument();
     });
 });
 
