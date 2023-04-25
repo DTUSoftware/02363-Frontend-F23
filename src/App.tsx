@@ -18,6 +18,7 @@ import Login from "./Login/Login";
 import DescopeSdk from '@descope/web-js-sdk';
 
 const descopeSdk = DescopeSdk({ projectId: "P2OsrcDOTW2jFz7Wq9Sxks54JSx3" });
+const descopeToken = new URLSearchParams(window.location.search).get("t");
 
 const address: Address = {
     firstName: "",
@@ -34,7 +35,6 @@ const address: Address = {
 };
 
 function App() {
-    const descopeToken = new URLSearchParams(window.location.search).get("t");
     const [user, setUser] = useState("");
 
     const [items, setItems] = useState<CartItem[]>([]);
@@ -52,7 +52,7 @@ function App() {
 
     return (
         <div className="App">
-            <Navbar/>
+            <Navbar user={user} descopeSdk={descopeSdk}/>
             <div className="content"> 
                 <Routes paths={routes}>        
                     <Route path={routes.home.routePath} element= { <ProductList items={items} setItems={setItems} setList={setList}/> } />
