@@ -64,19 +64,24 @@ function Login({
     };
 
     return (
-        <div>
-            {!descopeToken && !awaiting ? (
-                <h2>Login og få den fulde brugeroplevelse</h2>
-            ) : (
-                <h2>Din account</h2>
-            )}
+        <div className="login-box">
+            <h2 className="login-header">
+                {!descopeToken && !awaiting ? (
+                    <>Login og få den fulde brugeroplevelse</>
+                ) : (
+                    <>Din account</>
+                )}
+            </h2>
             {!descopeToken && !awaiting && (
                 <form
+                    className="login-form"
                     onSubmit={handleSubmit}
                     name="login-form"
                     aria-label="Login form"
                 >
-                    <label htmlFor="email-field">Din email</label>
+                    <label htmlFor="email-field">
+                        Skriv din email for at logge ind
+                    </label>
                     <input name="email-field" id="email-field" type="email" />
                     <button type="submit">Login</button>
                 </form>
