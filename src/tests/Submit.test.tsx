@@ -33,7 +33,7 @@ const order: Order = {
 };
 const options: RequestInit = {
     method: "POST",
-    headers:{"Content-Type":"application/json"},
+    headers: { "Content-Type": "application/json" },
     mode: "cors",
     body: JSON.stringify(order),
 };
@@ -66,13 +66,13 @@ describe(Submit.name, () => {
 
     it("Should render title", () => {
         render(<TestComponent />);
-        expect(screen.getByText("Indsendelse af order")).toBeInTheDocument();
+        expect(screen.getByText("Indsendelse af ordrer")).toBeInTheDocument();
     });
 
     it("Let user accept terms & conditions", async () => {
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
+            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         expect(checkBox).not.toBeChecked;
         await userEvent.click(checkBox);
@@ -82,14 +82,14 @@ describe(Submit.name, () => {
     it("Let user accept to receive marketing emails", async () => {
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer at modtage marketingmails fra denne webshop.",
+            name: "Jeg accepterer at modtage marketingmails fra denne webshop",
         });
         expect(checkBox).not.toBeChecked;
         await userEvent.click(checkBox);
         expect(checkBox).toBeChecked;
     });
 
-    it("Let user enter an optional order comment", async () => {
+    it("Let user enter an optional ordrer comment", async () => {
         const enterComment = "Test, i am a comment";
         render(<TestComponent />);
         const textBox = screen.getByRole("textbox", {
@@ -113,10 +113,10 @@ describe(Submit.name, () => {
             });
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
+            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         await userEvent.click(checkBox);
-        const submitButton = screen.getByText("Indsend order");
+        const submitButton = screen.getByText("Indsend ordrer");
         const textBox = screen.getByRole("textbox", {
             name: "Tilføj en yderligere kommentar",
         });
@@ -132,7 +132,7 @@ describe(Submit.name, () => {
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
                 if (url === submitUrl) {
-                    await delay(20);
+                    await delay(100); // Delay to expect on loading
                     return {
                         ok: false,
                     } as Response;
@@ -142,10 +142,10 @@ describe(Submit.name, () => {
             });
         render(<TestComponent />);
         const checkBox = screen.getByRole("checkbox", {
-            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen.",
+            name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         await userEvent.click(checkBox);
-        const submitButton = screen.getByText("Indsend order");
+        const submitButton = screen.getByText("Indsend ordrer");
         const textBox = screen.getByRole("textbox", {
             name: "Tilføj en yderligere kommentar",
         });
@@ -154,8 +154,12 @@ describe(Submit.name, () => {
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        expect(screen.findByText("Loading..."));
-        expect(screen.findByText("Vi beklager ulejligheden, noget gik galt."));
+        expect(await screen.findByLabelText("Loading")).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"
+            )
+        ).toBeInTheDocument();
     });
 });
 

@@ -17,8 +17,31 @@
 .submitcomment {
     width: 100%;
     resize: vertical;
-    min-height: 60px;
+    min-height: 80px;
     max-height: 200px;
+    padding: 2px;
+    outline: none;
+    display: block;
+    border-radius: 6px;
+    box-sizing: border-box;  
+    border: 1px solid var(--box-border); 
+    box-shadow: 0 0 4px #444; 
+}
+
+.send-order-btn {
+    width: 140px;
+}
+
+.send-order-btn:hover{
+    opacity: 0.9;
+    transition: .5s; 
+    color: var(--primary-text-color);
+    background-color: #7ef384;
+    font-weight: bold;    
+}
+
+.comment-box {
+    text-align: left;
 }
 
 .checkbox-paragraf {
@@ -28,7 +51,7 @@
     gap: 10px;
 }
 
-.submit-form label {
+.checkbox-label {
     font-size: small;
     text-align: start;
     font-weight: bolder;

@@ -10,8 +10,12 @@ describe(Finish.name, () => {
 
     it("Should render paragraphs", () => {
         render(<Finish />);
-        expect(screen.getByText("Din er order er nu bestilt.")).toBeInTheDocument();
-        expect(screen.getByText("Tjek din email for kvittering.")).toBeInTheDocument();
+        expect(
+            screen.getByText("Din er order er nu bestilt.")
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText("Tjek din email for kvittering.")
+        ).toBeInTheDocument();
     });
 
     it("Should render button", () => {

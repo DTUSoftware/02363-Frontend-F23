@@ -18,5 +18,8 @@ export const routes: RoutePaths = {
   },
   finish: {
     routePath: '/finish'
+  },
+  login: {
+    routePath: '/login'
   }
 };

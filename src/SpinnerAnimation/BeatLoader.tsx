@@ -1,7 +1,7 @@
 import "./BeatLoader.css"
 const BeatLoader = () => {
     return ( 
-        <span className="beat-loader"></span>
+        <span className="beat-loader" aria-label="Loading"></span>
      );
 }
  

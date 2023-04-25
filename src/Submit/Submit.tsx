@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
 import { CartItem } from "../interfaces/CartItem";
-import "./Submit.css";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
-import usePostData from "../hooks/useFetch"
+import usePostData from "../hooks/useFetch";
+import Beatloader from "../SpinnerAnimation/BeatLoader";
+import "./Submit.css";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
@@ -23,14 +24,15 @@ function Submit({
     const [marketing, setMarketing] = useState(false);
     const [terms, setTerms] = useState(false);
     const [comment, setComment] = useState("");
-    const {sendRequest,setError, status, isLoading, error} = usePostData<string>(submitUrl); 
+    const { sendRequest, setError, status, isLoading, error } =
+        usePostData<string>(submitUrl);
 
-    useEffect(()=>{
-        if(status === 200){
+    useEffect(() => {
+        if (status === 200) {
             resetAfterSubmit();
             navigate(routes.finish.routePath);
         }
-    },[status])
+    }, [status]);
 
     const onChangeTerms = () => {
         setTerms(!terms);
@@ -44,7 +46,7 @@ function Submit({
         setComment(event.target.value);
     };
 
-    const handleSubmit=(event:React.FormEvent<HTMLFormElement>)=>{
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const orderDetails = cartItems.map((x) => {
             return {
@@ -60,26 +62,29 @@ function Submit({
             shippingAddress: shippingAddress,
             checkMarketing: marketing,
             submitComment: comment,
-        };   
-        
+        };
+
         const options: RequestInit = {
             method: "POST",
-            headers:{"Content-Type":"application/json"},
+            headers: { "Content-Type": "application/json" },
             mode: "cors",
             body: JSON.stringify(order),
-        }; 
+        };
 
-       sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"); 
-    }
+        sendRequest(
+            options,
+            "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"
+        );
+    };
 
     return (
         <div className="terms-box">
-            <h2 className="address-row">Indsendelse af order</h2>
+            <h2 className="address-row">Indsendelse af ordrer</h2>
             {error === "" ? (
                 <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
-                            Inden at du kan indsende din order,{" "}
+                            Inden at du kan indsende din ordrer,{" "}
                             <strong> skal </strong> du acceptere
                             handelsbetingelserne for denne webshop. Du kan finde
                             mere information om siden handelsbetingelser{" "}
@@ -95,9 +100,13 @@ function Submit({
                                     checked={terms}
                                     onChange={onChangeTerms}
                                 />
-                                <label htmlFor="checkbox-terms" id="checkbox-label">
+                                <label
+                                    htmlFor="checkbox-terms"
+                                    id="checkbox-label"
+                                    className="checkbox-label"
+                                >
                                     Jeg accepterer vilkårene og betingelserne og
-                                    privatlivsaftalen.
+                                    privatlivsaftalen*
                                 </label>
                             </p>
                             <p className="checkbox-paragraf">
@@ -108,13 +117,17 @@ function Submit({
                                     checked={marketing}
                                     onChange={onChangeMarketing}
                                 />
-                                <label htmlFor="checkmarketing" id="checkbox-label">
+                                <label
+                                    htmlFor="checkmarketing"
+                                    id="checkbox-label"
+                                    className="checkbox-label"
+                                >
                                     Jeg accepterer at modtage marketingmails fra
-                                    denne webshop.
+                                    denne webshop
                                 </label>
                             </p>
                         </div>
-                        <p>
+                        <div className="comment-box">
                             <label htmlFor="submitcomment" id="submit-label">
                                 Tilføj en yderligere kommentar
                             </label>
@@ -127,20 +140,32 @@ function Submit({
                                 value={comment}
                                 onChange={changeTextArea}
                             />
-                        </p>
+                        </div>
                     </div>
-                    {!isLoading ? (
-                        <button disabled={isLoading} type="submit">
-                            Indsend order
-                        </button>
-                    ) : (
-                        <p className="loading">Loading...</p>
-                    )}
+                    <div className="full-row-btn">
+                        {!isLoading ? (
+                            <button
+                                className="send-order-btn"
+                                id="confirm-payment"
+                                disabled={isLoading}
+                                type="submit"
+                            >
+                                Indsend ordrer
+                            </button>
+                        ) : (
+                            <button className="send-order-btn" 
+                                type="submit"
+                                disabled={true}>
+                                <Beatloader/>                 
+                            </button>
+                            )
+                        }
+                    </div>
                 </form>
             ) : (
                 <div>
                     <p>{error}</p>
-                    <button onClick={()=>setError("")}>Prøv igen</button>
+                    <button onClick={() => setError("")}>Prøv igen</button>
                 </div>
             )}
         </div>

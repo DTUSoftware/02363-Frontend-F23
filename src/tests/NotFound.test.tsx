@@ -5,12 +5,16 @@ import NotFound from "../NotFound/NotFound";
 describe(NotFound.name, () => {
     it("Should render title", () => {
         render(<NotFound />);
-        expect(screen.getByText("Hov... du er vist kommet på afveje!")).toBeInTheDocument();
+        expect(
+            screen.getByText("Hov... du er vist kommet på afveje!")
+        ).toBeInTheDocument();
     });
 
     it("Should render paragraphs", () => {
         render(<NotFound />);
-        expect(screen.getByText("Denne side eksisterer ikke endnu.")).toBeInTheDocument();
+        expect(
+            screen.getByText("Denne side eksisterer ikke endnu.")
+        ).toBeInTheDocument();
     });
 
     it("Should render button", () => {

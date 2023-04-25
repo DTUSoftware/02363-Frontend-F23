@@ -6,14 +6,13 @@ import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
 import mockResponse from "../assets/products.json";
 
-const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
+const dataUrl =
+    "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
 const TestComponent = () => {
     const [items, setItems] = useState<CartItem[]>([]);
     const [productList, setList] = useState<Products>({});
-    return (
-        <ProductList items={items} setItems={setItems} setList={setList}/>
-    );
+    return <ProductList items={items} setItems={setItems} setList={setList} />;
 };
 
 describe(ProductList.name, () => {
@@ -31,8 +30,14 @@ describe(ProductList.name, () => {
                 }
             });
         render(<TestComponent />);
-        await waitFor(() => expect(mockFetch).toHaveBeenCalledWith(dataUrl, undefined));
-        await waitFor(() => expect(screen.queryByText("Produkter loader...")).not.toBeInTheDocument());
+        await waitFor(() =>
+            expect(mockFetch).toHaveBeenCalledWith(dataUrl, undefined)
+        );
+        await waitFor(() =>
+            expect(
+                screen.queryByText("Produkter loader...")
+            ).not.toBeInTheDocument()
+        );
     });
 
     afterEach(() => {
@@ -44,7 +49,9 @@ describe(ProductList.name, () => {
     });
 
     it("Product has information", () => {
-        const product = screen.getByLabelText("Produkt D-vitamin, 90ug, 120 stk");
+        const product = screen.getByLabelText(
+            "Produkt D-vitamin, 90ug, 120 stk"
+        );
         expect(product).toBeInTheDocument();
         expect(product).toHaveTextContent(/D-vitamin, 90ug, 120 stk/);
         expect(product).toHaveTextContent(/116.00 DKK/);
