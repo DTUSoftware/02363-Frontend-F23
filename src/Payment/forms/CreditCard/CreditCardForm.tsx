@@ -7,6 +7,7 @@ import navigate from "../../../Navigation/navigate";
 import { CreditCard } from "../../../interfaces/CreditCard";
 import { routes } from "../../../Navigation/RoutePaths";
 import usePostData from "../../../hooks/useFetch"
+import Beatloader from "../../../SpinnerAnimation/BeatLoader";
 
 const payment: CreditCard = {
     cardNumber: "",
@@ -142,17 +143,18 @@ function CreditCardForm() {
                             />
                         </div>
                         <div className="fullrow">
-                            {!isLoading ? (
-                                <button
-                                    className="confirm_payment"
-                                    disabled={isLoading}
-                                    type="submit"
-                                >
-                                    Bekræft Betaling
-                                </button>
-                            ) : (
-                                <p className="loading">Loading...</p>
-                            )}
+                            {isLoading === false 
+                                ?   <button className="confirm-payment-btn" 
+                                        type="submit" 
+                                        disabled={false} >
+                                        Bekræft Betaling
+                                    </button>
+                                :   <button className="confirm-payment-btn" 
+                                        type="submit" 
+                                        disabled={true}>
+                                        <Beatloader/>                 
+                                    </button>
+                            } 
                         </div>
                     </div>
                 </form>
