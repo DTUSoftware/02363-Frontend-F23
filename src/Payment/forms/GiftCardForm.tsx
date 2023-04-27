@@ -5,7 +5,7 @@ import { routes } from "../../Navigation/RoutePaths";
 import Beatloader from "../../SpinnerAnimation/BeatLoader";
 import usePosthData from "../../hooks/useFetch";
 import {GiftCard} from "../../interfaces/GiftCard";
-import  "./style.css"
+import  "../Payment.css"
 
 var form:GiftCard={giftCardnumber:"", securityCode:""}
 
@@ -95,7 +95,7 @@ const GiftCardForm =()=>{
                   </form>
                 : ( <div className="error-text">
                         <p>{error}</p>
-                        <button className="confirm-payment-btn" onClick={()=> setError("")}>
+                        <button className="retry-btn" onClick={()=> setError("")}>
                             Prøv igen
                         </button>
                     </div>
