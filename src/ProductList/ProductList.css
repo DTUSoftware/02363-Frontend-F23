@@ -1,11 +1,12 @@
 .ProductList {    
     display: grid ;
-    grid-template-columns: repeat(4, minmax(200px, 1fr));    
     grid-gap: 10px;
     padding: 5px;   
     border-radius: 1rem;
+    border: 5px solid var(white);
     background-color: var(--secondary-background-color);
-    border: 5px solid hsl(0, 0%, 100%);
+    grid-template-columns: repeat(4, minmax(200px, 1fr)); 
+    
 }  
 
 .card{
@@ -20,24 +21,24 @@
 }
 
 
-label.name{
-    color: var(--primary-text-color);
+label.name{    
     font-size: medium;
     line-height: 80px; 
     padding: 0 2px;
     font-weight: bold;
     transition:  fomt-size .35s;
+    color: var(--primary-text-color);
 }
 
 .card:hover label.name{
     font-size: x-large;
 }
 
-.price {
-    color: var(--primary-text-color);
+.price {   
     font-size: small;
     text-align: center;
     transition:  fomt-size .35s;
+    color: var(--primary-text-color);
 }
 
 .card:hover .price{
@@ -75,13 +76,13 @@ label.name{
     
 .add-button { 
     width: 100%;    
-    padding: 5px;    
-    font-size: medium;
-    margin: 1px 1px 1px 1px;
-    color: var(--secondary-background-color);
+    padding: 5px;  
+    margin: 1px;    
+    font-size: medium;      
     cursor: pointer;
     text-align: center;
-    background-color: #22223B;
+    background-color: var(--button-color);
+    color: var(--secondary-background-color);
 }
 
 

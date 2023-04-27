@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PaymentOptions from "./options/PaymentOptions";
-import CreditCardForm from "./forms/CreditCardForm";
+import CreditCardForm from "./forms/CreditCard/CreditCardForm";
 import MobilePayForm from "./forms/MobilepayForm";
 import GiftCardForm from "./forms/GiftCardForm";
 import { PaymentType } from "./options/PaymentType";
