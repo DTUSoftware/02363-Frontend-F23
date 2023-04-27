@@ -23,11 +23,16 @@
     box-sizing: border-box;   
     font: 1.25rem / 1.5 sans-serif;     
     border: 1px solid var(--box-border); 
-    box-shadow: 0 0 8px #444;   
+    box-shadow: 0 0 8px var(--checkbox-color);   
 }
 
 .email-box {
     text-align: left;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
 }
 
 .awaiting-text,

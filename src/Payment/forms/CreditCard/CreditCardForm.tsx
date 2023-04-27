@@ -8,6 +8,7 @@ import { CreditCard } from "../../../interfaces/CreditCard";
 import { routes } from "../../../Navigation/RoutePaths";
 import usePostData from "../../../hooks/useFetch"
 import Beatloader from "../../../SpinnerAnimation/BeatLoader";
+import  "./CreditCardForm.css"
 
 const payment: CreditCard = {
     cardNumber: "",
@@ -144,12 +145,12 @@ function CreditCardForm() {
                         </div>
                         <div className="fullrow">
                             {isLoading === false 
-                                ?   <button className="confirm-payment-btn" 
+                                ?   <button className="confirm-payment" 
                                         type="submit" 
                                         disabled={false} >
                                         Bekræft Betaling
                                     </button>
-                                :   <button className="confirm-payment-btn" 
+                                :   <button className="confirm-payment" 
                                         type="submit" 
                                         disabled={true}>
                                         <Beatloader/>                 
@@ -159,9 +160,9 @@ function CreditCardForm() {
                     </div>
                 </form>
             ) : (
-                <div>
-                    <p className="error-text">{error}</p>
-                    <button className="confirm_payment" onClick={()=>setError("")}>
+                <div className="error-text">
+                    <p >{error}</p>
+                    <button className="retry-btn" onClick={()=>setError("")}>
                         Prøv igen
                     </button>
                 </div>

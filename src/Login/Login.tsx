@@ -96,7 +96,7 @@ function Login({
                     <button onClick={userLogout}>Log ud</button>
                 </div>
             )}
-            {error && <p>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
         </div>
     );
 }

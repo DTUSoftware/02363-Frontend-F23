@@ -1,5 +1,5 @@
 
-.payment {
+.payment-block .payment {
     border-radius: 20px;
     display: grid;
     font-weight: bold;
@@ -11,24 +11,22 @@
     align-content: center;
 }
 
-.payment h2 {
-    margin-top: 3rem;
-}
 
 .fullrow,
 .cardinformation {
     grid-column: span 2;
     margin: 0px;
 }
-.paymentblock {
-    margin: 0px;
+
+.payment-block {
+    margin-top: 3rem;
 }
 
 .loading {
     text-align: center;
 }
 
-.confirm_payment,
-.error-text {
-    margin-top: 3rem;
+.confirm-payment {
+    width: 160px;
+    margin-top: 2rem;
 }

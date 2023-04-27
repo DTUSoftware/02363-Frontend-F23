@@ -164,7 +164,7 @@ function Submit({
                 </form>
             ) : (
                 <div>
-                    <p>{error}</p>
+                    <p className="error-message">{error}</p>
                     <button onClick={() => setError("")}>Prøv igen</button>
                 </div>
             )}

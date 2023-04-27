@@ -25,19 +25,11 @@
     border-radius: 6px;
     box-sizing: border-box;  
     border: 1px solid var(--box-border); 
-    box-shadow: 0 0 4px #444; 
+    box-shadow: 0 0 4px var(--checkbox-color); 
 }
 
 .send-order-btn {
     width: 140px;
-}
-
-.send-order-btn:hover{
-    opacity: 0.9;
-    transition: .5s; 
-    color: var(--primary-text-color);
-    background-color: #7ef384;
-    font-weight: bold;    
 }
 
 .comment-box {
@@ -75,7 +67,8 @@
     text-align: center;
 }
 
-.errormessage {
+.error-message {
+    color: red;
     text-align: center;
     padding-top: 2rem;
     padding-bottom: 2rem;
