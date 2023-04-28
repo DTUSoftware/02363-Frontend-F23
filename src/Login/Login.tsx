@@ -5,17 +5,34 @@ import { DescopeSdkType } from "../interfaces/DescopeSdkType";
 import "./Login.css";
 import { routes } from "../Navigation/RoutePaths";
 
+/**
+ * Options type for loginOptions with customClaims Records of string and any types
+ * Used to hold custom token claims
+ */
 type Options = { customClaims: Record<string, any> };
+
+/**
+ * EmailType with loginId and uri of string type and loginOptions of Options type, returns a Promise with type SdkResponse
+ * Used for type assertion to expand magicLink.signUpOrIn.email to allow for custom token claim options
+ */
 type EmailType = (
     loginId: string,
     uri: string,
     loginOptions: Options
 ) => Promise<SdkResponse<{ ok: boolean }>>;
+
+/**
+ * TokenResponce with ok of type boolean and data object type with sessionJwt string and user object type with email string
+ * Used for type assertion to handle magicLink.verify responce and infer object type
+ */
 type TokenResponce = {
     ok: boolean;
     data: { sessionJwt: string; user: { email: string } };
 };
 
+/**
+ * Login component page allowing the user to login using the descope magic link password-less login
+ */
 function Login({
     descopeSdk,
     user,
@@ -25,9 +42,11 @@ function Login({
     user: string;
     descopeToken: string | null;
 }) {
+    // useState hooks for holding awaiting and error states
     const [awaiting, setAwaiting] = useState(false);
     const [error, setError] = useState("");
 
+    // Function for authenticating the user using the magicLink signUpOrIn email option
     async function authenticate(descopeSdk: DescopeSdkType, email: string) {
         const url = window.location.href;
         const signInOptions: Options = { customClaims: { email } };
@@ -46,10 +65,12 @@ function Login({
         }
     }
 
+    // Function for logging out the user by reloading the page
     async function userLogout() {
         window.location.replace(routes.login.routePath);
     }
 
+    // Function for handling the login form onSubmit
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const target = event.currentTarget.elements.namedItem(
@@ -101,6 +122,9 @@ function Login({
     );
 }
 
+/**
+ * Function for verifying the descope token and returning user email from token claims
+ */
 async function verifyToken(descopeSdk: DescopeSdkType, descopeToken: string) {
     const responce = (await descopeSdk.magicLink.verify(
         descopeToken
@@ -110,6 +134,9 @@ async function verifyToken(descopeSdk: DescopeSdkType, descopeToken: string) {
     }
 }
 
+/**
+ * Function for logging in the user and setting setUser with the verified users email
+ */
 export async function userLogin(
     descopeSdk: DescopeSdkType,
     descopeToken: string,

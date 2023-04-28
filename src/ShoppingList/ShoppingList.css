@@ -35,6 +35,7 @@
     font-weight: bold;
 }
 
+/* For screens less or equal to 768px */
 @media only screen and (max-width: 768px) {
     .ShoppingList {
         width: 350px;
@@ -201,6 +202,7 @@
     }
 }
 
+/* For screens greater or equal to 768px */
 @media only screen and (min-width: 768px) {
     .ShoppingList {
         width: 768px;
@@ -379,6 +381,7 @@
     }
 }
 
+/* For screens greater or equal to 992px */
 @media only screen and (min-width: 992px) {
     .ShoppingList {
         width: 992px;
