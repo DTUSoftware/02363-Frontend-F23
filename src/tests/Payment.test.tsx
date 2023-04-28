@@ -4,8 +4,7 @@ import userEvent from "@testing-library/user-event";
 import Payment from "../Payment/Payment";
 import { CreditCard } from "../interfaces/CreditCard";
 
-const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
-
+// Dummy CreditCard to be used in tests
 const payment: CreditCard = {
     cardNumber: "0123456789101112",
     cvcNumber: "123",
@@ -13,6 +12,7 @@ const payment: CreditCard = {
     expiryYear: "23",
 };
 
+// RequestInit POST options with JSON stringified body to be used in tests
 const options: RequestInit = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -20,6 +20,12 @@ const options: RequestInit = {
     body: JSON.stringify(payment),
 };
 
+// RequestBin URL for fetch mock implementation
+const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
+
+/**
+ * Payment page test suite containing appropriate test function declarations to be run
+ */
 describe(Payment.name, () => {
     afterEach(() => {
         vi.restoreAllMocks();

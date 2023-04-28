@@ -7,6 +7,7 @@ import { Address } from "../interfaces/Address";
 import userEvent from "@testing-library/user-event";
 import { Order } from "../interfaces/Order";
 
+// Dummy Address to be used in tests
 const address: Address = {
     firstName: "",
     lastName: "",
@@ -21,8 +22,7 @@ const address: Address = {
     address2: "",
 };
 
-const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
-
+// Comment and dummy order to be used in tests
 const comment = "Test, i am a comment";
 const order: Order = {
     orderDetails: [],
@@ -31,6 +31,8 @@ const order: Order = {
     checkMarketing: false,
     submitComment: comment,
 };
+
+// RequestInit POST options with JSON stringified body to be used in tests
 const options: RequestInit = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -38,17 +40,22 @@ const options: RequestInit = {
     body: JSON.stringify(order),
 };
 
+// RequestBin URL for fetch mock implementation
+const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
+
+/**
+ * Test component to be used for setting up the necessary state handling and parameters for implementing the Submit component page
+ * This is necessary as Submit relies on state which lives outside the component 
+ */
 const TestComponent = () => {
     const [basket, setBasket] = useState<CartItem[]>([]);
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
-
     const resetAfterSubmit = () => {
         setBasket([]);
         setBilling(address);
         setShipping(address);
     };
-
     return (
         <Submit
             cartItems={basket}
@@ -59,6 +66,9 @@ const TestComponent = () => {
     );
 };
 
+/**
+ * Submit page test suite containing appropriate test function declarations to be run
+ */
 describe(Submit.name, () => {
     afterEach(() => {
         vi.restoreAllMocks();

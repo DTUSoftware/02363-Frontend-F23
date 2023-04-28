@@ -7,6 +7,10 @@ import { CartItem } from "../interfaces/CartItem";
 import { useState } from "react";
 import { Products } from "../interfaces/Products";
 
+/**
+ * Test component to be used for setting up the necessary state handling and parameters for implementing the ShoppingList component page
+ * This is necessary as ShoppingList relies on state which lives outside the component 
+ */
 const TestComponent = () => {
     const products: Products = {};
     mockData.forEach((x) => (products[x.id] = x));
@@ -20,6 +24,9 @@ const TestComponent = () => {
     );
 };
 
+/**
+ * ShoppingList page test suite containing appropriate test function declarations to be run
+ */
 describe(ShoppingList.name, () => {
     beforeEach(async () => {
         render(<TestComponent />);

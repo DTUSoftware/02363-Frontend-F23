@@ -4,7 +4,7 @@ import { CartItem } from "../interfaces/CartItem";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
-import usePostData from "../hooks/useFetch";
+import useFetch from "../hooks/useFetch";
 import Beatloader from "../SpinnerAnimation/BeatLoader";
 import "./Submit.css";
 
@@ -31,9 +31,9 @@ function Submit({
     const [terms, setTerms] = useState(false);
     const [comment, setComment] = useState("");
 
-    // usePostData custom hook for sending http requests and receiving status codes, isLoading, and error states
+    // Custom useFetch hook for sending http requests and receiving status codes, isLoading, and error states
     const { sendRequest, setError, status, isLoading, error } =
-        usePostData<string>(submitUrl);
+        useFetch<string>(submitUrl);
 
     // useEffect hook for navigating to the finish routePath upon a status code 200
     useEffect(() => {
@@ -43,21 +43,26 @@ function Submit({
         }
     }, [status]);
 
-    
+    // Function to set toggled terms
     const onChangeTerms = () => {
         setTerms(!terms);
     };
 
+    // Function to set toggled marketing
     const onChangeMarketing = () => {
         setMarketing(!marketing);
     };
 
+    // Function to set text area comment
     const changeTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setComment(event.target.value);
     };
 
+    // Function to handle onSubmit from form and to send POST request with a json stringified order
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        // Maps cartItems to a list of objects of type SubmitCartItem
         const orderDetails = cartItems.map((x) => {
             return {
                 productId: x.product.id,
@@ -66,6 +71,8 @@ function Submit({
                 recurringOrder: x.recurringOrder,
             };
         });
+
+        // Declares an order object
         const order: Order = {
             orderDetails: orderDetails,
             billingAddress: billingAddress,
@@ -74,6 +81,7 @@ function Submit({
             submitComment: comment,
         };
 
+        // Declares POST request options with json stringified order body
         const options: RequestInit = {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -81,6 +89,7 @@ function Submit({
             body: JSON.stringify(order),
         };
 
+        // Sends http request with the attached POST options and a custom error message
         sendRequest(
             options,
             "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din ordre!"

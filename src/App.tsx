@@ -16,9 +16,13 @@ import { Products } from "./interfaces/Products";
 import Login, { userLogin } from "./Login/Login";
 import DescopeSdk from "@descope/web-js-sdk";
 
+// DescopeSdk instantiation using projectId string
 const descopeSdk = DescopeSdk({ projectId: "P2OsrcDOTW2jFz7Wq9Sxks54JSx3" });
+
+// Searches for URL parameter with the name 't' containing the token provided by Descope after magic link login
 const descopeToken = new URLSearchParams(window.location.search).get("t");
 
+// Address declaration with initial values
 const address: Address = {
     firstName: "",
     lastName: "",
@@ -33,7 +37,12 @@ const address: Address = {
     address2: "",
 };
 
+/**
+ * App top level component
+ */
 function App() {
+
+    // useState hooks used throughout the application components
     const [user, setUser] = useState("");
     const [items, setItems] = useState<CartItem[]>([]);
     const [productList, setList] = useState<Products>({});
@@ -41,12 +50,14 @@ function App() {
     const [shippingAddress, setShipping] = useState<Address>(address);
     const [check, setCheck] = useState(false);
 
+    // useEffect for logging the user in when a Descope token is provided after magic link login
     useEffect(() => {
         if (descopeToken !== null) {
             userLogin(descopeSdk, descopeToken, setUser);
         }
     }, [descopeToken]);
 
+    // Function for resetting application state after an order has been submitted
     const resetAfterSubmit = () => {
         setItems([]);
         setBilling(address);

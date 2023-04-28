@@ -5,7 +5,7 @@
 export type RoutePaths = { [routeName: string]: { routePath: string } };
 
 /**
- * RoutePaths instance with routeNames and routePaths key value pairs for each page in the application
+ * RoutePaths declaration with routeNames and routePaths key value pairs for each page in the application
  */
 export const routes: RoutePaths = {
   home: {
