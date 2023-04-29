@@ -22,8 +22,9 @@ type EmailType = (
 ) => Promise<SdkResponse<{ ok: boolean }>>;
 
 /**
- * TokenResponce with ok of type boolean and data object type with sessionJwt string and user object type with email string
+ * TokenResponce with ok of type boolean and data object type with sessionJwt token string and user object type with email string
  * Used for type assertion to handle magicLink.verify responce and infer object type
+ * In a real world scenario, this sessionJwt token would be included in subsequent back-end requests as part of the authorize header 
  */
 type TokenResponce = {
     ok: boolean;
