@@ -76,7 +76,7 @@ describe(Submit.name, () => {
 
     it("Should render title", () => {
         render(<TestComponent />);
-        expect(screen.getByText("Indsendelse af ordrer")).toBeInTheDocument();
+        expect(screen.getByText("Indsendelse af ordre")).toBeInTheDocument();
     });
 
     it("Let user accept terms & conditions", async () => {
@@ -99,7 +99,7 @@ describe(Submit.name, () => {
         expect(checkBox).toBeChecked;
     });
 
-    it("Let user enter an optional ordrer comment", async () => {
+    it("Let user enter an optional ordre comment", async () => {
         const enterComment = "Test, i am a comment";
         render(<TestComponent />);
         const textBox = screen.getByRole("textbox", {
@@ -126,7 +126,7 @@ describe(Submit.name, () => {
             name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         await userEvent.click(checkBox);
-        const submitButton = screen.getByText("Indsend ordrer");
+        const submitButton = screen.getByText("Indsend ordre");
         const textBox = screen.getByRole("textbox", {
             name: "Tilføj en yderligere kommentar",
         });
@@ -155,7 +155,7 @@ describe(Submit.name, () => {
             name: "Jeg accepterer vilkårene og betingelserne og privatlivsaftalen*",
         });
         await userEvent.click(checkBox);
-        const submitButton = screen.getByText("Indsend ordrer");
+        const submitButton = screen.getByText("Indsend ordre");
         const textBox = screen.getByRole("textbox", {
             name: "Tilføj en yderligere kommentar",
         });
