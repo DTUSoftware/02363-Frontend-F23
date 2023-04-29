@@ -70,69 +70,13 @@ function App() {
             <Navbar user={user} descopeSdk={descopeSdk} />
             <div className="content">
                 <Routes paths={routes}>
-                    <Route
-                        path={routes.home.routePath}
-                        element={
-                            <ProductList
-                                items={items}
-                                setItems={setItems}
-                                setList={setList}
-                            />
-                        }
-                    />
-                    <Route
-                        path={routes.cart.routePath}
-                        element={
-                            <ShoppingList
-                                items={items}
-                                setItems={setItems}
-                                productList={productList}
-                            />
-                        }
-                    />
-                    <Route
-                        path={routes.delivery.routePath}
-                        element={
-                            <Delivery
-                                billingAddress={billingAddress}
-                                setBilling={setBilling}
-                                shippingAddress={shippingAddress}
-                                setShipping={setShipping}
-                                address={address}
-                                check={check}
-                                setCheck={setCheck}
-                            />
-                        }
-                    />
-                    <Route
-                        path={routes.payment.routePath}
-                        element={<Payment />}
-                    />
-                    <Route
-                        path={routes.submit.routePath}
-                        element={
-                            <Submit
-                                cartItems={items}
-                                billingAddress={billingAddress}
-                                shippingAddress={shippingAddress}
-                                resetAfterSubmit={resetAfterSubmit}
-                            />
-                        }
-                    />
-                    <Route
-                        path={routes.finish.routePath}
-                        element={<Finish />}
-                    />
-                    <Route
-                        path={routes.login.routePath}
-                        element={
-                            <Login
-                                descopeSdk={descopeSdk}
-                                user={user}
-                                descopeToken={descopeToken}
-                            />
-                        }
-                    />
+                    <Route path={routes.home.routePath} element={ <ProductList items={items} setItems={setItems} setList={setList}/> }/>
+                    <Route path={routes.cart.routePath} element={ <ShoppingList items={items} setItems={setItems} productList={productList} /> } />
+                    <Route path={routes.delivery.routePath} element={ <Delivery billingAddress={billingAddress} setBilling={setBilling} shippingAddress={shippingAddress} setShipping={setShipping} address={address} check={check} setCheck={setCheck}/>}/>
+                    <Route path={routes.payment.routePath} element={<Payment />} />
+                    <Route path={routes.submit.routePath}  element={ <Submit cartItems={items} billingAddress={billingAddress} shippingAddress={shippingAddress} resetAfterSubmit={resetAfterSubmit} /> } />
+                    <Route path={routes.finish.routePath} element={<Finish />} />
+                    <Route path={routes.login.routePath} element={ <Login descopeSdk={descopeSdk} user={user} descopeToken={descopeToken} /> } />
                 </Routes>
             </div>
         </div>

@@ -98,12 +98,12 @@ function Submit({
 
     return (
         <div className="terms-box">
-            <h2 className="address-row">Indsendelse af ordrer</h2>
+            <h2 className="address-row">Indsendelse af ordre</h2>
             {error === "" ? (
                 <form className="submit-form" onSubmit={handleSubmit}>
                     <div className="submitbox">
                         <p className="submitinfo">
-                            Inden at du kan indsende din ordrer,{" "}
+                            Inden at du kan indsende din ordre,{" "}
                             <strong> skal </strong> du acceptere
                             handelsbetingelserne for denne webshop. Du kan finde
                             mere information om siden handelsbetingelser{" "}
@@ -169,7 +169,7 @@ function Submit({
                                 disabled={isLoading}
                                 type="submit"
                             >
-                                Indsend ordrer
+                                Indsend ordre
                             </button>
                         ) : (
                             <button className="send-order-btn" 
