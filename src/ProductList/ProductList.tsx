@@ -5,11 +5,16 @@ import { useEffect } from "react";
 import {Products} from '../interfaces/Products';
 import "./ProductList.css";
 import RoundLoader from "../SpinnerAnimation/RounedLoader";
+import { ProductsContextType, ProductsContext } from "../context/ProductsContext";
+import React from "react";
+import { CartItemsContextType,CartItemsContext } from "../context/CartItemsContext";
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
-function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(values:CartItem[]) => void, setList: (products:Products) => void})  {
+function ProductList()  {
 
+    const { addItem } = React.useContext(CartItemsContext) as CartItemsContextType;
+    const {setProductList}= React.useContext(ProductsContext) as ProductsContextType;
     const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl)
 
     useEffect(() => {
@@ -23,31 +28,14 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
             products[product.id] = product;
         })
 
-        setList(products);
+        setProductList(products);
     },[data])
 
-    const AddToItems= (product: ProductItem)=>{
-        if(items.some((item)=>item.product.id === product.id)){
-            setItems(
-                items.map((item)=> 
-                    item.product.id ===product.id ?{
-                        ...item, 
-                        quantity: item.quantity + 1
-                    }:item
-                )
-            );
-            return;
-        }else{
-            let item : CartItem= {
-                product:product,
-                quantity:1,
-                giftWrap: false,
-                recurringOrder:false
-            }
-            setItems([...items,item])
-        }
-        
-    }
+    const handleAddItem = (e: React.FormEvent, product: ProductItem | any) => {
+        e.preventDefault();
+        addItem(product);
+    }; 
+
     
     if(isLoading){ return(<RoundLoader/>) }
     else if(error !== "") {return (<h1> {error} </h1>)}
@@ -67,7 +55,7 @@ function ProductList({items, setItems, setList}:{items:CartItem[], setItems:(val
                                :( <p> <br /></p>)                                    
                             }
 
-                            <p className="add-button"><button onClick={()=> AddToItems(product)}><b><i>Læg i inkøbskurv</i></b></button></p>
+                            <p className="add-button"><button onClick={(e)=> handleAddItem(e,product)}><b><i>Læg i inkøbskurv</i></b></button></p>
                         </div>
                     ) 
                 )

@@ -6,48 +6,17 @@ import { Products } from "../interfaces/Products";
 import { ProductItem } from "../interfaces/ProductItem";
 import { routes } from "../Navigation/RoutePaths";
 import navigate from "../Navigation/navigate";
+import { ProductsContextType, ProductsContext } from "../context/ProductsContext";
+import { CartItemsContext, CartItemsContextType } from "../context/CartItemsContext";
+import React from "react";
 
-function ShoppingList({
-    items,
-    setItems,
-    productList
-}: {
-    items: CartItem[];
-    setItems: (items: CartItem[]) => void;
-    productList: Products;
-}) {
+function ShoppingList() {
 
-    // Populates cart with dummy items
-    useEffect(() => {
-        if (items.length === 0) {
-            const p1 = productList["vitamin-c-500-200"];
-            const p2 = productList["kids-songbook"];
-            const p3 = productList["sugar-cane-1kg"];
-            if (p1 !== undefined && p2 !== undefined && p3 !== undefined) {
-                const list: CartItem[] = [
-                    {
-                        product: p1,
-                        quantity: 2,
-                        giftWrap: false,
-                        recurringOrder: false,
-                    },
-                    {
-                        product: p2,
-                        quantity: 1,
-                        giftWrap: true,
-                        recurringOrder: false,
-                    },
-                    {
-                        product: p3,
-                        quantity: 2,
-                        giftWrap: false,
-                        recurringOrder: true,
-                    },
-                ];
-                setItems(list);
-            }
-        }
-    }, []);
+    const {productList}= React.useContext(ProductsContext) as ProductsContextType;
+
+    const { items, populatesData, removeItem, handleQuantityChange, handleUpsellChange, toggleGiftWrap, toggleRecurringOrderSchedule } = React.useContext(CartItemsContext) as CartItemsContextType;
+
+    useEffect(()=>{populatesData()}  ,[])
 
     function incrementQuantity(index: number) {
         const item = items.at(index);
@@ -69,58 +38,6 @@ function ShoppingList({
             const upsell = `${item.product.upsellProductId}`;
             handleUpsellChange(item.product, upsell);
         }
-    }
-
-    function removeItem(index: number) {
-        setItems(items.filter((p, i) => i !== index));
-    }
-
-    function toggleGiftWrap(index: number) {
-        setItems(
-            items.map((item, i) => {
-                if (i === index) {
-                    return { ...item, giftWrap: !item.giftWrap };
-                } else {
-                    return item;
-                }
-            })
-        );
-    }
-
-    function handleQuantityChange(product: ProductItem, newQuantity: number) {
-        setItems(
-            items.map((item) => {
-                if (item.product.id === product.id) {
-                    return { ...item, quantity: newQuantity };
-                } else {
-                    return item;
-                }
-            })
-        );
-    }
-
-    function handleUpsellChange(product: ProductItem, upsell: string) {
-        setItems(
-            items.map((item) => {
-                if (item.product.id === product.id) {
-                    return { ...item, product: productList[upsell] };
-                } else {
-                    return item;
-                }
-            })
-        );
-    }
-
-    function toggleRecurringOrderSchedule(index: number) {
-        setItems(
-            items.map((item, i) => {
-                if (i === index) {
-                    return { ...item, recurringOrder: !item.recurringOrder };
-                } else {
-                    return item;
-                }
-            })
-        );
     }
 
     const listEmpty = items === undefined || items.length === 0;

@@ -15,6 +15,8 @@ import { routes } from "./Navigation/RoutePaths";
 import { Products } from "./interfaces/Products";
 import Login, { userLogin } from "./Login/Login";
 import DescopeSdk from "@descope/web-js-sdk";
+import ProductsProvider from "./context/ProductsContext";
+import CartItemsProvider from "./context/CartItemsContext";
 
 const descopeSdk = DescopeSdk({ projectId: "P2OsrcDOTW2jFz7Wq9Sxks54JSx3" });
 const descopeToken = new URLSearchParams(window.location.search).get("t");
@@ -35,8 +37,6 @@ const address: Address = {
 
 function App() {
     const [user, setUser] = useState("");
-    const [items, setItems] = useState<CartItem[]>([]);
-    const [productList, setList] = useState<Products>({});
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
     const [check, setCheck] = useState(false);
@@ -48,36 +48,26 @@ function App() {
     }, [descopeToken]);
 
     const resetAfterSubmit = () => {
-        setItems([]);
+        //setItems([]);
         setBilling(address);
         setShipping(address);
         setCheck(false);
     };
 
     return (
+        <ProductsProvider>
+        <CartItemsProvider>
         <div className="App">
             <Navbar user={user} descopeSdk={descopeSdk} />
             <div className="content">
                 <Routes paths={routes}>
                     <Route
                         path={routes.home.routePath}
-                        element={
-                            <ProductList
-                                items={items}
-                                setItems={setItems}
-                                setList={setList}
-                            />
-                        }
+                        element={ <ProductList/> }
                     />
                     <Route
                         path={routes.cart.routePath}
-                        element={
-                            <ShoppingList
-                                items={items}
-                                setItems={setItems}
-                                productList={productList}
-                            />
-                        }
+                        element={<ShoppingList /> }
                     />
                     <Route
                         path={routes.delivery.routePath}
@@ -101,7 +91,6 @@ function App() {
                         path={routes.submit.routePath}
                         element={
                             <Submit
-                                cartItems={items}
                                 billingAddress={billingAddress}
                                 shippingAddress={shippingAddress}
                                 resetAfterSubmit={resetAfterSubmit}
@@ -125,6 +114,8 @@ function App() {
                 </Routes>
             </div>
         </div>
+        </CartItemsProvider>
+        </ProductsProvider>
     );
 }
 

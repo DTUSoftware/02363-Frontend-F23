@@ -9,7 +9,7 @@ import BeatLoader from "../../SpinnerAnimation/BeatLoader";
 import { MobilePay } from "../../interfaces/MobilePay";
 import  "../Payment.css"
 
-const submitUrl="https://eoysx40p399y9yl.m.pipedream.netff"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
 
 var form:MobilePay={mobilePayNumber:"", check:false}
 
