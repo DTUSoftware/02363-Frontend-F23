@@ -89,33 +89,9 @@ label.logo{
     }
 }
 
-@media screen and (max-width: 410px) {
-    
-    .navbar li{
-        display: inline-block; 
-    }
-    
-    label.logo{
-        width: 140px;
-        font-size: large;
-        padding-top: 25px;
-        padding-bottom: 10px;
-        padding-left: 20px;
-        padding-right: 0px;
-    }
-
-    .nav-content{
-        padding-top: 25px;
-        margin: auto;
-        display: inline-block;
-    }
-
-    
-}
-
-@media screen and (max-width: 388px) {
+@media screen and (max-width: 470px) {
     .navbar{
-        height: 100px;
+        height: 140px;
     }
 
     .navbar li{
@@ -148,9 +124,10 @@ label.logo{
 
 }
 
+
 @media screen and (max-width: 309px) {
     .navbar{
-        height: 150px;
+        height: 180px;
     }
 
     .navbar li{

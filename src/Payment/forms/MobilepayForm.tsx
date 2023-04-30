@@ -7,9 +7,9 @@ import { routes } from "../../Navigation/RoutePaths";
 import usePostData from "../../hooks/useFetch"
 import BeatLoader from "../../SpinnerAnimation/BeatLoader";
 import { MobilePay } from "../../interfaces/MobilePay";
-import  "./style.css"
+import  "../Payment.css"
 
-const submitUrl="https://eoysx40p399y9yl.m.pipedream.net"
+const submitUrl="https://eoysx40p399y9yl.m.pipedream.netff"
 
 var form:MobilePay={mobilePayNumber:"", check:false}
 
@@ -89,7 +89,7 @@ const MobilePayForm = () => {
                 : ( 
                     <div className="error-text">
                         <p>{error}</p>
-                        <button className="confirm-payment-btn" onClick={()=>setError("")}>
+                        <button className="retry-btn" onClick={()=>setError("")}>
                             Prøv igen
                         </button>
                     </div>

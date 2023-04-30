@@ -1,19 +1,19 @@
 .delivery {
-    margin: 0 auto;
-    padding: 4rem 0;
     width: 100%;
+    margin: 0 auto;
+    padding: 4rem 0;    
     max-width: 60rem;
 }
 
 .address {
     display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(2, minmax(200px, 1fr)); 
-    box-sizing: border-box;
+    gap: 2rem; 
     padding: 2rem;
     border-radius: 1rem;
+    box-sizing: border-box;
+    border: 4px solid var(--box-border);
     background-color: var(--secondary-background-color);
-    border: 4px solid var(--box-border);      
+    grid-template-columns: repeat(2, minmax(200px, 1fr));     
 }
 
 h2,
@@ -25,25 +25,25 @@ h2,
 select {
     width: 100%;
     height: 40px;
-    padding: 2px;
-    font: 1.25rem / 1.5 sans-serif;
+    padding: 2px;    
     display: block;
-    box-sizing: border-box;
     border-radius: 6px;
+    box-sizing: border-box;    
+    font: 1.25rem / 1.5 sans-serif;
     border: 1px solid var(--box-border);
-    box-shadow: 0 0 8px #444;
+    box-shadow: 0 0 8px var(--checkbox-color);     
 }
 
 .address-form input:hover,
 .address-form select:hover {
-    border: 1px solid #fff;    
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25) inset,
-                0 0 5px rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--button-color);
+    box-shadow: 0 0 15px var(--accent-color) inset,
+                0 0 5px var(--button-text-color);
 }
 
 .address-form input:focus {
     transition: 0.2s ease-in-out;
-    border: 1px solid rgb(35, 136, 243);
+    border: 1px solid var(--button-color);
 }
 
 .address-form input[type="checkbox"] {
@@ -70,14 +70,6 @@ select {
     padding: 1em 2em;    
     border-radius: 6px; 
     color:var(--button-text-color);   
-}
-
-.goToPayment-btn:hover {
-    opacity: 0.7;
-    transition: .5s; 
-    color: var(--primary-text-color);
-    background-color: #7ef384;
-    font-weight: bold;   
 }
 
 .error {

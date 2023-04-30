@@ -4,8 +4,7 @@ import userEvent from "@testing-library/user-event";
 import Payment from "../Payment/Payment";
 import { CreditCard } from "../interfaces/CreditCard";
 
-const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
-
+// Dummy CreditCard to be used in tests
 const payment: CreditCard = {
     cardNumber: "0123456789101112",
     cvcNumber: "123",
@@ -13,13 +12,20 @@ const payment: CreditCard = {
     expiryYear: "23",
 };
 
+// RequestInit POST options with JSON stringified body to be used in tests
 const options: RequestInit = {
     method: "POST",
-    headers:{"Content-Type":"application/json"},
+    headers: { "Content-Type": "application/json" },
     mode: "cors",
     body: JSON.stringify(payment),
 };
 
+// RequestBin URL for fetch mock implementation
+const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
+
+/**
+ * Payment page test suite containing appropriate test function declarations to be run
+ */
 describe(Payment.name, () => {
     afterEach(() => {
         vi.restoreAllMocks();
@@ -33,7 +39,9 @@ describe(Payment.name, () => {
     it("Choose expiration month", async () => {
         const monthValue = "04";
         render(<Payment />);
-        const expirationMonth = screen.getByRole("combobox", { name: /Udløbsmåned/i });
+        const expirationMonth = screen.getByRole("combobox", {
+            name: /Udløbsmåned/i,
+        });
         const month = screen.getByRole("option", { name: monthValue });
         await userEvent.selectOptions(expirationMonth, month);
         expect(month).toHaveValue(monthValue);
@@ -42,7 +50,9 @@ describe(Payment.name, () => {
     it("Choose expiration year", async () => {
         const yearValue = "29";
         render(<Payment />);
-        const expirationYear = screen.getByRole("combobox", { name: /Udløbsår/i });
+        const expirationYear = screen.getByRole("combobox", {
+            name: /Udløbsår/i,
+        });
         const year = screen.getByRole("option", { name: yearValue });
         await userEvent.selectOptions(expirationYear, year);
         expect(year).toHaveValue(yearValue);
@@ -107,7 +117,7 @@ describe(Payment.name, () => {
             .spyOn(window, "fetch")
             .mockImplementation(async (url: RequestInfo | URL) => {
                 if (url === submitUrl) {
-                    await delay(20);
+                    await delay(100); // Delay to expect on loading
                     return {
                         ok: false,
                     } as Response;
@@ -125,8 +135,12 @@ describe(Payment.name, () => {
         await waitFor(() =>
             expect(mockFetch).toHaveBeenCalledWith(submitUrl, options)
         );
-        expect(screen.findByText("Loading..."));
-        expect(screen.findByText("Vi beklager ulejligheden, noget gik galt."));
+        expect(await screen.findByLabelText("Loading")).toBeInTheDocument();
+        expect(
+            await screen.findByText(
+                "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med kort!"
+            )
+        ).toBeInTheDocument();
     });
 });
 
