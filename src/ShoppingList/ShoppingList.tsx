@@ -7,6 +7,9 @@ import { ProductItem } from "../interfaces/ProductItem";
 import { routes } from "../Navigation/RoutePaths";
 import navigate from "../Navigation/navigate";
 
+/**
+ * ShoppingList component page where the user can adjust their cart items and see pricings
+ */
 function ShoppingList({
     items,
     setItems,
@@ -17,7 +20,7 @@ function ShoppingList({
     productList: Products;
 }) {
 
-    // Populates cart with dummy items
+    // useEffect that populates the cart with dummy items if it is empty
     useEffect(() => {
         if (items.length === 0) {
             const p1 = productList["vitamin-c-500-200"];
@@ -49,6 +52,7 @@ function ShoppingList({
         }
     }, []);
 
+    // Function for incrementing product item quantity
     function incrementQuantity(index: number) {
         const item = items.at(index);
         if (item !== undefined) {
@@ -56,6 +60,7 @@ function ShoppingList({
         }
     }
 
+    // Function for decrementing product item quantity
     function decrementQuantity(index: number) {
         const item = items.at(index);
         if (item !== undefined && item.quantity > 1) {
@@ -63,6 +68,7 @@ function ShoppingList({
         }
     }
 
+    // Function to set upsell item
     function upsellItem(index: number) {
         const item = items.at(index);
         if (item !== undefined && item.product.upsellProductId !== null) {
@@ -71,10 +77,12 @@ function ShoppingList({
         }
     }
 
+    // Function to remove an item
     function removeItem(index: number) {
         setItems(items.filter((p, i) => i !== index));
     }
 
+    // Function to toggle giftwrap on an item
     function toggleGiftWrap(index: number) {
         setItems(
             items.map((item, i) => {
@@ -87,6 +95,7 @@ function ShoppingList({
         );
     }
 
+    // Function to handle quantity change for a productItem
     function handleQuantityChange(product: ProductItem, newQuantity: number) {
         setItems(
             items.map((item) => {
@@ -99,6 +108,7 @@ function ShoppingList({
         );
     }
 
+    // Function to handle upsell change by replacing a productItem with its upsell product
     function handleUpsellChange(product: ProductItem, upsell: string) {
         setItems(
             items.map((item) => {
@@ -111,6 +121,7 @@ function ShoppingList({
         );
     }
 
+    // Function to toggle recurring order schedule on an item
     function toggleRecurringOrderSchedule(index: number) {
         setItems(
             items.map((item, i) => {
@@ -123,6 +134,7 @@ function ShoppingList({
         );
     }
 
+    // Checks if the items list is empty
     const listEmpty = items === undefined || items.length === 0;
 
     return (
@@ -152,6 +164,9 @@ function ShoppingList({
     );
 }
 
+/**
+ * ProductTable component which displays the whole shopping list page if the cartItems list is not empty
+ */
 function ProductTable({
     items,
     decrementQuantity,
@@ -171,6 +186,8 @@ function ProductTable({
     upsellItem: (index: number) => void;
     productList: Products;
 }) {
+
+    // Function for getting the cartItem total price
     const itemTotal = (item: CartItem) => {
         const priceSum = item.quantity * item.product.price;
         if (item.quantity >= item.product.rebateQuantity) {
@@ -180,6 +197,7 @@ function ProductTable({
         }
     };
 
+    // Function to determine if any cartItem in the items list has upsell products
     const hasUpsellProducts = () => {
         let upsellItemsExsist = false;
         items.forEach((item) => {
@@ -190,6 +208,7 @@ function ProductTable({
         return upsellItemsExsist;
     };
 
+    // onClick function which navigates the user to the delivery routePath
     const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         navigate(routes.delivery.routePath);
@@ -263,6 +282,9 @@ function ProductTable({
     );
 }
 
+/**
+ * CartTotal component which displays the item list total pricings
+ */
 function CartTotal({
     items,
     itemTotal,
@@ -270,6 +292,8 @@ function CartTotal({
     items: CartItem[];
     itemTotal: (item: CartItem) => number;
 }) {
+
+    // Defined pricing constants
     const shippingPrice = 39;
     const freeShipping = 499;
     const totalRebate = 0.1;
@@ -326,6 +350,9 @@ function CartTotal({
     );
 }
 
+/**
+ * UpsellItems component which displays a single upsell item for a particular CartItem, if it has any
+ */
 function UpsellItems({
     item,
     upsellItem,
@@ -335,6 +362,8 @@ function UpsellItems({
     upsellItem: () => void;
     productList: Products;
 }) {
+
+    // holds the upsell item of a CartItem if it has any, else null 
     const upsellProduct =
         item.product.upsellProductId !== null
             ? productList[item.product.upsellProductId]
@@ -365,6 +394,9 @@ function UpsellItems({
     }
 }
 
+/**
+ * ProductTableRow component which displays a single cartItems row in the users shopping list
+ */
 function ProductTableRow({
     item,
     decrementQuantity,

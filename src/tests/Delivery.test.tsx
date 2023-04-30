@@ -6,6 +6,7 @@ import Delivery from "../Delivery/Delivery";
 import { useState } from "react";
 import { Address } from "../interfaces/Address";
 
+// Dummy Address to be used in tests
 const address: Address = {
     firstName: "",
     lastName: "",
@@ -20,6 +21,13 @@ const address: Address = {
     address2: "",
 };
 
+// Zipcode URL for fetch mock implementation
+const zipCodeUrl = "https://api.dataforsyningen.dk/postnumre";
+
+/**
+ * Test component to be used for setting up the necessary state handling and parameters for implementing the Delivery component page
+ * This is necessary as Delivery relies on state which lives outside the component 
+ */
 const TestComponent = () => {
     const [billingAddress, setBilling] = useState<Address>(address);
     const [shippingAddress, setShipping] = useState<Address>(address);
@@ -37,8 +45,9 @@ const TestComponent = () => {
     );
 };
 
-const zipCodeUrl = "https://api.dataforsyningen.dk/postnumre";
-
+/**
+ * Delivery page test suite containing appropriate test function declarations to be run
+ */
 describe(Delivery.name, () => {
     beforeEach(async () => {
         const mockFetch = vi

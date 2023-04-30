@@ -2,6 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import Finish from "../Finish/Finish";
 
+/**
+ * Finish page test suite containing appropriate test function declarations to be run
+ */
 describe(Finish.name, () => {
     it("Should render title", () => {
         render(<Finish />);

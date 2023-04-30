@@ -6,15 +6,23 @@ import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
 import mockResponse from "../assets/products.json";
 
+// Products JSON data URL for fetch mock implementation
 const dataUrl =
     "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
+/**
+ * Test component to be used for setting up the necessary state handling and parameters for implementing the ProductList component page
+ * This is necessary as ProductList relies on state which lives outside the component 
+ */
 const TestComponent = () => {
     const [items, setItems] = useState<CartItem[]>([]);
     const [productList, setList] = useState<Products>({});
     return <ProductList items={items} setItems={setItems} setList={setList} />;
 };
 
+/**
+ * ProductList page test suite containing appropriate test function declarations to be run
+ */
 describe(ProductList.name, () => {
     beforeEach(async () => {
         const mockFetch = vi
