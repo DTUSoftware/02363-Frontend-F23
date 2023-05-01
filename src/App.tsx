@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { CartItem } from "./interfaces/CartItem";
 import { Address } from "./interfaces/Address";
 import ShoppingList from "./ShoppingList/ShoppingList";
 import "./App.css";
@@ -12,11 +11,10 @@ import Finish from "./Finish/Finish";
 import Route from "./Navigation/Route";
 import Routes from "./Navigation/Routes";
 import { routes } from "./Navigation/RoutePaths";
-import { Products } from "./interfaces/Products";
 import Login, { userLogin } from "./Login/Login";
 import DescopeSdk from "@descope/web-js-sdk";
 import ProductsProvider from "./context/ProductsContext";
-import CartItemsProvider from "./context/CartItemsContext";
+import { CartProvider } from "./context/ShoppingContext";
 
 const descopeSdk = DescopeSdk({ projectId: "P2OsrcDOTW2jFz7Wq9Sxks54JSx3" });
 const descopeToken = new URLSearchParams(window.location.search).get("t");
@@ -56,7 +54,7 @@ function App() {
 
     return (
         <ProductsProvider>
-        <CartItemsProvider>
+        <CartProvider>
         <div className="App">
             <Navbar user={user} descopeSdk={descopeSdk} />
             <div className="content">
@@ -114,7 +112,7 @@ function App() {
                 </Routes>
             </div>
         </div>
-        </CartItemsProvider>
+        </CartProvider>
         </ProductsProvider>
     );
 }

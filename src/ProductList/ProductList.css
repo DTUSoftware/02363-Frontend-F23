@@ -26,7 +26,7 @@ label.name{
     line-height: 80px; 
     padding: 0 2px;
     font-weight: bold;
-    transition:  fomt-size .35s;
+    transition:  font-size .35s;
     color: var(--primary-text-color);
 }
 
@@ -37,7 +37,7 @@ label.name{
 .price {   
     font-size: small;
     text-align: center;
-    transition:  fomt-size .35s;
+    transition:  font-size .35s;
     color: var(--primary-text-color);
 }
 
@@ -50,7 +50,7 @@ label.name{
     font-weight: bold;
     font-style: italic;
     text-align: center;  
-    transition:  fomt-size .35s;  
+    transition:  font-size .35s;  
 }
 
 .card:hover p{

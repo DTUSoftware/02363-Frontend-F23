@@ -8,12 +8,14 @@ import RoundLoader from "../SpinnerAnimation/RounedLoader";
 import { ProductsContextType, ProductsContext } from "../context/ProductsContext";
 import React from "react";
 import { CartItemsContextType,CartItemsContext } from "../context/CartItemsContext";
+import { useCartDispatch } from "../context/ShoppingContext";
 
 const dataUrl = "https://raw.githubusercontent.com/larsthorup/checkout-data/main/product-v2.json";
 
 function ProductList()  {
 
-    const { addItem } = React.useContext(CartItemsContext) as CartItemsContextType;
+    
+    const dispatch= useCartDispatch();
     const {setProductList}= React.useContext(ProductsContext) as ProductsContextType;
     const {sendRequest,data, isLoading, error}=useFetchData<ProductItem[]>(dataUrl)
 
@@ -32,8 +34,8 @@ function ProductList()  {
     },[data])
 
     const handleAddItem = (e: React.FormEvent, product: ProductItem | any) => {
-        e.preventDefault();
-        addItem(product);
+        e.preventDefault();        
+        dispatch({type:'addItem',payload:{product:product}})
     }; 
 
     
@@ -55,7 +57,7 @@ function ProductList()  {
                                :( <p> <br /></p>)                                    
                             }
 
-                            <p className="add-button"><button onClick={(e)=> handleAddItem(e,product)}><b><i>Læg i inkøbskurv</i></b></button></p>
+                            <p className="add-button"><button onClick={(e)=>handleAddItem(e,product)}><b><i>Læg i inkøbskurv</i></b></button></p>
                         </div>
                     ) 
                 )

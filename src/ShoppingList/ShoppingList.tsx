@@ -1,34 +1,33 @@
-import { useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import "./ShoppingList.css";
 import { CartItem } from "../interfaces/CartItem";
 import { Products } from "../interfaces/Products";
-import { ProductItem } from "../interfaces/ProductItem";
 import { routes } from "../Navigation/RoutePaths";
 import navigate from "../Navigation/navigate";
 import { ProductsContextType, ProductsContext } from "../context/ProductsContext";
-import { CartItemsContext, CartItemsContextType } from "../context/CartItemsContext";
 import React from "react";
+import { useCartDispatch, useCartState } from "../context/ShoppingContext";
 
 function ShoppingList() {
 
     const {productList}= React.useContext(ProductsContext) as ProductsContextType;
 
-    const { items, populatesData, removeItem, handleQuantityChange, handleUpsellChange, toggleGiftWrap, toggleRecurringOrderSchedule } = React.useContext(CartItemsContext) as CartItemsContextType;
+    const items= useCartState();
+    const dispatch= useCartDispatch();
 
-    useEffect(()=>{populatesData()}  ,[])
+    dispatch({type:'populatesData'})    
 
     function incrementQuantity(index: number) {
         const item = items.at(index);
         if (item !== undefined) {
-            handleQuantityChange(item.product, item.quantity + 1);
+            dispatch({type:'handleQuantityChange', payload:{product:item.product, newQuantity:(item.quantity + 1)}})
         }
     }
 
     function decrementQuantity(index: number) {
         const item = items.at(index);
         if (item !== undefined && item.quantity > 1) {
-            handleQuantityChange(item.product, item.quantity - 1);
+            dispatch({type:'handleQuantityChange', payload:{product:item.product, newQuantity:(item.quantity - 1)}})
         }
     }
 
@@ -36,7 +35,7 @@ function ShoppingList() {
         const item = items.at(index);
         if (item !== undefined && item.product.upsellProductId !== null) {
             const upsell = `${item.product.upsellProductId}`;
-            handleUpsellChange(item.product, upsell);
+            dispatch({type:'handleUpsellChange', payload:{product:item.product, upsell:upsell}})
         }
     }
 
@@ -56,9 +55,9 @@ function ShoppingList() {
                     items={items}
                     decrementQuantity={decrementQuantity}
                     incrementQuantity={incrementQuantity}
-                    toggleGiftWrap={toggleGiftWrap}
-                    toggleRecurringOrderSchedule={toggleRecurringOrderSchedule}
-                    removeItem={removeItem}
+                    toggleGiftWrap={(i)=>dispatch({type:'toggleGiftWrap',payload:{index:i}})}
+                    toggleRecurringOrderSchedule={(i)=>dispatch({type:'toggleRecurringOrderSchedule',payload:{index:i}})}
+                    removeItem={(i)=>dispatch({type:'removeItem',payload:{index:i}})}
                     upsellItem={upsellItem}
                     productList={productList}
                 />

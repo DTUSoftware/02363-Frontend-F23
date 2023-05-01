@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
-import { CartItem } from "../interfaces/CartItem";
 import { Address } from "../interfaces/Address";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
@@ -8,7 +7,7 @@ import usePostData from "../hooks/useFetch";
 import Beatloader from "../SpinnerAnimation/BeatLoader";
 import "./Submit.css";
 import React from "react";
-import {CartItemsContext, CartItemsContextType } from "../context/CartItemsContext";
+import { useCartState } from "../context/ShoppingContext";
 
 const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
@@ -48,8 +47,8 @@ function Submit({
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const { items } = React.useContext(CartItemsContext) as CartItemsContextType;
-
+        const items= useCartState();
+        
         const orderDetails = items.map((x) => {
             return {
                 productId: x.product.id,
