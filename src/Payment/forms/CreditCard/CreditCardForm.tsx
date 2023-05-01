@@ -1,14 +1,10 @@
-
 import { useEffect, useState } from "react";
-import card_americanexpress from "../../../assets/americanexpress_logo.png";
-import card_dankort from "../../../assets/dankort_logo.png";
-import card_mastercard from "../../../assets/mastercard_logo.png";
 import navigate from "../../../Navigation/navigate";
 import { CreditCard } from "../../../interfaces/CreditCard";
 import { routes } from "../../../Navigation/RoutePaths";
-import usePostData from "../../../hooks/useFetch"
+import usePostData from "../../../hooks/useFetch";
 import Beatloader from "../../../SpinnerAnimation/BeatLoader";
-import  "./CreditCardForm.css"
+import "./CreditCardForm.css";
 
 const payment: CreditCard = {
     cardNumber: "",
@@ -21,25 +17,29 @@ const submitUrl = "https://eoysx40p399y9yl.m.pipedream.net";
 
 function CreditCardForm() {
     const [customerPayment, setCustomerPayment] = useState<CreditCard>(payment);
-    const {sendRequest, setError, status, isLoading, error} = usePostData<string>(submitUrl);
+    const { sendRequest, setError, status, isLoading, error } =
+        usePostData<string>(submitUrl);
 
-    useEffect(()=>{
-        if(status === 200){
+    useEffect(() => {
+        if (status === 200) {
             navigate(routes.submit.routePath);
         }
-    },[status]) 
+    }, [status]);
 
-    const handleSubmit =async (event:React.FormEvent<HTMLFormElement>)=> {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const options: RequestInit = {
             method: "POST",
-            headers:{"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             mode: "cors",
             body: JSON.stringify(customerPayment),
         };
 
-        sendRequest(options, "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med kort!");
-    } 
+        sendRequest(
+            options,
+            "Vi beklager ulejligheden, noget gik galt ved indsendelsen af din betaling med kort!"
+        );
+    };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setCustomerPayment({
@@ -144,25 +144,30 @@ function CreditCardForm() {
                             />
                         </div>
                         <div className="fullrow">
-                            {isLoading === false 
-                                ?   <button className="confirm-payment" 
-                                        type="submit" 
-                                        disabled={false} >
-                                        Bekræft Betaling
-                                    </button>
-                                :   <button className="confirm-payment" 
-                                        type="submit" 
-                                        disabled={true}>
-                                        <Beatloader/>                 
-                                    </button>
-                            } 
+                            {isLoading === false ? (
+                                <button
+                                    className="confirm-payment"
+                                    type="submit"
+                                    disabled={false}
+                                >
+                                    Bekræft Betaling
+                                </button>
+                            ) : (
+                                <button
+                                    className="confirm-payment"
+                                    type="submit"
+                                    disabled={true}
+                                >
+                                    <Beatloader />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </form>
             ) : (
                 <div className="error-text">
-                    <p >{error}</p>
-                    <button className="retry-btn" onClick={()=>setError("")}>
+                    <p>{error}</p>
+                    <button className="retry-btn" onClick={() => setError("")}>
                         Prøv igen
                     </button>
                 </div>

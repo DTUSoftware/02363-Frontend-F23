@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./Delivery.css";
 import { City } from "../interfaces/City";
 import useFetchData from "../hooks/useFetch";
-import BeatLoader  from "../SpinnerAnimation/BeatLoader"
+import BeatLoader from "../SpinnerAnimation/BeatLoader";
 import navigate from "../Navigation/navigate";
 import { routes } from "../Navigation/RoutePaths";
 
@@ -87,7 +87,9 @@ const Delivery = ({
                 )}
 
                 <br />
-                <button className="goToPayment-btn" type="submit">Gå til betaling</button>
+                <button className="goToPayment-btn" type="submit">
+                    Gå til betaling
+                </button>
             </form>
         </div>
     );
@@ -113,11 +115,12 @@ function AddressDetails({
     const isShipping = check !== null && setCheck !== null;
 
     const dataUrl = "https://api.dataforsyningen.dk/postnumre";
-    const {sendRequest ,data, isLoading, error } = useFetchData<City[]>(dataUrl);
-    
+    const { sendRequest, data, isLoading, error } =
+        useFetchData<City[]>(dataUrl);
+
     useEffect(() => {
         sendRequest();
-    },[dataUrl]);
+    }, [dataUrl]);
 
     useEffect(() => {
         const cityData: CityData = {};
@@ -301,7 +304,7 @@ function AddressDetails({
                     Postnummer
                 </label>
                 {isLoading ? (
-                    <BeatLoader/>
+                    <BeatLoader />
                 ) : (
                     <input
                         disabled={isLoading}
@@ -323,7 +326,7 @@ function AddressDetails({
                     By
                 </label>
                 {isLoading ? (
-                    <BeatLoader/>
+                    <BeatLoader />
                 ) : (
                     <input
                         readOnly
