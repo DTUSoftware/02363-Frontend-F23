@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import mobilepayImg from "../../assets/mobilepayicon.svg";
+import mobilepayImg from "../../assets/mobilepayicon.png";
 import navigate from "../../Navigation/navigate";
 import { routes } from "../../Navigation/RoutePaths";
 import usePostData from "../../hooks/useFetch";
