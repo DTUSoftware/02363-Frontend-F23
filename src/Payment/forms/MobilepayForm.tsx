@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import mobilepayImg from "../../assets/mobilepayicon.png";
 import navigate from "../../Navigation/navigate";
 import { routes } from "../../Navigation/RoutePaths";
@@ -57,13 +55,13 @@ const MobilePayForm = () => {
                     </label>
 
                     <div className="full-row">
-                        <PhoneInput
-                            country={"dk"}
+                        <input
+                            type="tel"
                             value={mobilePayForm.mobilePayNumber}
                             onChange={(phone) =>
                                 setForm({
                                     ...mobilePayForm,
-                                    mobilePayNumber: phone,
+                                    mobilePayNumber: phone.currentTarget.value,
                                 })
                             }
                         />
