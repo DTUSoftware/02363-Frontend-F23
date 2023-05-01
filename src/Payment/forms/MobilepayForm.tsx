@@ -56,6 +56,8 @@ const MobilePayForm = () => {
 
                     <div className="full-row">
                         <input
+                            pattern="[0-9]{8}"
+                            required
                             type="tel"
                             value={mobilePayForm.mobilePayNumber}
                             onChange={(phone) =>
