@@ -12,7 +12,7 @@ const dataUrl =
 const TestComponent = () => {
     const [items, setItems] = useState<CartItem[]>([]);
     const [productList, setList] = useState<Products>({});
-    return <ProductList items={items} setItems={setItems} setList={setList} />;
+    return <ProductList />;
 };
 
 describe(ProductList.name, () => {

@@ -51,7 +51,6 @@ const TestComponent = () => {
 
     return (
         <Submit
-            cartItems={basket}
             billingAddress={billingAddress}
             shippingAddress={shippingAddress}
             resetAfterSubmit={resetAfterSubmit}

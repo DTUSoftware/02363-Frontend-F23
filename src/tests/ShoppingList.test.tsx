@@ -11,13 +11,7 @@ const TestComponent = () => {
     const products: Products = {};
     mockData.forEach((x) => (products[x.id] = x));
     const [items, setItems] = useState<CartItem[]>([]);
-    return (
-        <ShoppingList
-            items={items}
-            setItems={setItems}
-            productList={products}
-        />
-    );
+    return <ShoppingList />;
 };
 
 describe(ShoppingList.name, () => {
