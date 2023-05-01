@@ -7,15 +7,9 @@ export type ProductsContextType = {
     setProductList:(data:Products) => void;
 };
 
-
-interface Props {
-    children: React.ReactNode;
-}
-
-//ProductsContext
 export const ProductsContext = React.createContext<ProductsContextType | null>(null);
 
-
+interface Props { children: React.ReactNode;}
 const ProductsProvider: React.FC<Props> = ({ children }): any => {
     const [productList, setProductList] = useState<Products>({});
 
